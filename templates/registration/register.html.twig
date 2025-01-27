@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from unicoderbd.com/template/uniland/fullwidth/signin.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 28 Dec 2024 10:59:20 GMT -->
+<head>
+    <!-- Meta Tag -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Uniland - Real Estate HTML5 Template">
+    <meta name="keywords" content="real estate, property, property search, agent, apartments, booking, business, idx, housing, real estate agency, rental">
+    <meta name="author" content="unicoder">
+    <title>M'inscrire</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400;700&amp;display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,700;1,400&amp;display=swap" rel="stylesheet">
+
+    <!-- Required style of the theme -->
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/bootstrap-select.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/animate.min.css') }}">
+    <link rel="stylesheet" href="assets/webfonts/flaticon/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/owl.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/jquery.fancybox.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/layerslider.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/template.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/colors/color.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/loader.css') }}">
+</head>
+
+<body>
+
+    <div class="preloader">
+		<div class="loader xy-center"></div>
+	</div>
+
+    <div id="page_wrapper" class="bg-light">
+        <!--============== Header Section Start ==============-->
+        <header class="header-style nav-on-top bg-white">
+            <div class="main-nav">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <nav class="navbar navbar-expand-lg nav-secondary nav-primary-hover nav-line-active">
+                                <a class="navbar-brand" href="#"><img class="nav-logo" src="assets/images/logo/logo1.png" alt="Image not found !"></a>
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon flaticon-menu flat-small text-primary"></span>
+                                  </button>
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <ul class="navbar-nav ms-auto">
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#">Home</a>
+                                            
+                                        </li>
+                                        
+                                    </ul>
+                                    
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!--============== Header Section End ==============-->
+
+        <!--============== Styled Registration Form ==============-->
+        <div class="full-row">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-6 mx-auto">
+                        <div class="bg-white xs-p-20 p-30 border rounded">
+                            <div class="form-icon-left rounded form-boder">
+                                <h4 class="mb-4">M'inscrire</h4>
+                                {{ form_errors(registrationForm) }}
+                                {{ form_start(registrationForm) }}
+                                <div class="row row-cols-1 g-3">
+                                    <div class="col">
+                                        <label class="mb-2" for="nom">Nom</label>
+                                        {{ form_widget(registrationForm.nom, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                    </div>
+                                    <div class="col">
+                                        <label class="mb-2" for="prenom">Prénom</label>
+                                        {{ form_widget(registrationForm.prenom, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                    </div>
+                                    <div class="col">
+                                        <label class="mb-2" for="email">Email</label>
+                                        {{ form_widget(registrationForm.email, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                    </div>
+                                    <div class="col">
+                                        <label class="mb-2" for="tel">Téléphone</label>
+                                        {{ form_widget(registrationForm.tel, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                    </div>
+                                    <div class="col">
+                                        <label class="mb-2" for="photoProfil">Photo de Profil (PNG/JPEG)</label>
+                                        {{ form_widget(registrationForm.photoProfil, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                        {{ form_errors(registrationForm.photoProfil) }}
+                                    </div>
+                                    <div class="col">
+                                        <label class="mb-2" for="plainPassword">Mot de passe</label>
+                                        {{ form_widget(registrationForm.plainPassword, { 'attr': {'class': 'form-control bg-light'}, 'label': 'Mot de passe' }) }}
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-check">
+                                            {{ form_widget(registrationForm.agreeTerms, { 'attr': {'class': 'form-check-input'} }) }}
+                                            <label class="form-check-label" for="agreeTerms">J'accepte les conditions</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-primary w-100">M'inscrire</button>
+                                    </div>
+                                    <div class="col text-center">
+                                        <p>Déjà inscrit(e) ? <a href="{{ path('app_login') }}" class="text-dark"><u>Me connecter</u></a></p>
+                                    </div>
+                                </div>
+                                {{ form_end(registrationForm) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!--============== Footer Section Start ==============-->
+        <footer class="full-row footer-default-dark bg-footer" style="padding-bottom: 30px">
+            <div class="container">
+                <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1">
+                    <div class="col">
+                        <div class="footer-widget mb-4">
+                            <div class="footer-logo mb-4">
+                                <a href="index.html"><img src="{{ asset('assetsFront/img/logo-white2.svg') }}" alt="Habilux"></a>
+                            </div>
+                            <p>Votre partenaire de confiance pour trouver le bien immobilier idéal. Que vous cherchiez à acheter, louer ou vendre, notre agence met à votre disposition un service personnalisé.</p>
+                        </div>
+                        <div class="footer-widget media-widget mb-4">
+                            <a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://www.twitter.com/"><i class="fab fa-twitter"></i></a>
+                            <a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.youtube.com/"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="footer-widget contact-widget mb-4">
+                            <h3 class="widget-title mb-4">Contactez-nous</h3>
+                            <ul>
+                                <li><i class="fas fa-map-marker-alt"></i> Hammamet, Tunis</li>
+                                <li><i class="fas fa-phone"></i> <a href="tel:+21693313278">+216 93 313 278</a></li>
+                                <li><i class="fas fa-phone"></i> <a href="tel:+21690388911">+216 90 388 911</a></li>
+                                <li><i class="fas fa-envelope"></i> <a href="mailto:mailinfo@Habilux.com">mailinfo@Habilux.com</a></li>
+                                <li><i class="fas fa-envelope"></i> <a href="mailto:support@Habilux.com">support@Habilux.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="footer-widget footer-nav mb-4">
+                            <h3 class="widget-title mb-4">Navigations</h3>
+                            <ul>
+                                <li><a href="{{ path('app_propos') }}">A propos de nous</a></li>
+                                <li><a href="{{ path('app_Proprietes') }}">Propriétés</a></li>
+                                <li><a href="{{ path('app_agents') }}">Nos agents</a></li>
+                                <li><a href="{{ path('app_contact') }}">Demander une visite</a></li>
+                                <li><a href="{{ path('app_boutique') }}">Boutique</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright-wrap bg-light text-center py-3">
+                <p class="copyright-text">Copyright <i class="fal fa-copyright"></i> 2024 <a href="index.html">Habilux / BiKso</a>, Tous droits réservés.</p>
+            </div>
+        </footer>
+        <!--============== Footer Section End ==============-->
+
+
+     
+    </div>
+
+    <!-- Javascript Files -->
+    <script src="{{ asset('assetsDashboard/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/popper.min.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/jquery.fancybox.min.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/owl.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/range/tmpl.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/range/jquery.dependClass.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/range/draggable.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/range/jquery.slider.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/wow.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/mixitup.min.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/paraxify.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/custom.js') }}"></script>
+
+</body>
+
+
+<!-- Mirrored from unicoderbd.com/template/uniland/fullwidth/signin.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 28 Dec 2024 10:59:20 GMT -->
+</html>
+
+
+

@@ -1,0 +1,133 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}HabiLux - Détails de la propriété{% endblock %}
+
+{% block style %}
+<style>
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.table th {
+    width: 30%;
+    font-weight: bold;
+    color: #555;
+}
+
+.table td {
+    color: #333;
+}
+
+.btn i {
+    margin-right: 5px;
+}
+</style>
+{% endblock  %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h1 class="text-center">Détails de la Propriété</h1>
+        </div>
+        <div class="card-body">
+            <div class="text-center">
+                <!-- Affichage de la photo du bien -->
+                {% if bien.imageBiens is defined and bien.imageBiens|length > 0 %}
+                    <img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens.first().nomImage) }}" alt="Photo du bien" class="img-fluid mb-3" style="max-height: 300px; object-fit: cover;">
+                {% else %}
+                    <p>Aucune photo disponible</p>
+                {% endif %}
+            </div>
+
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th class="text-start">ID :</th>
+                        <td>{{ bien.id }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Nom du Bien :</th>
+                        <td>{{ bien.nomBien }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Adresse :</th>
+                        <td>{{ bien.adresseBien }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Prix :</th>
+                        <td>{{ bien.prixBien }} DT</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Type d'offre :</th>
+                        <td>{{ bien.typeOffre }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Description :</th>
+                        <td>{{ bien.description }} </td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Localisation :</th>
+                        <td>{{ bien.localisationBien }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Prix afficher :</th>
+                        <td>{{ bien.AfficherPrix ? 'Oui' : 'Non' }}</td>
+                    </tr>
+                    
+                    <!-- Affichage de la catégorie -->
+                    <tr>
+                        <th class="text-start">Type du bien :</th>
+                        <td>{{ bien.type.nomType }}</td>
+                    </tr>
+
+                    <!-- Affichage du plan -->
+                    <tr>
+                        <th class="text-start">Plan :</th>
+                        <td>
+                            {% if bien.plan %}
+                                <a href="{{ asset('uploads/plans/' ~ bien.plan) }}" target="_blank">Voir le plan</a>
+                            {% else %}
+                                Aucun plan disponible
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    <!-- Affichage de la vidéo -->
+                    <tr>
+                        <th class="text-start">Vidéo :</th>
+                        <td>
+                            {% if bien.video %}
+                                <a href="{{ asset('uploads/videos/' ~ bien.video) }}" target="_blank">Voir la vidéo</a>
+                            {% else %}
+                                Aucune vidéo disponible
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <a href="{{ path('app_bien_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </a>
+
+            <a href="{{ path('app_details_propriete_show', {'id': bien.id}) }}" class="btn btn-info">
+                <i class="fas fa-cogs"></i> Voir les caractéristiques
+            </a>
+
+            <div>
+                <a href="{{ path('app_bien_edit', {'id': bien.id}) }}" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Modifier
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

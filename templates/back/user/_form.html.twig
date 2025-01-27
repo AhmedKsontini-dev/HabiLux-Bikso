@@ -1,0 +1,57 @@
+<div class="container py-4">
+    <h2 class="text-center mb-4">Ajouter / Modifier un Utilisateur</h2>
+    <div class="card shadow p-4">
+        {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+
+        <div class="mb-3">
+            {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.nom) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.prenom) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.email) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.tel, 'Téléphone', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.tel, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.tel) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.roles, 'Roles', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.roles, {'attr': {'class': 'form-control'}}) }} 
+            {{ form_errors(form.roles) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.photoProfil, 'Photo de profil', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.photoProfil, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.photoProfil) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.password, 'Mot de passe', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.password) }}
+        </div>
+
+
+
+        <div class="d-flex justify-content-between mt-3">
+            <a href="javascript:history.back()" class="btn btn-secondary">Retour</a>
+            <button type="submit" class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>

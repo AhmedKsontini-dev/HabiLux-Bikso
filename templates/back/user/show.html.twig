@@ -1,0 +1,102 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}HabiLux - Détails de l'Utilisateur{% endblock %}
+
+{% block style %}
+<style>
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.table th {
+    width: 30%;
+    font-weight: bold;
+    color: #555;
+}
+
+.table td {
+    color: #333;
+}
+
+.btn i {
+    margin-right: 5px;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h1 class="text-center">Détails de l'Utilisateur</h1>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <tbody>
+
+                    <tr>
+                        <th class="text-start">Photo Profil :</th>
+                        <td>
+                            {% if user.photoProfil is defined and user.photoProfil is not empty %}
+                                <img src="{{ asset('uploads/photo_profil/' ~ user.photoProfil) }}" alt="Photo de Profil" width="30%">
+                            {% else %}
+                                <span>Aucune photo de profil</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">ID :</th>
+                        <td>{{ user.id }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <th class="text-start">Nom :</th>
+                        <td>{{ user.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Prenom :</th>
+                        <td>{{ user.prenom }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Email :</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Tel :</th>
+                        <td>{{ user.tel }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Roles :</th>
+                        <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Vérifier :</th>
+                        <td>{{ user.verifier ? 'Yes' : 'No' }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Password :</th>
+                        <td>{{ user.password }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <a href="{{ path('app_back_user_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </a>
+
+            <div>
+                <a href="{{ path('app_back_user_edit', {'id': user.id}) }}" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Modifier
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

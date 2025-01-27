@@ -1,0 +1,81 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}HabiLux - Détails des Propriétés{% endblock %}
+
+{% block style %}
+<style>
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.table th {
+    width: 30%;
+    font-weight: bold;
+    color: #555;
+}
+
+.table td {
+    color: #333;
+}
+
+.btn i {
+    margin-right: 5px;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h1 class="text-center">Détails des Propriétés</h1>
+        </div>
+        <div class="card-body">
+            <!-- Vérification des données existantes -->
+            {% if proprietebien is not empty %}
+                <form method="post" action="{{ path('app_propriete_update') }}">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nom de la Propriété</th>
+                                <th>Valeur de la Propriété</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for propriete in proprietebien %}
+                                <tr>
+                                    <td>{{ propriete.propriete.nomPropriete }}</td>
+                                    <td>
+                                        <input 
+                                            type="text" 
+                                            name="proprietes[{{ propriete.id }}][valeurPropriete]" 
+                                            value="{{ propriete.valeurPropriete }}" 
+                                            class="form-control">
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div class="card-footer d-flex justify-content-between">
+                        <a href="{{ path('app_bien_index') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Retour à la liste
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Enregistrer
+                        </button>
+                    </div>
+                </form>
+            {% else %}
+                <p class="text-center">Aucune propriété trouvée.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

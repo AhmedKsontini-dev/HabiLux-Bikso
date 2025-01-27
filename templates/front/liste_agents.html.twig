@@ -1,0 +1,224 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}HabiLux-Agents{% endblock %}
+
+
+{% block body %}
+ <div class="breadcumb-wrapper " data-bg-src="{{ asset('assetsFront/img/bg/breadcumb-bg.jpg') }}">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-9">
+                    <div class="breadcumb-content">
+                        <h1 class="breadcumb-title">Agents</h1>
+                        <ul class="breadcumb-menu">
+                            <li><a href="{{ path('app_front')}}">Accueil</a></li>
+                            <li>Agents</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--==============================
+Team Area  
+==============================-->
+    <section class="space">
+        <div class="container z-index-common">
+            <div class="row gy-30">
+                <!-- Single Item -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="th-team team-card style4">
+                        <div class="img-wrap">
+                            <div class="team-img">
+                                <img src="{{ asset('assetsFront/img/team/team-1.jpg') }}" alt="Team">
+                            </div>
+                            <div class="th-social-wrap">
+                                <div class="th-social">
+                                    <a target="_blank" href="https://www.facebook.com/ahmed.ksontini.37?locale=fr_FR"><i class="fab fa-facebook-f"></i></a>
+                                    <a target="_blank" href="https://www.linkedin.com/in/ahmed-ksontini-3589071a0/"><i class="fab fa-linkedin-in"></i></a>
+                                    <a target="_blank" href="https://www.instagram.com/ahmed_ksontini_/"><i class="fab fa-instagram"></i></a>
+                                </div>
+                                <a class="icon-btn" href="team-details.html"><img src="{{ asset('assetsFront/img/icon/arrow-right.svg') }}" alt="img"></a>
+                            </div>
+                        </div>
+                        <div class="team-card-content">
+                            <div class="media-left">
+                                <h3 class="box-title"><a href="team-details.html">Ksontini Ahmed</a></h3>
+                                <span class="team-desig">Expert immobilier</span>
+                            </div>
+                            <a class="icon-btn" href="tel:+21693313278"><img src="{{ asset('assetsFront/img/icon/phone.svg') }}" alt="img"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Single Item -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="th-team team-card style4">
+                        <div class="img-wrap">
+                            <div class="team-img">
+                                <img src="{{ asset('assetsFront/img/team/team_2_2.png') }}" alt="Team">
+                            </div>
+                            <div class="th-social-wrap">
+                                <div class="th-social">
+                                    <a target="_blank" href="https://facebook.com/"><i class="fab fa-facebook-f"></i></a>
+                                    <a target="_blank" href="https://twitter.com/"><i class="fab fa-twitter"></i></a>
+                                    <a target="_blank" href="https://linkedin.com/"><i class="fab fa-linkedin-in"></i></a>
+                                    <a target="_blank" href="https://youtube.com/"><i class="fab fa-youtube"></i></a>
+                                    <a target="_blank" href="https://instagram.com/"><i class="fab fa-instagram"></i></a>
+                                </div>
+                                <a class="icon-btn" href="team-details.html"><img src="{{ asset('assetsFront/img/icon/arrow-right.svg') }}" alt="img"></a>
+                            </div>
+                        </div>
+                        <div class="team-card-content">
+                            <div class="media-left">
+                                <h3 class="box-title"><a href="team-details.html">Andrew Richard</a></h3>
+                                <span class="team-desig">Property Expert</span>
+                            </div>
+                            <a class="icon-btn" href="tel:09876543210"><img src="{{ asset('assetsFront/img/icon/phone.svg') }}" alt="img"></a>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+            </div>
+        </div>
+    </section>
+    <!--==============================
+Client Area  
+==============================-->
+    <div class="client-area-1 space-bottom" data-bg-src="{{ asset('assetsFront/img/hero/hero_bg_4_1.jpg') }}">
+        <div class="container">
+            <div class="slider-area client-slider3">
+                <div class="swiper th-slider has-shadow" id="clientSlider1" data-slider-options='{"breakpoints":{"0":{"slidesPerView":2},"576":{"slidesPerView":"3"},"768":{"slidesPerView":"4"},"992":{"slidesPerView":"5"},"1200":{"slidesPerView":"6"}}}'>
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <a href="#" class="client-card">
+                                <img src="{{ asset('assetsFront/img/brand/brand_3_1.svg') }}" alt="Image">
+                            </a>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <a href="#" class="client-card">
+                                <img src="{{ asset('assetsFront/img/brand/brand_3_2.svg') }}" alt="Image">
+                            </a>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <a href="#" class="client-card">
+                                <img src="{{ asset('assetsFront/img/brand/brand_3_3.svg') }}" alt="Image">
+                            </a>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <a href="#" class="client-card">
+                                <img src="{{ asset('assetsFront/img/brand/brand_3_4.svg') }}" alt="Image">
+                            </a>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <a href="#" class="client-card">
+                                <img src="{{ asset('assetsFront/img/brand/brand_3_5.svg') }}" alt="Image">
+                            </a>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <a href="#" class="client-card">
+                                <img src="{{ asset('assetsFront/img/brand/brand_3_6.svg') }}" alt="Image">
+                            </a>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <a href="#" class="client-card">
+                                <img src="{{ asset('assetsFront/img/brand/brand_3_1.svg') }}" alt="Image">
+                            </a>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <a href="#" class="client-card">
+                                <img src="{{ asset('assetsFront/img/brand/brand_3_2.svg') }}" alt="Image">
+                            </a>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <a href="#" class="client-card">
+                                <img src="{{ asset('assetsFront/img/brand/brand_3_3.svg') }}" alt="Image">
+                            </a>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <a href="#" class="client-card">
+                                <img src="{{ asset('assetsFront/img/brand/brand_3_4.svg') }}" alt="Image">
+                            </a>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <a href="#" class="client-card">
+                                <img src="{{ asset('assetsFront/img/brand/brand_3_5.svg') }}" alt="Image">
+                            </a>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <a href="#" class="client-card">
+                                <img src="{{ asset('assetsFront/img/brand/brand_3_6.svg') }}" alt="Image">
+                            </a>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--==============================
+Appointment Area   
+==============================-->
+    <div class="space-bottom">
+        <div class="container">
+            <div class="row gx-60 align-items-center">
+                <div class="col-lg-5">
+                    <div class="appointment-thumb text-xl-end mb-lg-0 mb-50">
+                        <img src="{{ asset('assetsFront/img/normal/booking_1_1.png') }}" alt="img">
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="title-area mb-35">
+                        <h2 class="sec-title">Réservez des solutions professionnelles</h2>
+                    </div>
+                    <form action="https://html.themeholy.com/realar/demo/mail.php" method="POST" class="appointment-form ajax-contact me-xl-5">
+                        <div class="row">
+                            <div class="form-group style-border style-radius col-md-6">
+                                <input type="text" class="form-control" name="name" id="name" placeholder="Votre Nom*">
+                                <i class="fal fa-user"></i>
+                            </div>
+                            <div class="form-group style-border style-radius col-md-6">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Votre Email*">
+                                <i class="fal fa-envelope"></i>
+                            </div>
+                            <div class="form-group style-border style-radius col-md-12">
+                                <select name="subject" id="subject" class="form-select">
+                                    <option value="" disabled selected hidden>Sélectionnez le type de service</option>
+                                    <option value="Real Estate">Immobilier</option>
+                                    <option value="Apartment">Appartement</option>
+                                    <option value="Residencial">Résidentiel</option>
+                                    <option value="Deluxe">De luxe</option>
+                                </select>
+                                <i class="fal fa-angle-down"></i>
+                            </div>
+                            <div class="col-12 form-group style-border style-radius">
+                                <i class="far fa-comments"></i>
+                                <textarea placeholder="Tapez votre message" class="form-control"></textarea>
+                            </div>
+                            <div class="col-12 form-btn mt-4">
+                                <button class="th-btn style-border2">Envoyer le message <span class="btn-icon"><img src="{{ asset('assetsFront/img/icon/paper-plane.svg') }}" alt="img"></span></button>
+                            </div>
+                        </div>
+                        <p class="form-messages mb-0 mt-3"></p>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,158 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}HabiLux-Profil{% endblock %}
+
+{% block body %}
+ <div class="full-row px-40 py-30 xs-p-0">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col">
+                                    <h3 class="my-3">My Profile</h3>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="border rounded bg-white p-30 mb-30">
+                                        <div class="row">
+                                            <div class="col-xl-2">
+                                                <h4 class="mb-4 font-400">Profile Information</h4>
+                                            </div>
+                                            <div class="col-xl-10">
+                                                <form action="#" class="form-boder" method="POST">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="wrap-custom-file">
+                                                                <input type="file" name="image1" id="image1" accept=".gif, .jpg, .png">
+                                                                <label for="image1" style="background-image: url({{ asset('assetsDashboard/images/team/2.jpg') }});">
+																<span><i class="flaticon-download"></i> Upload Photo </span>
+															</label>
+                                                            </div>
+                                                            <p>*minimum 260px x 260px</p>
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Username</label>
+                                                            <input class="form-control" name="username" placeholder="admin" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Email</label>
+                                                            <input class="form-control" name="email" placeholder="admin@website.com" type="email">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">First Name</label>
+                                                            <input class="form-control" name="firstname" placeholder="Brain" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Last Name</label>
+                                                            <input class="form-control" name="lastname" placeholder="Adams" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Position</label>
+                                                            <input class="form-control" name="position" placeholder="Property Broker" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Phone</label>
+                                                            <input class="form-control" name="phone" placeholder="+1-908-941-6051" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Fax Number</label>
+                                                            <input class="form-control" name="faxnumber" placeholder="94 1551 466 1" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Language</label>
+                                                            <select>
+																<option>English</option>
+																<option>Spanish</option>
+																<option>Arabic</option>
+																<option>Dutch</option>
+																<option>German</option>
+																<option>Franch</option>
+																<option>African</option>
+															</select>
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Company Name</label>
+                                                            <input class="form-control" name="companyname" placeholder="Company Name" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Address</label>
+                                                            <input class="form-control" name="address" placeholder="3170 Fairfax Drive New Brunswick, NJ 08901" type="text">
+                                                        </div>
+                                                        <div class="col-12 mb-20">
+                                                            <label class="mb-2 font-500 w-100">About Me</label>
+                                                            <textarea class="form-control bg-light" placeholder="Write Details..." rows="6"></textarea>
+                                                        </div>
+                                                        <div class="col-12 mb-20">
+                                                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <p><span class="font-500">NOTE :</span> Morbi nibh dis. Pede. Erat, porta urna. Adipiscing Ipsum nibh morbi taciti proin quisque sit quam curae; vulputate ridiculus. Dictumst ullamcorper nullam Parturient,
+                                                    urna. Etiam nascetur enim lectus torquent pellentesque.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="border rounded bg-white p-30 mb-30">
+                                        <div class="row">
+                                            <div class="col-xl-2">
+                                                <h4 class="mb-4 font-400">Social Media</h4>
+                                            </div>
+                                            <div class="col-xl-10">
+                                                <form action="#" class="form-boder" method="POST">
+                                                    <div class="row">
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Skype</label>
+                                                            <input class="form-control" name="title" placeholder="skype.id" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Website</label>
+                                                            <input class="form-control" name="title" placeholder="mywebsite.com" type="email">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Facebook</label>
+                                                            <input class="form-control" name="title" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Twitter</label>
+                                                            <input class="form-control" name="title" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Linkedin</label>
+                                                            <input class="form-control" name="title" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Instagram</label>
+                                                            <input class="form-control" name="title" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Google Plus</label>
+                                                            <input class="form-control" name="title" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Youtube</label>
+                                                            <input class="form-control" name="title" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Facebook</label>
+                                                            <input class="form-control" name="title" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Pinterest</label>
+                                                            <input class="form-control" name="title" type="text">
+                                                        </div>
+                                                        <div class="col-lg-6 mb-20">
+                                                            <label class="mb-2 font-fifteen font-500">Vimeo</label>
+                                                            <input class="form-control" name="title" type="text">
+                                                        </div>
+                                                        <div class="col-lg-12 mb-20">
+                                                            <button type="submit" name="name" class="btn btn-primary">Update Profile</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+{% endblock %}

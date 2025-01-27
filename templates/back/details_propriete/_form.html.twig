@@ -1,0 +1,31 @@
+<div class="container py-4">
+    <h2 class="text-center mb-4">Ajouter / Modifier Détails de Propriété</h2>
+    <div class="card shadow p-4">
+        {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+
+        <div class="mb-3">
+            {{ form_label(form.valeurPropriete, 'Valeur de la Propriété', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.valeurPropriete, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.valeurPropriete) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.propriete, 'Propriété', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.propriete, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.propriete) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.bien, 'Bien Associé', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.bien, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.bien) }}
+        </div>
+
+        <div class="d-flex justify-content-between mt-3">
+            <a href="{{ path('app_details_propriete_index') }}" class="btn btn-secondary">Retour</a>
+            <button type="submit" class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>

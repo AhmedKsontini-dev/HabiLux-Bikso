@@ -1,0 +1,65 @@
+
+
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Liste des Types de Biens{% endblock %}
+
+{% block body %}
+    <div class="container-fluid bg-light p-4" style="border: 5px solid #1C2D37;">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="page-header-left">
+                        <h3>
+                            <small>Liste des Types de Biens</small>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-light p-4 mt-4" >
+        <div class="dashboard-panel border bg-white rounded overflow-hidden w-100">
+            <div class="overflow-x-scroll font-fifteen">
+                <table class="w-100 items-list bg-transparent">
+                    <thead>
+                        <tr class="bg-white">
+                            <th>ID</th>
+                            <th>Nom du Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for type_bien in type_biens %}
+                            <tr>
+                                <td>{{ type_bien.id }}</td>
+                                <td>{{ type_bien.nomType }}</td>
+                                <td>
+                                    
+                                    <a href="{{ path('app_back_type_bien_edit', {'id': type_bien.id}) }}" class="text-success me-2" title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ path('app_back_type_bien_delete', {'id': type_bien.id}) }}" method="post" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ type_bien.id) }}">
+                                        <button type="submit" class="btn btn-link text-danger p-0" title="Supprimer">
+                                            <i class="fas fa-trash"></i> 
+                                        </button>
+                                    </form>
+                                
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3" class="text-center">Aucun enregistrement trouvé</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    
+{% endblock %}

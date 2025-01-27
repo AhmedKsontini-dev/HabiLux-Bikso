@@ -1,0 +1,66 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}HabiLux - Détails du Type de Bien{% endblock %}
+
+{% block style %}
+<style>
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.table th {
+    width: 30%;
+    font-weight: bold;
+    color: #555;
+}
+
+.table td {
+    color: #333;
+}
+
+.btn i {
+    margin-right: 5px;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h1 class="text-center">Détails du Type de Bien</h1>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th class="text-start">ID :</th>
+                        <td>{{ type_bien.id }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Nom du Type :</th>
+                        <td>{{ type_bien.nomType }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <a href="{{ path('app_back_type_bien_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </a>
+
+            <div>
+                <a href="{{ path('app_back_type_bien_edit', {'id': type_bien.id}) }}" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Modifier
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Gestion des Propriétés{% endblock %}
+
+{% block body %}
+    <div class="container-fluid bg-light p-4" style="border: 5px solid #1C2D37;">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="page-header-left">
+                        <h3>
+                            <small>Liste des propriétés</small>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+
+    <!-- Formulaire de filtre -->
+    
+        <form method="get" action="{{ path('app_back_propriete_index') }}" class="mb-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="typeBien">Filtrer par Type de Bien :</label>
+                    <select name="typeBien" id="typeBien" class="form-control">
+                        <option value="">Tous les types</option>
+                        {% for type in typeBiens %}
+                            <option value="{{ type.id }}" {% if selectedTypeBien == type.id %}selected{% endif %}>
+                                {{ type.nomType }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Filtrer</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+
+    <!-- Liste des propriétés -->
+    <div class="container-fluid bg-light p-4 mt-4" >
+        <div class="dashboard-panel border bg-white rounded overflow-hidden w-100">
+            <div class="overflow-x-scroll font-fifteen">
+                <table class="w-100 items-list bg-transparent">
+                    <thead>
+                        <tr class="bg-white">
+                            <th>ID</th>
+                            <th>Nom Propriété</th>
+                            <th>Type de Bien</th> {# Nouvelle colonne #}
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for propriete in proprietes %}
+                            <tr>
+                                <td>{{ propriete.id }}</td>
+                                <td>{{ propriete.nomPropriete }}</td>
+                                <td>{{ propriete.type ? propriete.type.nomType : 'Non défini' }}</td> {# Affiche le nomType #}
+                                <td>
+                                    <a href="{{ path('app_back_propriete_edit', {'id': propriete.id}) }}" class="text-success me-2" title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ path('app_propriete_delete', {'id': propriete.id}) }}" method="post" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ propriete.id) }}">
+                                        <button type="submit" class="btn btn-link text-danger p-0" title="Supprimer">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center">Aucun enregistrement trouvé</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

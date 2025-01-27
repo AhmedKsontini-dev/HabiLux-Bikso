@@ -1,0 +1,133 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Gestion des Biens{% endblock %}
+
+{% block body %}
+<div class="container-fluid bg-light p-4" style="border: 5px solid #1C2D37;">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-header-left">
+                    <h3>
+                        <small>Liste des biens</small>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulaire de filtre -->
+    <form method="get" action="{{ path('app_bien_index') }}" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="typeBien">Filtrer par Type de Bien :</label>
+                <select name="typeBien" id="typeBien" class="form-control">
+                    <option value="">Tous les types</option>
+                    {% for type in typeBiens %}
+                        <option value="{{ type.id }}" {% if selectedTypeBien == type.id %}selected{% endif %}>
+                            {{ type.nomType }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label for="localisationBien">Filtrer par Localisation :</label>
+                <input type="text" name="localisationBien" id="localisationBien" class="form-control" value="{{ selectedLocalisationBien }}">
+            </div>
+
+            <div class="col-md-4">
+                <label for="typeOffre">Filtrer par Type d'Offre :</label>
+                <input type="text" name="typeOffre" id="typeOffre" class="form-control" value="{{ selectedTypeOffre }}">
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary">Filtrer</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+    <div class="container-fluid bg-light p-4 mt-4" >
+        <div class="dashboard-panel border bg-white rounded overflow-hidden w-100">
+            <div class="overflow-x-scroll font-fifteen">
+                <table class="w-100 items-list bg-transparent">
+                    <thead>
+                        <tr class="bg-white">
+                            <th>Image</th>
+                            <th>ID</th>
+                            <th>Nom Bien</th>
+                            <th>Type Bien</th>
+                            <th>Adresse</th>
+                            <th>Prix</th>
+                            <th>Type d'Offre</th>
+                            <th>Description</th>
+                            <th>Plan</th>
+                            <th>Vidéo</th>
+                            <th>Localisation</th>
+                            <th>Afficher Prix</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bien in biens %}
+                            <tr>
+                                <td>
+                                    {% if bien.imageBiens is defined and bien.imageBiens|length > 0 %}
+                                        <img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens.first().nomImage) }}" alt="Image Bien" style="width: 100px; height: 100px; object-fit: cover;">
+                                    {% else %}
+                                        <span>Aucune image</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ bien.id }}</td>
+                                <td>{{ bien.nomBien }}</td>
+                                <td>{{ bien.type.nomType }}</td>
+                                <td>{{ bien.adresseBien }}</td>
+                                <td>{{ bien.prixBien }}</td>
+                                <td>{{ bien.typeOffre }}</td>
+                                <td>{{ bien.description }}</td>
+                                <td>
+                                    {% if bien.plan %}
+                                        <a href="{{ asset('uploads/plan_bien/' ~ bien.plan) }}" target="_blank">Voir le plan</a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if bien.video %}
+                                        <a href="{{ asset('uploads/video_bien/' ~ bien.video) }}" target="_blank">Voir la vidéo</a>
+                                    {% endif %}
+                                </td>
+                                <td>{{ bien.localisationBien }}</td>
+                                <td>{{ bien.AfficherPrix ? 'Oui' : 'Non' }}</td>
+                                <td>
+                                    <a href="{{ path('app_bien_show', {'id': bien.id}) }}" class="text-primary me-2" title="Voir">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{{ path('app_bien_edit', {'id': bien.id}) }}" class="text-success me-2" title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ path('app_bien_delete', {'id': bien.id}) }}" method="post" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ bien.id) }}">
+                                        <button type="submit" class="btn btn-link text-danger p-0" title="Supprimer">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                    <a href="{{ path('app_bien_propriete', {'id': bien.id}) }}" class="text-info" title="Ajouter les details de propriete">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="12" class="text-center">Aucun enregistrement trouvé</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+      
+    </div>
+{% endblock %}

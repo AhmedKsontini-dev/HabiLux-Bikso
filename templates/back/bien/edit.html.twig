@@ -1,0 +1,13 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}HabiLux-Edit proprietes{% endblock %}
+
+{% block body %}
+    
+
+    {{ include('back/bien/_form.html.twig', {'button_label': 'Update'}) }}
+
+    
+
+    {{ include('back/bien/_delete_form.html.twig') }}
+{% endblock %}
