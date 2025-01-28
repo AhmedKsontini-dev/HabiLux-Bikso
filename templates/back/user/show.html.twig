@@ -77,12 +77,16 @@
                     </tr>
                     <tr>
                         <th class="text-start">Vérifier :</th>
-                        <td>{{ user.verifier ? 'Yes' : 'No' }}</td>
+                        <td>
+                            {% if user.verifier %}
+                                <span class="badge bg-success">Vérifié</span>
+                            {% else %}
+                                <span class="badge bg-danger">Non vérifié</span>
+                            {% endif %}
+                        </td>
                     </tr>
-                    <tr>
-                        <th class="text-start">Password :</th>
-                        <td>{{ user.password }}</td>
-                    </tr>
+
+                   
                 </tbody>
             </table>
         </div>

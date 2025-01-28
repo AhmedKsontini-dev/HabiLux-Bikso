@@ -75,11 +75,6 @@
 
                                 <li class="text-white pb-2 pt-4 px-20">Gérer les Utilisateurs</li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('app_back_user_new') }}">
-                                        <i class="bi bi-person-plus pe-2"></i> Ajouter des utilisateurs
-                                    </a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link" href="{{ path('app_back_user_index') }}">
                                         <i class="bi bi-people pe-2"></i> Liste des utilisateurs
                                     </a>
@@ -173,11 +168,22 @@
                                                 <ul class="navbar-nav user-option">
                                                     
                                                     <li class="nav-item">
-                                                        <img src="{{ asset('uploads/photo_profil/' ~ app.user.photoProfil) }}" alt="Profile Picture" class="profile-picture">
-                                                        <a href="{{ path('app_logout') }}" class="btn1">
-                                                            <i class="fas fa-sign-out-alt"></i> Déconnexion
-                                                        </a>
+                                                        <div class="dropdown">
+                                                            <img src="{{ asset('uploads/photo_profil/' ~ app.user.photoProfil) }}" 
+                                                                alt="Profile Picture" 
+                                                                class="profile-picture dropdown-toggle" 
+                                                                id="profileDropdown" 
+                                                                data-bs-toggle="dropdown" 
+                                                                aria-expanded="false">
+                                                                {{app.user.nom}} {{app.user.prenom}}
+                                                                
+                                                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                                                                <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Voir le profil</a></li>
+                                                                <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
+                                                            </ul>
+                                                        </div>
                                                     </li>
+
 
 
                                                 </ul>

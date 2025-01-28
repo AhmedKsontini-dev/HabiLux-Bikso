@@ -2869,9 +2869,10 @@ Deshboard Style Start
 	font-weight: 400;
 }
 .items-list td img {
-	width: 90px;
-	float: left;
-	margin-right: 15px;
+	width: 60px;
+    float: left;
+    margin-right: 15px;
+    border-radius: 13%;
 }
 .media-upload li.col {
 	position: relative

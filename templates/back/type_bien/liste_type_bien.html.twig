@@ -36,19 +36,29 @@
                                 <td>{{ type_bien.id }}</td>
                                 <td>{{ type_bien.nomType }}</td>
                                 <td>
-                                    
-                                    <a href="{{ path('app_back_type_bien_edit', {'id': type_bien.id}) }}" class="text-success me-2" title="Modifier">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <form action="{{ path('app_back_type_bien_delete', {'id': type_bien.id}) }}" method="post" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ type_bien.id) }}">
-                                        <button type="submit" class="btn btn-link text-danger p-0" title="Supprimer">
-                                            <i class="fas fa-trash"></i> 
-                                        </button>
-                                    </form>
-                                
+                                    <div class="dropdown">
+                                        <a href="#" class="text-dark" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa fa-info-circle"></i> <!-- Icône pour ouvrir la dropdown -->
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                            <li>
+                                                <a class="dropdown-item text-success" href="{{ path('app_back_type_bien_edit', {'id': type_bien.id}) }}">
+                                                    <i class="fas fa-edit"></i> Modifier
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <form action="{{ path('app_back_type_bien_delete', {'id': type_bien.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ type_bien.id) }}">
+                                                    <button type="submit" class="dropdown-item text-danger">
+                                                        <i class="fas fa-trash"></i> Supprimer
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </td>
+
                             </tr>
                         {% else %}
                             <tr>

@@ -544,23 +544,23 @@
                                 </button>
                             </div>
                         </div>
-                       <div class="col-auto d-none d-xl-block">
-    <div class="header-button">
-        {% if app.user %}
-            <div class="dropdown">
-                <img src="{{ asset('uploads/photo_profil/' ~ app.user.photoProfil) }}" alt="Profile Picture" class="profile-picture dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Voir le profil</a></li>
-                    <li><a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a></li>
-                </ul>
-            </div>
-        {% else %}
-            <a href="{{ path('app_login') }}" class="th-btn style-border th-btn-icon">
-                <i class="fas fa-sign-in-alt"></i> Connexion
-            </a>
-        {% endif %}
-    </div>
-</div>
+                        <div class="col-auto d-none d-xl-block">
+                            <div class="header-button">
+                                {% if app.user %}
+                                    <div class="dropdown">
+                                        <img src="{{ asset('uploads/photo_profil/' ~ app.user.photoProfil) }}" alt="Profile Picture" class="profile-picture dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Voir le profil</a></li>
+                                            <li><a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a></li>
+                                        </ul>
+                                    </div>
+                                {% else %}
+                                    <a href="{{ path('app_login') }}" class="th-btn style-border th-btn-icon">
+                                        <i class="fas fa-sign-in-alt"></i> Connexion
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
 
 
                     </div>
