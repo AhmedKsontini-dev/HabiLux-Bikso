@@ -1,0 +1,1229 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}HabiLux{% endblock %}
+
+{% block body %}
+<style>
+    .about-profile-wrap {
+        display: flex;
+        gap: 20px; /* Espacement entre les deux photos de profil */
+    }
+
+    .about-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* Espacement entre l'image et le texte */
+    }
+
+    .avatar-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .signature-wrap {
+        display: flex;
+        gap: 20px; /* Espacement entre les photos de signature */
+        margin-top: 20px;
+    }
+
+    .signature img {
+        width: 80px;
+        height: auto;
+    }
+
+    .user-photo {
+    width: 50px; /* Taille de l'avatar */
+    height: 50px; /* Taille de l'avatar */
+    border-radius: 50%; /* Cette propriété rend l'image circulaire */
+    object-fit: cover; /* Cette propriété ajuste l'image pour qu'elle remplisse complètement le cercle sans déformer l'image */
+    border: 2px solid #fff; /* Optionnel : ajoute une bordure blanche autour de l'image */
+    }
+
+    .offer-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    text-transform: uppercase;
+    z-index: 10;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+
+    .tag-sale {
+        background-color: #ff4d4d; /* Rouge pour "A Vendre" */
+    }
+
+    .tag-rent {
+        background-color: #f1c643; /* Bleu pour "A Louer" */
+    }
+
+    .property-type-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #0099ff; /* Bleu, change selon ton design */
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Style du badge de prix */
+.price-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    color: white;
+    background-color: #28a745; /* Vert par défaut */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    }
+
+    /* Couleur pour le prix visible */
+    .price-visible {
+        background-color: #90F3A7FF; /* Vert si prix affiché */
+    }
+
+    /* Couleur pour le prix privé */
+    .price-hidden {
+        background-color: #9CA7B1FF; /* Gris si "Prix Privée" */
+    }
+
+
+/* Assurez-vous que chaque image ait une hauteur de 400px */
+.portfolio-card .portfolio-img {
+    position: relative;
+    width: 100%;
+    height: 200px; /* Hauteur fixe de l'image */
+    overflow: hidden;
+}
+
+/* Style pour l'image */
+.portfolio-card .portfolio-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease; /* Effet de zoom au survol */
+}
+
+/* Style pour l'overlay et le texte */
+.portfolio-card .portfolio-img .overlay {
+    position: absolute;
+    bottom: 0;
+    right: 0; /* Aligne à droite */
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    text-align: right;
+    width: 100%;
+}
+
+/* Texte du nom de la ville */
+.portfolio-card .portfolio-img .overlay .city-name {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Bouton En savoir plus */
+.portfolio-card .portfolio-img .overlay .btn-offer {
+    background-color: #1C2D37;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+/* Effet de flow et apparition du bouton au survol */
+.portfolio-card .portfolio-img:hover img {
+    transform: scale(1.1); /* Zoom effet sur l'image */
+}
+
+
+
+
+
+
+
+</style>
+   <div class="hero-5" id="hero">
+        <div class="swiper th-slider hero-slider5" id="heroSlide5" data-slider-options='{"effect":"fade", "autoHeight": "true"}'>
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="hero-inner">
+                        <div class="th-hero-bg" data-bg-src="{{ asset('assetsFront/img/hero/hero_bg_5_1.jpg') }}"></div>
+                        <div class="container">
+                            <div class="row align-items-center justify-content-center">
+                                <div class="col-lg-10">
+                                    <div class="hero-style5 text-center">
+                                        <div class="btn-wrap justify-content-center" data-ani="slideindown" data-ani-delay="0.3s">
+                                            <a href="{{ path('app_front_all_biens_vendre')}}" class="th-btn style-border th-btn-icon">Ventes</a>
+                                            <a href="{{ path('app_front_all_biens_louer')}}" class="th-btn style-border th-btn-icon">Locations</a>
+                                            <a href="property.html" class="th-btn style-border th-btn-icon">Boutique</a>
+                                        </div>
+                                        <h1 class="hero-title text-white">
+                                            <span class="title1" data-ani="slideindown" data-ani-delay="0.3s">
+                                                Expérimentez l'harmonie </span>
+                                            <span class="title2" data-ani="slideindown" data-ani-delay="0.4s">
+                                                entre Luxe et Confort </span>
+                                        </h1>
+                                        <a href="" class="th-btn style4 th-btn-icon" data-ani="slideinup" data-ani-delay="0.6s">Demander une visite</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="hero-inner">
+                        <div class="th-hero-bg" data-bg-src="{{ asset('assetsFront/img/hero/hero_bg_5_2.jpg') }}"></div>
+                        <div class="container">
+                            <div class="row align-items-center justify-content-center">
+                                <div class="col-lg-10">
+                                    <div class="hero-style5 text-center">
+                                        <div class="btn-wrap justify-content-center" data-ani="slideindown" data-ani-delay="0.3s">
+                                            <a href="{{ path('app_front_all_biens_vendre')}}" class="th-btn style-border th-btn-icon">Ventes</a>
+                                            <a href="{{ path('app_front_all_biens_louer')}}" class="th-btn style-border th-btn-icon">Locations</a>
+                                            <a href="property.html" class="th-btn style-border th-btn-icon">Boutique</a>
+                                        </div>
+                                        <h1 class="hero-title text-white">
+                                            <span class="title1" data-ani="slideindown" data-ani-delay="0.3s">
+                                                Élevez votre style de vie où </span>
+                                            <span class="title2" data-ani="slideindown" data-ani-delay="0.4s">
+                                                Luxe et Confort se rencontrent </span>
+                                        </h1>
+                                        <a href="" class="th-btn style4 th-btn-icon" data-ani="slideinup" data-ani-delay="0.6s">Demander une visite</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="hero-inner">
+                        <div class="th-hero-bg" data-bg-src="{{ asset('assetsFront/img/hero/hero_bg_5_3.jpg') }}"></div>
+                        <div class="container">
+                            <div class="row align-items-center justify-content-center">
+                                <div class="col-lg-10">
+                                    <div class="hero-style5 text-center">
+                                        <div class="btn-wrap justify-content-center" data-ani="slideindown" data-ani-delay="0.3s">
+                                            <a href="{{ path('app_front_all_biens_vendre')}}" class="th-btn style-border th-btn-icon">Ventes</a>
+                                            <a href="{{ path('app_front_all_biens_louer')}}" class="th-btn style-border th-btn-icon">Locations</a>
+                                            <a href="property.html" class="th-btn style-border th-btn-icon">Boutique</a>
+                                        </div>
+                                        <h1 class="hero-title text-white">
+                                            <span class="title1" data-ani="slideindown" data-ani-delay="0.3s">
+                                                Découvrez une maison </span>
+                                            <span class="title2" data-ani="slideindown" data-ani-delay="0.4s">
+                                                confortable et flexible </span>
+                                        </h1>
+                                        <a href="" class="th-btn style4 th-btn-icon" data-ani="slideinup" data-ani-delay="0.6s">Demander une visite</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-pagination style4"></div>
+        </div>
+        <div class="hero-social-link">
+            <div class="social-wrap">
+                <a href="https://facebook.com/">FACEBOOK</a>
+                <a href="https://instagram.com/">INSTAGRAM</a>
+                <a href="https://twitter.com/">TWITTER</a>
+            </div>
+        </div>
+        <div class="scroll-down">
+            <a href="#property-sec" class="hero-scroll-wrap"></a>
+        </div>
+    </div>
+
+    <!--======== / Hero Section ========--><!--==============================
+Property Area 2  
+==============================-->
+    <section class="space-top" id="property-sec">
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-xxl-6 col-lg-8">
+                    <div class="title-area">
+                        <span class="sub-title">Liste en vedette</span>
+                        <h2 class="sec-title text-theme">Propriétés en vedette</h2>
+                        <p class="text-theme">Découvrez les dernières propriétés ajoutées, soigneusement sélectionnées pour vous offrir les meilleures opportunités immobilières. Trouvez la maison, l’appartement , le terrain ou le local commercial qui correspond à vos besoins.</p>
+                    </div>
+                </div>
+
+                <div class="col-auto">
+                    <div class="sec-btn">
+                        <a href="{{ path('app_front_all_biens_louer')}}" class="th-btn style4 th-btn-icon">Voir toutes les propriétés</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slider-area property-slider2 slider-drag-wrap z-index-common">
+                <div class="swiper th-slider" data-slider-options='{"breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":"1"},"768":{"slidesPerView":"2"},"992":{"slidesPerView":"2"},"1200":{"slidesPerView":"3"},"1500":{"slidesPerView":"3"}},"spaceBetween":"24","grabCursor":"true","slideToClickedSlide":"true"}'>
+                    <div class="swiper-wrapper">
+                        {% for bien in biens|slice(0, 4) %}
+                            <div class="swiper-slide">
+                                <div class="property-card3 style-border">
+                                    <div class="property-card-thumb img-shine">
+                                        <!-- Ajout du tag de type d'offre -->
+                                        <span class="offer-tag {{ bien.typeOffre == 'A Vendre' ? 'tag-sale' : 'tag-rent' }}">
+                                            {{ bien.typeOffre }}
+                                        </span>
+
+                                        <!-- Nouveau badge pour le nomType -->
+                                        <span class="property-type-badge">
+                                            {{ bien.type.nomType }}
+                                        </span>
+
+                                        <img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien">
+                                    </div>
+
+                                    <div class="property-card-details">
+                                        <h4 class="property-card-title">
+                                            <a href="property-details.html">{{ bien.nomBien }}</a>
+                                        </h4>
+                                        <p class="property-card-location">
+                                            <i class="far fa-map-marker-alt me-2"></i>{{ bien.localisationBien }}
+                                        </p>
+                                        
+                                        <div class="property-card-meta">
+                                            
+
+                                            <span class="price-badge {{ bien.afficherPrix ? 'price-visible' : 'price-hidden' }}">
+                                                {{ bien.afficherPrix ? bien.prixBien ~ ' DT' : 'Prix Privée' }}
+                                            </span>
+
+                                            <span>
+                                                <p class="property-card-type">
+                                                    <i class="fas fa-calendar me-2"></i>Publié en : {{ bien.dateCreation|date('y-m-d') }}
+                                                </p>
+                                            </span>
+                                        </div>
+                                        <div class="property-btn-wrap">
+                                            <div class="property-author-wrap">
+                                                <img src="{{ asset('uploads/photo_profil/' ~ bien.publierPar.photoProfil) }}" alt="Photo de l'utilisateur" class="user-photo">
+                                                <a href="#">Admin</a>
+                                            </div>
+                                            <div class="btn-wrap">
+                                                <a href="property-details.html" class="th-btn style-border2 th-btn-icon"><i class="fas fa-info-circle"></i>Details</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!--==============================
+About Area  
+==============================-->
+    <div class="about-area-6 z-index-common position-relative space" id="about-sec">
+        <div class="container">
+            <div class="row gx-80 justify-content-between">
+                <div class="col-xl-6 mb-50 mb-xl-0">
+                    <div class="img-box6">
+                        <div class="img1">
+                            <img src="{{ asset('assetsFront/img/normal/about_6_1.png') }}" alt="img">
+                        </div>
+                        <div class="img2">
+                            <img src="{{ asset('assetsFront/img/normal/about_6_2.png') }}" alt="img">
+                        </div>
+                        <div class="about-tag">
+                            <div class="about-experience-tag">
+                                <span class="circle-title-anime"> HabiLux BiKso</span>
+                            </div>
+                            <a href="https://www.youtube.com/watch?v=_sI_Ps7JSEk" class="play-btn popup-video"><i class="fa-sharp fa-solid fa-play"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div class="title-area mb-32">
+                        <span class="sub-title">À propos de nous</span>
+                        <h2 class="sec-title text-theme">Bienvenue chez HabiLux</h2>
+                        <p class="sec-text text-theme">Quis nulla blandit vulputate morbi adipiscing sem vestibulum. Nulla turpis integer dui sed posuere sem. Id molestie mi arcu gravida lorem potenti.</p>
+                    </div>
+                    <div class="about-wrap2">
+                        <div class="checklist style5">
+                            <ul>
+                                <li>Services immobiliers de qualité</li>
+                                <li>Garantie de satisfaction à 100%</li>
+                                <li>Équipe hautement professionnelle</li>
+                                <li>Traitement toujours à temps</li>
+                            </ul>
+                        </div>
+                        <div class="call-btn">
+                            <div class="icon-btn bg-theme">
+                                <img src="{{ asset('assetsFront/img/icon/phone.svg') }}" alt="img">
+                            </div>
+                            <div class="btn-content">
+                                <h6 class="btn-title">Appelez-nous 24/7</h6>
+                                <span class="btn-text"><a href="tel:+21693313278">+216 93 313 278</a></span><br>
+                                <span class="btn-text"><a href="tel:+21690388911">+216 90 388 911</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-wrap mt-40">
+                        <!-- Première ligne de photos de profil -->
+                        <div class="about-profile-wrap">
+                            <div class="about-profile">
+                                <div class="avater">
+                                    <img src="{{ asset('assetsFront/img/normal/ahmed.png') }}" alt="avater" class="avatar-circle">
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="about-profile-name">Ksontini Ahmed</h5>
+                                    <p class="desig">PDG, Fondateur de HabiLux</p>
+                                </div>
+                            </div>
+
+                            <div class="about-profile">
+                                <div class="avater">
+                                    <img src="{{ asset('assetsFront/img/normal/bilel.png') }}" alt="avater" class="avatar-circle">
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="about-profile-name">Maghreby Bilel</h5>
+                                    <p class="desig">Co-fondateur de HabiLux</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Deuxième ligne de photos de signature -->
+                        <div class="signature-wrap mt-20">
+                            <div class="signature">
+                                <img src="{{ asset('assetsFront/img/normal/sinAh.png') }}" alt="img">
+                            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="signature">
+                                <img src="{{ asset('assetsFront/img/normal/sinbi.png') }}" alt="img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--==============================
+Counter Area  
+==============================-->
+    <div class="space bg-theme" data-bg-src="{{ asset('assetsFront/img/bg/award-bg-1-1.png') }}">
+        <div class="container">
+            <div class="counter-card-wrap">
+                <div class="counter-card style4">
+                    <div class="media-body">
+                        <div class="box-icon">
+                            <img src="{{ asset('assetsFront/img/icon/counter-4-1.svg') }}" alt="img">
+                        </div>
+                        <h2 class="box-number text-white"><span class="counter-number text-white">850</span>+</h2>
+                        <p class="box-text text-light">Appartements Élégants</p>
+                    </div>
+                </div>
+                <div class="counter-card style4">
+                    <div class="media-body">
+                        <div class="box-icon">
+                            <img src="{{ asset('assetsFront/img/icon/counter-4-2.svg') }}" alt="img">
+                        </div>
+                        <h2 class="box-number text-white"><span class="counter-number text-white">950</span>+</h2>
+                        <p class="box-text text-light">Maisons de Luxe</p>
+                    </div>
+                </div>
+                <div class="counter-card style4">
+                    <div class="media-body">
+                        <div class="box-icon">
+                            <img src="{{ asset('assetsFront/img/icon/counter-4-3.svg') }}" alt="img">
+                        </div>
+                        <h2 class="box-number text-white"><span class="counter-number text-white">18</span>k+</h2>
+                        <p class="box-text text-light">Invités Satisfaits</p>
+                    </div>
+                </div>
+                <div class="counter-card style4">
+                    <div class="media-body">
+                        <div class="box-icon">
+                            <img src="{{ asset('assetsFront/img/icon/counter-4-4.svg') }}" alt="img">
+                        </div>
+                        <h2 class="box-number text-white"><span class="counter-number text-white">2</span>k+</h2>
+                        <p class="box-text text-light">Propriétaires Heureux</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--==============================
+RSVP Area  
+==============================-->
+    <div class="space overflow-hidden">
+        <div class="sec-bg-shape2-1 spin shape-mockup d-xl-block d-none" data-top="6%" data-left="4%">
+            <img src="{{ asset('assetsFront/img/shape/section_shape_2_1.jpg') }}" alt="img">
+        </div>
+        <div class="sec-bg-shape2-2 wave-anim shape-mockup d-xl-block d-none" data-bg-src="{{ asset('assetsFront/img/shape/section_shape_2_2.jpg') }}" data-top="25%" data-right="4%">
+        </div>
+        <div class="sec-bg-shape2-3 jump shape-mockup d-xl-block d-none" data-bottom="0" data-left="3%">
+            <img src="{{ asset('assetsFront/img/shape/section_shape_2_3.jpg') }}" alt="img">
+        </div>
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-xxl-6 col-lg-8">
+                    <div class="title-area">
+                        <span class="sub-title">Plus de 745K annonces d'appartements</span>
+                        <h2 class="sec-title text-theme">Acheter, Louer & Vendre</h2>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="sec-btn">
+                        <a href="{{ path('app_front_all_biens_louer')}}" class="th-btn style-border2 th-btn-icon">Voir toutes les propriétés</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row gy-4 justify-content-center">
+                <div class="col-lg-4 col-md-6">
+                    <div class="rent-card">
+                        <div class="box-icon">
+                            <img src="{{ asset('assetsFront/img/icon/rent-icon1-1.svg') }}" alt="img">
+                        </div>
+                        <h4 class="box-title"><a href="property-details.html">Acheter une maison</a></h4>
+                        <p class="box-text">Découvrez votre lieu de vie parfait en parcourant plus de 2 millions de résidences sur Homy.</p>
+                        <a href="property.html" class="th-btn style-border th-btn-icon">Trouver une maison</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="rent-card">
+                        <div class="box-icon">
+                            <img src="{{ asset('assetsFront/img/icon/rent-icon1-2.svg') }}" alt="img">
+                        </div>
+                        <h4 class="box-title"><a href="property-details.html">Louer une maison</a></h4>
+                        <p class="box-text">Utilisez plus de 35 critères de HabiLux et des mots-clés personnalisés pour choisir une location qui vous plaira.</p>
+                        <a href="property.html" class="th-btn style-border th-btn-icon">Trouver une maison</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="rent-card">
+                        <div class="box-icon">
+                            <img src="{{ asset('assetsFront/img/icon/rent-icon1-1.svg') }}" alt="img">
+                        </div>
+                        <h4 class="box-title"><a href="property-details.html">Vendre une maison</a></h4>
+                        <p class="box-text">Découvrez votre lieu de vie parfait en parcourant plus de 2 millions de résidences sur Homy.</p>
+                        <a href="property.html" class="th-btn style-border th-btn-icon">Trouver une maison</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--==============================
+Award Area  
+==============================-->
+    <section class="space overflow-hidden bg-theme position-relative award-area-1" data-bg-src="{{ asset('assetsFront/img/bg/award-bg-1-1.png') }}">
+        <div class="container">
+            <div class="title-area text-center">
+                <span class="sub-title text-white">Récompenses</span>
+                <h2 class="sec-title text-white">Nos Reconnaissances & Récompenses</h2>
+            </div>
+            <div class="swiper th-slider has-shadow" id="awardSlider1" data-slider-options='{"breakpoints":{"0":{"slidesPerView":2},"576":{"slidesPerView":"3"},"768":{"slidesPerView":"4"},"992":{"slidesPerView":"5"},"1200":{"slidesPerView":"5"}}}'>
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/award/award1-1.png') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/award/award1-2.png') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/award/award1-3.png') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/award/award1-4.png') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/award/award1-5.png') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/award/award1-1.png') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/award/award1-2.png') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/award/award1-3.png') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/award/award1-4.png') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/award/award1-5.png') }}" alt="Image">
+                        </a>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section><!--==============================
+Contact Area   
+==============================-->
+    <div class="overflow-hidden contact-area-4 z-index-common" data-sec-pos="top-half" data-pos-for=".award-area-1" id="contact-sec">
+        <div class="container">
+            <div class="contact-wrap4">
+                <div class="row g-0">
+                    <div class="col-lg-6">
+                        <div class="appointment-wrap2 bg-white">
+                        <h2 class="form-title text-theme">Planifiez une visite</h2>
+                        <form action="https://html.themeholy.com/realar/demo/mail.php" method="POST" class="appointment-form ajax-contact">
+                            <div class="row">
+                                <div class="form-group style-border style-radius col-12">
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="Votre Nom*">
+                                    <i class="fal fa-user"></i>
+                                </div>
+                                <div class="form-group style-border style-radius col-12">
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="Votre Email*">
+                                    <i class="fal fa-envelope"></i>
+                                </div>
+                                <div class="form-group style-border style-radius col-md-12">
+                                    <select name="subject" id="subject" class="form-select">
+                                        <option value="" disabled selected hidden>Sélectionnez le type de service</option>
+                                        <option value="Immobilier">Immobilier</option>
+                                        <option value="Appartement">Appartement</option>
+                                        <option value="Résidentiel">Résidentiel</option>
+                                        <option value="Luxe">Luxe</option>
+                                    </select>
+                                    <i class="fal fa-angle-down"></i>
+                                </div>
+                                <div class="col-12 form-group style-border style-radius">
+                                    <i class="far fa-comments"></i>
+                                    <textarea placeholder="Tapez votre message" class="form-control"></textarea>
+                                </div>
+                                <div class="col-12 form-btn mt-4">
+                                    <button class="th-btn">Envoyer le message <span class="btn-icon"><img src="{{ asset('assetsFront/img/icon/paper-plane.svg') }}" alt="img"></span></button>
+                                </div>
+                            </div>
+                            <p class="form-messages mb-0 mt-3"></p>
+                        </form>
+                    </div>
+
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="contact-thumb4-1">
+                            <img src="{{ asset('assetsFront/img/normal/contact.jpg') }}" alt="img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--==============================
+Property Area 4  
+==============================-->
+    <section class="space overflow-hidden" style="padding: 100px 20px;">
+    <div class="sec-bg-shape2-1 spin shape-mockup d-xl-block d-none" data-top="6%" data-left="4%">
+        <img src="{{ asset('assetsFront/img/shape/section_shape_2_1.jpg') }}" alt="img">
+    </div>
+    <div class="sec-bg-shape2-2 wave-anim shape-mockup d-xl-block d-none" data-bg-src="{{ asset('assetsFront/img/shape/section_shape_2_2.jpg') }}" data-top="12%" data-right="4%">
+    </div>
+    <div class="sec-bg-shape2-3 jump shape-mockup d-xl-block d-none" data-bottom="0" data-left="3%">
+        <img src="{{ asset('assetsFront/img/shape/section_shape_2_3.jpg') }}" alt="img">
+    </div>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-xxl-6 col-lg-8">
+                <div class="title-area text-center">
+                    <span class="sub-title">Villes</span>
+                    <h2 class="sec-title text-theme">Villes à Explorer</h2>
+                    <p class="text-theme">Découvrez les biens disponibles dans ces villes à travers ces images.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid p-lg-0">
+        <div class="slider-area project-slider4-1 ">
+            <!-- Remplacer swiper par des div fixes pour les cartes -->
+            <div class="row">
+                {% for ville in ['Hammamet', 'Tunis', 'Sousse', 'Mahdia', 'Monastir'] %}
+                    <div class="col-lg-4 col-md-6">
+                        <a href="{{ path('app_front_all_biens_par_ville', {'nomVille': ville}) }}" class="portfolio-card style4">
+                            <div class="portfolio-img">
+                                <img src="{{ asset('assetsFront/img/ville/' ~ ville|lower ~ '.jpg') }}" alt="{{ ville }}">
+                                <div class="overlay">
+                                    <p class="city-name">{{ ville }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        <div class="btn-wrap justify-content-center mt-55">
+            <a href="{{ path('app_front_all_biens_louer')}}" class="th-btn style4 th-btn-icon">Voir toutes les propriétés</a>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+    <!--==============================
+Testimonial Area  
+==============================-->
+    <section class="overflow-hidden space-top bg-theme overflow-hidden" data-bg-src="{{ asset('assetsFront/img/bg/award-bg-1-1.png') }}">
+        <div class="container">
+            <div class="row justify-content-lg-between align-items-center">
+                <div class="col-xxl-6 col-lg-7">
+                    <div class="title-area">
+                        <span class="sub-title text-white">Témoignages</span>
+                        <h2 class="sec-title text-white">Ce Que Disent Nos Clients</h2>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="sec-btn">
+                        <div class="icon-box">
+                            <button data-slider-prev="#testiSlider4-2" class="slider-arrow style6 default slider-prev"><img src="{{ asset('assetsFront/img/icon/arrow-left.svg') }}" alt=""></button>
+                            <button data-slider-next="#testiSlider4-2" class="slider-arrow style6 default slider-next"><img src="{{ asset('assetsFront/img/icon/arrow-right.svg') }}" alt=""></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="swiper th-slider testi-slider4-2" id="testiSlider4-2" data-slider-options='{"spaceBetween":"32","breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":"1"},"768":{"slidesPerView":"1"},"992":{"slidesPerView":"1"},"1200":{"slidesPerView":"2"},"1500":{"slidesPerView":"3"}}}'>
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="testi-card style3">
+                            <p class="testi-card_text">“A home that perfectly blends sustainability with luxury until I discovered Ecoland Residence. From the moment I stepped into this community, I knew it was where I wanted to live. The commitment to eco-friendly living, coupled with modern amenities, is truly commendable.”</p>
+                            <div class="testi-grid_review">
+                                <i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i>
+                            </div>
+                            <div class="testi-card_profile">
+                                <div class="quote-icon">
+                                    <img src="{{ asset('assetsFront/img/icon/qoute.svg') }}" alt="icon">
+                                </div>
+                                <div class="avatar">
+                                    <img src="{{ asset('assetsFront/img/testimonial/testi_1_2.png') }}" alt="avatar">
+                                </div>
+                                <div class="testi-card_profile-details">
+                                    <h3 class="testi-card_name">Andrew Simon</h3>
+                                    <span class="testi-card_desig">Property Expert</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="testi-card style3">
+                            <p class="testi-card_text">“A home that perfectly blends sustainability with luxury until I discovered Ecoland Residence. From the moment I stepped into this community, I knew it was where I wanted to live. The commitment to eco-friendly living, coupled with modern amenities, is truly commendable.”</p>
+                            <div class="testi-grid_review">
+                                <i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i>
+                            </div>
+                            <div class="testi-card_profile">
+                                <div class="quote-icon">
+                                    <img src="{{ asset('assetsFront/img/icon/qoute.svg') }}" alt="icon">
+                                </div>
+                                <div class="avatar">
+                                    <img src="{{ asset('assetsFront/img/testimonial/testi_2_2.png') }}" alt="avatar">
+                                </div>
+                                <div class="testi-card_profile-details">
+                                    <h3 class="testi-card_name">Ralph Edwards</h3>
+                                    <span class="testi-card_desig">Property Expert</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="testi-card style3">
+                            <p class="testi-card_text">“A home that perfectly blends sustainability with luxury until I discovered Ecoland Residence. From the moment I stepped into this community, I knew it was where I wanted to live. The commitment to eco-friendly living, coupled with modern amenities, is truly commendable.”</p>
+                            <div class="testi-grid_review">
+                                <i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i>
+                            </div>
+                            <div class="testi-card_profile">
+                                <div class="quote-icon">
+                                    <img src="{{ asset('assetsFront/img/icon/qoute.svg') }}" alt="icon">
+                                </div>
+                                <div class="avatar">
+                                    <img src="{{ asset('assetsFront/img/testimonial/testi_2_1.png') }}" alt="avatar">
+                                </div>
+                                <div class="testi-card_profile-details">
+                                    <h3 class="testi-card_name">Andrew Simon</h3>
+                                    <span class="testi-card_desig">Property Expert</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="testi-card style3">
+                            <p class="testi-card_text">“A home that perfectly blends sustainability with luxury until I discovered Ecoland Residence. From the moment I stepped into this community, I knew it was where I wanted to live. The commitment to eco-friendly living, coupled with modern amenities, is truly commendable.”</p>
+                            <div class="testi-grid_review">
+                                <i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i>
+                            </div>
+                            <div class="testi-card_profile">
+                                <div class="quote-icon">
+                                    <img src="{{ asset('assetsFront/img/icon/qoute.svg') }}" alt="icon">
+                                </div>
+                                <div class="avatar">
+                                    <img src="{{ asset('assetsFront/img/testimonial/testi_1_1.png') }}" alt="avatar">
+                                </div>
+                                <div class="testi-card_profile-details">
+                                    <h3 class="testi-card_name">Ralph Edwards</h3>
+                                    <span class="testi-card_desig">Property Expert</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="testi-card style3">
+                            <p class="testi-card_text">“A home that perfectly blends sustainability with luxury until I discovered Ecoland Residence. From the moment I stepped into this community, I knew it was where I wanted to live. The commitment to eco-friendly living, coupled with modern amenities, is truly commendable.”</p>
+                            <div class="testi-grid_review">
+                                <i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i>
+                            </div>
+                            <div class="testi-card_profile">
+                                <div class="quote-icon">
+                                    <img src="{{ asset('assetsFront/img/icon/qoute.svg') }}" alt="icon">
+                                </div>
+                                <div class="avatar">
+                                    <img src="{{ asset('assetsFront/img/testimonial/testi_1_2.png') }}" alt="avatar">
+                                </div>
+                                <div class="testi-card_profile-details">
+                                    <h3 class="testi-card_name">Andrew Simon</h3>
+                                    <span class="testi-card_desig">Property Expert</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="testi-card style3">
+                            <p class="testi-card_text">“A home that perfectly blends sustainability with luxury until I discovered Ecoland Residence. From the moment I stepped into this community, I knew it was where I wanted to live. The commitment to eco-friendly living, coupled with modern amenities, is truly commendable.”</p>
+                            <div class="testi-grid_review">
+                                <i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i>
+                            </div>
+                            <div class="testi-card_profile">
+                                <div class="quote-icon">
+                                    <img src="{{ asset('assetsFront/img/icon/qoute.svg') }}" alt="icon">
+                                </div>
+                                <div class="avatar">
+                                    <img src="{{ asset('assetsFront/img/testimonial/testi_2_2.png') }}" alt="avatar">
+                                </div>
+                                <div class="testi-card_profile-details">
+                                    <h3 class="testi-card_name">Ralph Edwards</h3>
+                                    <span class="testi-card_desig">Property Expert</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="testi-card style3">
+                            <p class="testi-card_text">“A home that perfectly blends sustainability with luxury until I discovered Ecoland Residence. From the moment I stepped into this community, I knew it was where I wanted to live. The commitment to eco-friendly living, coupled with modern amenities, is truly commendable.”</p>
+                            <div class="testi-grid_review">
+                                <i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i>
+                            </div>
+                            <div class="testi-card_profile">
+                                <div class="quote-icon">
+                                    <img src="{{ asset('assetsFront/img/icon/qoute.svg') }}" alt="icon">
+                                </div>
+                                <div class="avatar">
+                                    <img src="{{ asset('assetsFront/img/testimonial/testi_2_1.png') }}" alt="avatar">
+                                </div>
+                                <div class="testi-card_profile-details">
+                                    <h3 class="testi-card_name">Andrew Simon</h3>
+                                    <span class="testi-card_desig">Property Expert</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="testi-card style3">
+                            <p class="testi-card_text">“A home that perfectly blends sustainability with luxury until I discovered Ecoland Residence. From the moment I stepped into this community, I knew it was where I wanted to live. The commitment to eco-friendly living, coupled with modern amenities, is truly commendable.”</p>
+                            <div class="testi-grid_review">
+                                <i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i><i class="fa-sharp fa-solid fa-star"></i>
+                            </div>
+                            <div class="testi-card_profile">
+                                <div class="quote-icon">
+                                    <img src="{{ asset('assetsFront/img/icon/qoute.svg') }}" alt="icon">
+                                </div>
+                                <div class="avatar">
+                                    <img src="{{ asset('assetsFront/img/testimonial/testi_1_1.png') }}" alt="avatar">
+                                </div>
+                                <div class="testi-card_profile-details">
+                                    <h3 class="testi-card_name">Ralph Edwards</h3>
+                                    <span class="testi-card_desig">Property Expert</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--==============================
+Client Area  
+==============================-->
+    <div class="client-area-4 space bg-theme overflow-hidden" data-bg-src="{{ asset('assetsFront/img/bg/award-bg-1-1.png') }}">
+        <div class="container">
+            <div class="swiper th-slider has-shadow" id="clientSlider1" data-slider-options='{"breakpoints":{"0":{"slidesPerView":2},"576":{"slidesPerView":"3"},"768":{"slidesPerView":"4"},"992":{"slidesPerView":"5"},"1200":{"slidesPerView":"6"}}}'>
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/brand/brand_1_1.svg') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/brand/brand_1_2.svg') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/brand/brand_1_3.svg') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/brand/brand_1_4.svg') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/brand/brand_1_5.svg') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/brand/brand_1_6.svg') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/brand/brand_1_1.svg') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/brand/brand_1_2.svg') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/brand/brand_1_3.svg') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/brand/brand_1_4.svg') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/brand/brand_1_5.svg') }}" alt="Image">
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="client-card">
+                            <img src="{{ asset('assetsFront/img/brand/brand_1_6.svg') }}" alt="Image">
+                        </a>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div><!--==============================
+Team Area  
+==============================-->
+    <section class="space overflow-hidden" id="team-sec">
+        <div class="sec-bg-shape2-3 jump shape-mockup d-xxl-block d-none" data-top="15%" data-right="4%">
+            <img src="{{ asset('assetsFront/img/shape/section_shape_2_3.jpg') }}" alt="img">
+        </div>
+        <div class="sec-bg-shape2-1 spin shape-mockup d-xxl-block d-none" data-bottom="15%" data-left="4%">
+            <img src="{{ asset('assetsFront/img/shape/section_shape_2_1.jpg') }}" alt="img">
+        </div>
+        <div class="container">
+            <div class="row justify-content-lg-between align-items-center">
+                <div class="col-xxl-5 col-lg-6">
+                    <div class="title-area">
+                        <span class="sub-title">Membre de l'équipe</span>
+                        <h2 class="sec-title text-theme">Notre Équipe Géniale</h2>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="sec-btn">
+                        <a href="{{ path('app_front_team_team')}}" class="th-btn style-border2 th-btn-icon">Voir Toute l'Équipe</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slider-area team-slider3">
+                <div class="swiper th-slider slider-drag-wrap" id="teamSlider3" data-slider-options='{"breakpoints": {"0": {"slidesPerView": 1},"576": {"slidesPerView": "1"},"768": {"slidesPerView": "2"},"992": {"slidesPerView": "3"},"1400": {"slidesPerView": "3"}},"grabCursor": "true"}'>
+                    <div class="swiper-wrapper">
+                        {% for admin in admins %}
+                            <div class="swiper-slide">
+                                <div class="th-team team-card style3">
+                                    <div class="img-wrap">
+                                        <div class="team-img">
+                                            <!-- Afficher la photo de profil dynamique -->
+                                            <img src="{{ asset('uploads/photo_profil/' ~ admin.photoProfil) }}" alt="Team" style="width: 100%; height: 450px; object-fit: cover;">
+                                        </div>
+                                        <div class="th-social-wrap">
+                                            <div class="th-social">
+                                                <!-- Liens sociaux dynamiques -->
+                                                <a target="_blank" href="{{ admin.facebook }}"><i class="fab fa-facebook-f"></i></a>
+                                                <a target="_blank" href="{{ admin.linkedin }}"><i class="fab fa-linkedin-in"></i></a>
+                                                <a target="_blank" href="{{ admin.instagram }}"><i class="fab fa-instagram"></i></a>
+                                            </div>
+                                            <a class="icon-btn" href="{{ path('app_front_team_detail_team', { 'id': admin.id }) }}">
+                                                <img src="{{ asset('assetsFront/img/icon/arrow-right.svg') }}" alt="img">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="team-card-content">
+                                        <div class="media-left">
+                                            <!-- Nom dynamique -->
+                                            <h3 class="box-title"><a href="team-details.html">{{ admin.nom }} {{ admin.prenom }}</a></h3>
+                                            <span class="team-desig">{{ admin.poste is iterable ? admin.poste|join(', ') : admin.poste }}</span>
+                                        </div>
+                                        <!-- Lien téléphone dynamique -->
+                                        <a class="icon-btn" href="tel:{{ admin.tel }}"><img src="{{ asset('assetsFront/img/icon/phone.svg') }}" alt="img"></a>
+                                    </div>
+                                        <!-- Champ caché pour stocker l'ID -->
+                                        <input type="hidden" name="id" value="{{ admin.id }}">
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!--==============================
+Blog Area  
+==============================-->
+    <section class="overflow-hidden space bg-theme" id="blog-sec">
+        <div class="sec-bg-shape2-3 jump shape-mockup d-xl-block d-none text-white" data-bottom="40%" data-right="0%">
+            <img src="{{ asset('assetsFront/img/shape/section_shape_2_3.jpg') }}" alt="img">
+        </div>
+        <div class="container">
+            <div class="row justify-content-lg-between justify-content-center align-items-end">
+                <div class="col-xl-5 col-lg-6">
+                    <div class="title-area text-lg-start text-center">
+                        <h2 class="sec-title text-white">Actualités & Articles</h2>
+                        <p class="text-white">HabiLux vous aide à créer facilement un site web de transactions immobilières. Avec la fonction d'inscription, de connexion, et la publication de nouvelles immobilières.</p>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="slider-area blog-slider2">
+                <div class="swiper th-slider" id="blogSlider2" data-slider-options='{"breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":"1"},"768":{"slidesPerView":"2"},"992":{"slidesPerView":"2"},"1200":{"slidesPerView":"2"}}}'>
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="blog-card style2">
+                                <div class="blog-img">
+                                    <a href="blog-details.html">
+                                        <img src="{{ asset('assetsFront/img/blog/blog_2_1.jpg') }}" alt="blog image">
+                                    </a>
+                                </div>
+                                <div class="blog-content">
+                                    <div class="blog-meta">
+                                        <a href="blog.html">April 22, 2024</a>
+                                        <a href="blog.html">08 min read</a>
+                                    </div>
+                                    <h3 class="box-title"><a href="blog-details.html">What trends do we expect to start growing in the coming future journey?</a></h3>
+                                    <a href="blog-details.html" class="th-btn style-border th-btn-icon">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="blog-card style2">
+                                <div class="blog-img">
+                                    <a href="blog-details.html">
+                                        <img src="{{ asset('assetsFront/img/blog/blog_2_2.jpg') }}" alt="blog image">
+                                    </a>
+                                </div>
+                                <div class="blog-content">
+                                    <div class="blog-meta">
+                                        <a href="blog.html">June 16, 2024</a>
+                                        <a href="blog.html">10 min read</a>
+                                    </div>
+                                    <h3 class="box-title"><a href="blog-details.html">The workplace tells and screams for more top story bloggers already be following</a></h3>
+                                    <a href="blog-details.html" class="th-btn style-border th-btn-icon">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="blog-card style2">
+                                <div class="blog-img">
+                                    <a href="blog-details.html">
+                                        <img src="{{ asset('assetsFront/img/blog/blog_2_1.jpg') }}" alt="blog image">
+                                    </a>
+                                </div>
+                                <div class="blog-content">
+                                    <div class="blog-meta">
+                                        <a href="blog.html">April 22, 2024</a>
+                                        <a href="blog.html">08 min read</a>
+                                    </div>
+                                    <h3 class="box-title"><a href="blog-details.html">What trends do we expect to start growing in the coming future journey?</a></h3>
+                                    <a href="blog-details.html" class="th-btn style-border th-btn-icon">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="blog-card style2">
+                                <div class="blog-img">
+                                    <a href="blog-details.html">
+                                        <img src="{{ asset('assetsFront/img/blog/blog_2_2.jpg') }}" alt="blog image">
+                                    </a>
+                                </div>
+                                <div class="blog-content">
+                                    <div class="blog-meta">
+                                        <a href="blog.html">June 16, 2024</a>
+                                        <a href="blog.html">10 min read</a>
+                                    </div>
+                                    <h3 class="box-title"><a href="blog-details.html">The workplace tells and screams for more top story bloggers already be following</a></h3>
+                                    <a href="blog-details.html" class="th-btn style-border th-btn-icon">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="space overflow-hidden">
+        <div class="sec-bg-shape2-1 spin shape-mockup d-xl-block d-none" data-top="7%" data-right="15%">
+            <img src="{{ asset('assetsFront/img/shape/section_shape_2_1.jpg') }}" alt="img">
+        </div>
+        <div class="container-fluid">
+            <div class="swiper th-slider instagram-slider1" id="instaSlider1" data-slider-options='{"breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":"2"},"768":{"slidesPerView":"3"},"992":{"slidesPerView":"4"},"1200":{"slidesPerView":"5"}}}'>
+                <div class="swiper-wrapper">
+                    <div class="col-auto swiper-slide">
+                        <div class="insta-box">
+                            <img src="{{ asset('assetsFront/img/instagram/insta_1_1.jpg') }}" alt="Instagram">
+                            <a target="_blank" href="https://instagram.com/" class="icon-btn"><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-auto swiper-slide">
+                        <div class="insta-box">
+                            <img src="{{ asset('assetsFront/img/instagram/insta_1_2.jpg') }}" alt="Instagram">
+                            <a target="_blank" href="https://instagram.com/" class="icon-btn"><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-auto swiper-slide">
+                        <div class="insta-box">
+                            <img src="{{ asset('assetsFront/img/instagram/insta_1_3.jpg') }}" alt="Instagram">
+                            <a target="_blank" href="https://instagram.com/" class="icon-btn"><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-auto swiper-slide">
+                        <div class="insta-box">
+                            <img src="{{ asset('assetsFront/img/instagram/insta_1_4.jpg') }}" alt="Instagram">
+                            <a target="_blank" href="https://instagram.com/" class="icon-btn"><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-auto swiper-slide">
+                        <div class="insta-box">
+                            <img src="{{ asset('assetsFront/img/instagram/insta_1_5.jpg') }}" alt="Instagram">
+                            <a target="_blank" href="https://instagram.com/" class="icon-btn"><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-auto swiper-slide">
+                        <div class="insta-box">
+                            <img src="{{ asset('assetsFront/img/instagram/insta_1_1.jpg') }}" alt="Instagram">
+                            <a target="_blank" href="https://instagram.com/" class="icon-btn"><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-auto swiper-slide">
+                        <div class="insta-box">
+                            <img src="{{ asset('assetsFront/img/instagram/insta_1_2.jpg') }}" alt="Instagram">
+                            <a target="_blank" href="https://instagram.com/" class="icon-btn"><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-auto swiper-slide">
+                        <div class="insta-box">
+                            <img src="{{ asset('assetsFront/img/instagram/insta_1_3.jpg') }}" alt="Instagram">
+                            <a target="_blank" href="https://instagram.com/" class="icon-btn"><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-auto swiper-slide">
+                        <div class="insta-box">
+                            <img src="{{ asset('assetsFront/img/instagram/insta_1_4.jpg') }}" alt="Instagram">
+                            <a target="_blank" href="https://instagram.com/" class="icon-btn"><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-auto swiper-slide">
+                        <div class="insta-box">
+                            <img src="{{ asset('assetsFront/img/instagram/insta_1_5.jpg') }}" alt="Instagram">
+                            <a target="_blank" href="https://instagram.com/" class="icon-btn"><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -71,17 +71,7 @@
             {{ form_errors(form.imageBien) }}
         </div>
 
-        <div class="mb-3">
-            {{ form_label(form.plan, 'Plan', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.plan, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.plan) }}
-        </div>
-
-        <div class="mb-3">
-            {{ form_label(form.video, 'Vidéo', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.video, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.video) }}
-        </div>
+     
 
         <div class="d-flex justify-content-between mt-3">
             <a href="javascript:history.back()" class="btn btn-secondary">Retour</a>
@@ -91,3 +81,6 @@
         {{ form_end(form) }}
     </div>
 </div>
+
+
+

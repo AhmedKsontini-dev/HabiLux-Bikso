@@ -5,6 +5,7 @@ namespace App\Controller\Back\bien;
 use App\Entity\Bien;
 use App\Form\BienType;
 use App\Entity\TypeBien;
+use App\Entity\User;
 use App\Repository\BienRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\FileUploader;
 use App\Entity\ImageBien;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/back/bien')]
 final class BienController extends AbstractController
@@ -23,6 +25,9 @@ final class BienController extends AbstractController
         $typeBienId = $request->query->get('typeBien'); // Récupérer le filtre par type de bien
         $localisationBien = $request->query->get('localisationBien'); // Récupérer le filtre par localisation
         $typeOffre = $request->query->get('typeOffre'); // Récupérer le filtre par type d'offre
+        $propertiesForRent = $bienRepository->countByTypeOffre('À Louer');
+        $propertiesForSale = $bienRepository->countByTypeOffre('À Vendre');
+        $totalProperties = $bienRepository->countAll();
 
         // Construire la condition pour le filtre
         $criteria = [];
@@ -50,7 +55,10 @@ final class BienController extends AbstractController
             'typeBiens' => $typeBiens,
             'selectedTypeBien' => $typeBienId, // Garder la sélection après filtrage
             'selectedLocalisationBien' => $localisationBien, // Garder la sélection de la localisation
-            'selectedTypeOffre' => $typeOffre, // Garder la sélection du type d'offre
+            'selectedTypeOffre' => $typeOffre,
+            'properties_for_rent' => $propertiesForRent,
+            'properties_for_sale' => $propertiesForSale,
+            'total_properties' => $totalProperties, // Garder la sélection du type d'offre
         ]);
     }
 
@@ -79,6 +87,9 @@ final class BienController extends AbstractController
                 
             }
 
+            // Associer l'admin connecté au bien
+            $bien->setPublierPar($this->getUser());
+
             $entityManager->persist($bien);
             $entityManager->flush();
 
@@ -106,6 +117,8 @@ final class BienController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $bien->setPublierPar($this->getUser()); // Met à jour l'admin qui modifie
             $entityManager->flush();
 
             return $this->redirectToRoute('app_bien_index', [], Response::HTTP_SEE_OTHER);
@@ -127,8 +140,6 @@ final class BienController extends AbstractController
 
         return $this->redirectToRoute('app_bien_index', [], Response::HTTP_SEE_OTHER);
     }
-
-
 
 
 

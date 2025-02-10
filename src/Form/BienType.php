@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\Bien;
 use App\Entity\Gouvernorat;
-use App\Entity\typeBien;
+use App\Entity\TypeBien;
 use App\Entity\Ville;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -30,20 +30,6 @@ class BienType extends AbstractType
                 'attr' => ['class' => 'form-control'],
             ])
             ->add('description')
-            ->add('plan', FileType::class, [
-                'label' => 'Ajouter un plan',
-                'mapped' => false,
-                'required' => false,
-                'multiple' => true,
-                'attr' => ['class' => 'form-control'],
-            ])
-            ->add('video', FileType::class, [
-                'label' => 'Ajouter une vidéo',
-                'mapped' => false,
-                'required' => false,
-                'multiple' => false,
-                'attr' => ['class' => 'form-control'],
-            ])
             ->add('localisationBien')
             ->add('AfficherPrix', ChoiceType::class, [
                 'choices' => [

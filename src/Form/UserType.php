@@ -20,10 +20,30 @@ class UserType extends AbstractType
             ->add('prenom')
             ->add('email')
             ->add('tel')
+            ->add('adresse')
+            ->add('localisation')
+            ->add('cin')
+            ->add('poste', ChoiceType::class, [
+                'choices' => [
+                    'Administrateur de biens' => 'Administrateur de biens',
+                    'Agent immobilier' => 'Agent immobilier',
+                    'Conseiller en immobilier' => 'Conseiller en immobilier',
+                    'Mandataire immobilier' => 'Mandataire immobilier',
+                    'Chasseur immobilier' => 'Chasseur immobilier',
+                    'Responsable d’agence' => 'Responsable d’agence',
+                    'Expert immobilier' => 'Expert immobilier',
+                ],
+                'multiple' => true,  // Permet plusieurs choix
+                'expanded' => false,  // Liste déroulante
+                'label' => 'Poste',
+                'required' => false, // Rend le champ non obligatoire
+                'attr' => ['class' => 'form-control']
+            ])
+      
             ->add('roles', ChoiceType::class, [
                 'choices' => [
-                    'Administrateur' => 'ROLE_ADMIN',
-                    'Utilisateur' => 'ROLE_USER',    
+                    'Admin' => 'ROLE_ADMIN',
+                    'Client' => 'ROLE_USER',    
                 ],
                 'expanded' => false,  // Permet d'afficher une liste "select" classique
                 'multiple' => true,  // Un seul choix possible

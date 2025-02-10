@@ -2,7 +2,18 @@
 
 {% block title %}Gestion des Biens{% endblock %}
 
+{% block style %}
+<style>
+/* Quand on survole l'image de profil, on affiche les informations */
+.col-PublierPar:hover .admin-info-container {
+    display: block !important; /* Afficher les informations */
+}
+
+</style>
+{% endblock  %}
+
 {% block body %}
+
 <div class="container-fluid bg-light p-4" style="border: 5px solid #1C2D37;">
     <div class="page-header">
         <div class="row">
@@ -46,74 +57,165 @@
             </div>
         </div>
     </form>
+
+    <div class="row row-cols-xxl-4 row-cols-lg-2 row-cols-1 g-4 mb-30">
+        <div class="col">
+            <div class="ball p-4 position-relative text-white rounded" style="background-color: #55e3b0;">
+                <i class="flaticon-home flat-medium float-start pe-3" aria-hidden="true"></i>
+                <h4 class="m-0 text-white">{{ total_properties }}</h4>
+                <span class="d-table">Total des biens</span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="ball p-4 position-relative text-white rounded" style="background-color: #dc69f1;">
+                <i class="flaticon-home flat-medium float-start pe-3" aria-hidden="true"></i>
+                <h4 class="m-0 text-white">{{ properties_for_rent }}</h4>
+                <span class="d-table">A Louer</span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="ball p-4 position-relative text-white rounded" style="background-color: #f1c643;">
+                <i class="flaticon-home flat-medium float-start pe-3" aria-hidden="true"></i>
+                <h4 class="m-0 text-white">{{ properties_for_sale }}</h4>
+                <span class="d-table">A Vendre</span>
+            </div>
+        </div>
+        
+    </div>
 </div>
 
 
 
-    <div class="container-fluid bg-light p-4 mt-4" >
+    <div class="container-fluid bg-light p-4">
+        <label for="toggleColumns"><strong>Afficher/Masquer Colonnes :</strong></label>
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="toggleColumns" data-bs-toggle="dropdown" aria-expanded="false">
+                Sélectionner les colonnes
+            </button>
+            <ul class="dropdown-menu p-3" aria-labelledby="toggleColumns" id="columnsDropdown">
+                {% set columns = [
+                    {'id': 'col-id', 'label': 'ID'},
+                    {'id': 'col-photo', 'label': 'Images'},
+                    {'id': 'col-NomBien', 'label': 'Nom du Bien'},
+                    {'id': 'col-TypeBien', 'label': 'Type de Bien'},
+                    {'id': 'col-Adresse', 'label': 'Adresse'},
+                    {'id': 'col-Prix', 'label': 'Prix'},
+                    {'id': 'col-TypesOffre', 'label': "Types d'offres"},
+                    {'id': 'col-Localisation', 'label': 'Localisation'},
+                    {'id': 'col-AfficherPrix', 'label': 'Afficher Prix'},
+                    {'id': 'col-PublierPar', 'label': 'Publier par'},
+                    {'id': 'col-Actions', 'label': 'Actions'}
+                ] %}
+
+                {% for column in columns %}
+                    <li>
+                        <a href="#" class="toggle-column text-decoration-none text-dark d-flex justify-content-between align-items-center"
+                        data-column="{{ column.id }}">
+                            <span>{{ column.label }}</span>
+                            <i class="status-icon fas fa-eye" data-column="{{ column.id }}"></i>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Votre tableau des biens -->
+    <div class="container-fluid bg-light p-4 mt-4">
         <div class="dashboard-panel border bg-white rounded overflow-hidden w-100">
-            <div class="overflow-x-scroll font-fifteen">
-                <table class="w-100 items-list bg-transparent">
+            <div style="overflow-x: auto; width: 100%; max-width: 100%;">
+                <table class="w-100 items-list bg-transparent" style="min-width: 1200px;">
                     <thead>
                         <tr class="bg-white">
-                            <th>Image</th>
-                            <th>ID</th>
-                            <th>Nom Bien</th>
-                            <th>Type Bien</th>
-                            <th>Adresse</th>
-                            <th>Prix</th>
-                            <th>Type d'Offre</th>
-                            <th>Description</th>
-                            <th>Plan</th>
-                            <th>Vidéo</th>
-                            <th>Localisation</th>
-                            <th>Afficher Prix</th>
-                            <th>Actions</th>
+                            <th id="col-id">ID</th>
+                            <th id="col-photo">Image</th>
+                            <th id="col-NomBien">Nom Bien</th>
+                            <th id="col-TypeBien">Type Bien</th>
+                            <th id="col-Adresse">Adresse</th>
+                            <th id="col-Prix">Prix</th>
+                            <th id="col-TypesOffre">Type d'Offre</th>
+                            <th id="col-Localisation">Localisation</th>
+                            <th id="col-AfficherPrix">Afficher Prix</th>
+                            <th id="col-PublierPar">Publier par</th>
+                            <th id="col-Actions">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for bien in biens %}
                             <tr>
-                                <td>
+                                <td class="col-id">{{ bien.id }}</td>
+                                <td class="col-photo">
                                     {% if bien.imageBiens is defined and bien.imageBiens|length > 0 %}
                                         <img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens.first().nomImage) }}" alt="Image Bien" style="width: 100px; height: 100px; object-fit: cover;">
                                     {% else %}
                                         <span>Aucune image</span>
                                     {% endif %}
                                 </td>
-                                <td>{{ bien.id }}</td>
-                                <td>{{ bien.nomBien }}</td>
-                                <td>{{ bien.type.nomType }}</td>
-                                <td>{{ bien.adresseBien }}</td>
-                                <td>{{ bien.prixBien }}</td>
-                                <td>{{ bien.typeOffre }}</td>
-                                <td>{{ bien.description }}</td>
-                                <td>
-                                    {% if bien.plan %}
-                                        <a href="{{ asset('uploads/plan_bien/' ~ bien.plan) }}" target="_blank">Voir le plan</a>
+                                <td class="col-NomBien">{{ bien.nomBien }}</td>
+                                <td class="col-TypeBien">{{ bien.type.nomType }}</td>
+                                <td class="col-Adresse">{{ bien.adresseBien }}</td>
+                                <td class="col-Prix">{{ bien.prixBien }}</td>
+                                <td class="col-TypesOffre">
+                                    {% if bien.typeOffre == 'A Louer' %}
+                                        <span class="badge" style="background-color: #dc69f1; color: white; padding: 5px 10px; border-radius: 5px;">
+                                            A Louer
+                                        </span>
+                                    {% else %}
+                                        <span class="badge" style="background-color: #f1c643; color: white; padding: 5px 10px; border-radius: 5px;">
+                                            {{ bien.typeOffre }}
+                                        </span>
                                     {% endif %}
                                 </td>
-                                <td>
-                                    {% if bien.video %}
-                                        <a href="{{ asset('uploads/video_bien/' ~ bien.video) }}" target="_blank">Voir la vidéo</a>
+
+                                <td class="col-Localisation">{{ bien.localisationBien }}</td>
+                                <td class="col-AfficherPrix">
+                                    {% if bien.AfficherPrix %}
+                                        <i class="fas fa-check-circle text-success"></i> <!-- Coche verte -->
+                                    {% else %}
+                                        <i class="fas fa-times-circle text-danger"></i> <!-- Croix rouge -->
                                     {% endif %}
                                 </td>
-                                <td>{{ bien.localisationBien }}</td>
-                                <td>{{ bien.AfficherPrix ? 'Oui' : 'Non' }}</td>
-                                <td>
+
+                                <td class="col-PublierPar">
+                                    <div class="d-flex align-items-center position-relative">
+                                        <img src="{{ asset('uploads/photo_profil/' ~ bien.publierPar.photoProfil) }}" alt="Photo de profil" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                                        <div class="admin-info-container position-absolute bg-light border rounded p-2" style="top: 50px; left: 0; width: 200px; display: none; z-index: 1050;">
+                                            <p><strong>ID :</strong> <a href="{{ path('app_back_user_show', {'id': bien.publierPar.id}) }}" target="_blank">{{ bien.publierPar.id }}</a></p>
+                                            <p><strong>Nom :</strong> {{ bien.publierPar.nom }}</p>
+                                            <p><strong>Prénom :</strong> {{ bien.publierPar.prenom }}</p>
+                                            <p><strong>Poste :</strong> {{  bien.publierPar.poste ? bien.publierPar.poste|join(', ') : '----'}}</p>
+                                            <p>
+                                                <strong>Status :</strong>
+                                                {% if bien.publierPar.status == 1 %}
+                                                    <i class="fas fa-circle text-success"></i> Actif
+                                                {% else %}
+                                                    <i class="fas fa-circle text-danger"></i> Inactif
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td class="col-Actions">
                                     <div class="dropdown">
                                         <a href="#" class="text-dark" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="fa fa-info-circle"></i> <!-- Icône pour ouvrir la dropdown -->
                                         </a>
-                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                        <ul class="dropdown-menu dropdown-menu-end position-absolute" aria-labelledby="dropdownMenuButton" style="z-index: 1050;">
                                             <li>
                                                 <a class="dropdown-item text-primary" href="{{ path('app_bien_show', {'id': bien.id}) }}">
                                                     <i class="fas fa-eye"></i> Voir
                                                 </a>
                                             </li>
+                                            
                                             <li>
                                                 <a class="dropdown-item text-success" href="{{ path('app_bien_edit', {'id': bien.id}) }}">
                                                     <i class="fas fa-edit"></i> Modifier
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-info" href="{{ path('app_bien_propriete', {'id': bien.id}) }}">
+                                                    <i class="fas fa-plus-circle"></i> Caractéristiques
                                                 </a>
                                             </li>
                                             <li>
@@ -125,15 +227,10 @@
                                                     </button>
                                                 </form>
                                             </li>
-                                            <li>
-                                                <a class="dropdown-item text-info" href="{{ path('app_bien_propriete', {'id': bien.id}) }}">
-                                                    <i class="fas fa-plus-circle"></i> Ajouter des détails
-                                                </a>
-                                            </li>
+                                            
                                         </ul>
                                     </div>
                                 </td>
-
                             </tr>
                         {% else %}
                             <tr>
@@ -141,9 +238,52 @@
                             </tr>
                         {% endfor %}
                     </tbody>
+
+
                 </table>
             </div>
         </div>
-      
     </div>
+
+
+
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let columnLinks = document.querySelectorAll(".toggle-column");
+
+        columnLinks.forEach(function (link) {
+            let columnClass = link.getAttribute("data-column");
+            let columnHeaders = document.querySelectorAll("th#" + columnClass);
+            let columnCells = document.querySelectorAll("td." + columnClass);
+            let statusIcon = document.querySelector(".status-icon[data-column='" + columnClass + "']");
+
+            if (localStorage.getItem(columnClass) === "hidden") {
+                columnHeaders.forEach(el => el.style.display = "none");
+                columnCells.forEach(el => el.style.display = "none");
+                statusIcon.classList.remove("fa-eye");
+                statusIcon.classList.add("fa-eye-slash");
+            }
+
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+                if (localStorage.getItem(columnClass) === "hidden") {
+                    columnHeaders.forEach(el => el.style.display = "table-cell");
+                    columnCells.forEach(el => el.style.display = "table-cell");
+                    localStorage.setItem(columnClass, "visible");
+                    statusIcon.classList.remove("fa-eye-slash");
+                    statusIcon.classList.add("fa-eye");
+                } else {
+                    columnHeaders.forEach(el => el.style.display = "none");
+                    columnCells.forEach(el => el.style.display = "none");
+                    localStorage.setItem(columnClass, "hidden");
+                    statusIcon.classList.remove("fa-eye");
+                    statusIcon.classList.add("fa-eye-slash");
+                }
+            });
+        });
+    });
+    </script>
+
+
 {% endblock %}

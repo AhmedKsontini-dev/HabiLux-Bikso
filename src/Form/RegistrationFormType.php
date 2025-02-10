@@ -25,6 +25,9 @@ class RegistrationFormType extends AbstractType
             ->add('prenom')
             ->add('email')
             ->add('tel')
+            ->add('adresse')
+            ->add('localisation')
+            ->add('cin')
             ->add('photoProfil', FileType::class, [
                 'label' => 'Profile Photo (PNG/JPEG/jpg file)',
                 'mapped' => false,

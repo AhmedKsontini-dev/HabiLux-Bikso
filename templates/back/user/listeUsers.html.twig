@@ -3,6 +3,7 @@
 {% block title %}Liste des Utilisateurs{% endblock %}
 
 {% block body %}
+
     <div class="container-fluid bg-light p-4" style="border: 5px solid #1C2D37;">
         <div class="page-header">
             <div class="row">
@@ -14,70 +15,156 @@
                     </div>
                 </div>
             </div>
+               <!-- Barre de recherche -->
+                <div class="container-fluid bg-light p-4">
+                    <form method="get" action="{{ path('app_back_user_index') }}">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <input type="text" name="search" class="form-control" placeholder="Rechercher par Nom ou Prénom " value="{{ app.request.query.get('search') }}">
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="submit" class="btn btn-primary">Rechercher</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+                <div class="row row-cols-xxl-4 row-cols-lg-2 row-cols-1 g-4 mb-30">
+                <!-- Total Utilisateurs -->
+                <div class="col">
+                    <div class="ball p-4 position-relative text-white rounded" style="background-color: #78A6C7FF;">
+                        <i class="fa-solid fa-users flat-medium float-start pe-3"></i> <!-- Icône pour utilisateurs -->
+                        <h4 class="m-0 text-white">{{ total_users }}</h4>
+                        <span class="d-table">Total Utilisateurs</span>
+                    </div>
+                </div>
+
+                <!-- Nombre des Admins -->
+                <div class="col">
+                    <div class="ball p-4 position-relative text-white rounded" style="background-color: #DFB266FF;">
+                        <i class="fa-solid fa-user-shield flat-medium float-start pe-3"></i> <!-- Icône pour Admins -->
+                        <h4 class="m-0 text-white">{{ nbr_admin }}</h4>
+                        <span class="d-table">Nombre des Admins</span>
+                    </div>
+                </div>
+
+                <!-- Utilisateurs Connectés -->
+                <div class="col">
+                    <div class="ball p-4 position-relative text-white rounded" style="background-color: #55e3b0;">
+                        <i class="fa-solid fa-circle-check flat-medium float-start pe-3"></i> <!-- Icône pour connectés -->
+                        <h4 class="m-0 text-white">{{ nbr_connecte }}</h4>
+                        <span class="d-table">Connecté</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
+
+
+    <div class="container-fluid bg-light p-4">
+        <label for="toggleColumns"><strong>Afficher/Masquer Colonnes :</strong></label>
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="toggleColumns" data-bs-toggle="dropdown" aria-expanded="false">
+                Sélectionner les colonnes
+            </button>
+            <ul class="dropdown-menu p-3" aria-labelledby="toggleColumns" id="columnsDropdown">
+                {% set columns = [
+                    {'id': 'col-id', 'label': 'ID'},
+                    {'id': 'col-photo', 'label': 'Photo'},
+                    {'id': 'col-nom', 'label': 'Nom'},
+                    {'id': 'col-prenom', 'label': 'Prénom'},
+                    {'id': 'col-email', 'label': 'Email'},
+                    {'id': 'col-tel', 'label': 'Téléphone'},
+                    {'id': 'col-poste', 'label': 'Poste'},
+                    {'id': 'col-roles', 'label': 'Roles'},
+                    {'id': 'col-verifie', 'label': 'Vérifié'},
+                    {'id': 'col-status', 'label': 'Status'},
+                    {'id': 'col-actions', 'label': 'Actions'}
+                ] %}
+
+                {% for column in columns %}
+                    <li>
+                        <a href="#" class="toggle-column text-decoration-none text-dark d-flex justify-content-between align-items-center"
+                        data-column="{{ column.id }}">
+                            <span>{{ column.label }}</span>
+                            <i class="status-icon fas fa-eye" data-column="{{ column.id }}"></i>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+ 
+
     <div class="container-fluid bg-light p-4 mt-4">
         <div class="dashboard-panel border bg-white rounded overflow-hidden w-100">
-            <!-- Conteneur avec défilement horizontal -->
             <div style="overflow-x: auto; width: 100%; max-width: 100%;">
                 <table class="w-100 items-list bg-transparent" style="min-width: 1200px;">
                     <thead>
                         <tr class="bg-white">
-                            <th>ID</th>
-                            <th>Photo de Profil</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Email</th>
-                            <th>Téléphone</th>
-                            <th>Roles</th>
-                            <th>Vérifié</th>
-                            
-                            <th>Actions</th>
+                            <th id="col-id">ID</th>
+                            <th id="col-photo">Photo de Profil</th>
+                            <th id="col-nom">Nom</th>
+                            <th id="col-prenom">Prénom</th>
+                            <th id="col-email">Email</th>
+                            <th id="col-tel">Téléphone</th>
+                            <th id="col-poste">Poste</th>
+                            <th id="col-roles">Roles</th>
+                            <th id="col-verifie">Vérifié</th>
+                            <th id="col-status">Status</th>
+                            <th id="col-actions">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for user in users %}
                             <tr>
-                                <td>{{ user.id }}</td>
-                                <td>
-                                    {% if user.photoProfil is defined and user.photoProfil is not empty %}
+                                <td class="col-id">{{ user.id }}</td>
+                                <td class="col-photo">
+                                    {% if user.photoProfil %}
                                         <img src="{{ asset('uploads/photo_profil/' ~ user.photoProfil) }}" alt="Photo de Profil" width="50">
                                     {% else %}
                                         <span>Aucune photo de profil</span>
                                     {% endif %}
                                 </td>
-
-                                <td>{{ user.nom }}</td>
-                                <td>{{ user.prenom }}</td>
-                                <td>{{ user.email }}</td>
-                                <td>{{ user.tel }}</td>
-                                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                                <td>
+                                <td class="col-nom">{{ user.nom }}</td>
+                                <td class="col-prenom">{{ user.prenom }}</td>
+                                <td class="col-email">{{ user.email }}</td>
+                                <td class="col-tel">{{ user.tel }}</td>
+                                <td class="col-poste">{{ user.poste ? user.poste|join(', ') : '----' }}</td>
+                                <td class="col-roles">
+                                    {% if 'ROLE_ADMIN' in user.roles %}
+                                        <span class="badge bg-warning">Admin</span>
+                                    {% else %}
+                                        <span class="badge bg-primary">Client</span>
+                                    {% endif %}
+                                </td>
+                                <td class="col-verifie">
                                     {% if user.verifier %}
                                         <span class="badge bg-success">Vérifié</span>
                                     {% else %}
                                         <span class="badge bg-danger">Non vérifié</span>
                                     {% endif %}
                                 </td>
-
-                               
-                                <td>
+                                <td class="col-status">
+                                    {% if user.status %}
+                                        <i class="fas fa-circle text-success"></i>
+                                    {% else %}
+                                        <i class="fas fa-circle text-danger"></i>
+                                    {% endif %}
+                                </td>
+                                <td class="col-actions">
                                     <div class="dropdown">
-                                        <a href="#" class="text-dark" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa fa-info-circle"></i><!-- Icône de trois points verticale (ou remplace par une flèche si besoin) -->
+                                        <a href="#" class="text-dark" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                                            <i class="fa fa-info-circle"></i>
                                         </a>
-                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                            <li>
-                                                <a class="dropdown-item text-primary" href="{{ path('app_back_user_show', {'id': user.id}) }}">
-                                                    <i class="fas fa-eye"></i> Voir
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item text-success" href="{{ path('app_back_user_edit', {'id': user.id}) }}">
-                                                    <i class="fas fa-edit"></i> Modifier
-                                                </a>
-                                            </li>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item text-primary" href="{{ path('app_back_user_show', {'id': user.id}) }}"><i class="fas fa-eye"></i> Voir</a></li>
+                                            <li><a class="dropdown-item text-success" href="{{ path('app_back_user_edit', {'id': user.id}) }}"><i class="fas fa-edit"></i> Modifier</a></li>
                                             <li>
                                                 <form action="{{ path('app_back_user_delete', {'id': user.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">
                                                     <input type="hidden" name="_method" value="DELETE">
@@ -90,18 +177,56 @@
                                         </ul>
                                     </div>
                                 </td>
-
-
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="10" class="text-center">Aucun enregistrement trouvé</td>
+                                <td colspan="11" class="text-center">Aucun enregistrement trouvé</td>
                             </tr>
                         {% endfor %}
                     </tbody>
-                </table>
+
+                </table>           
             </div>
         </div>
     </div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let columnLinks = document.querySelectorAll(".toggle-column");
+
+    columnLinks.forEach(function (link) {
+        let columnClass = link.getAttribute("data-column");
+        let columnHeaders = document.querySelectorAll("th#" + columnClass);
+        let columnCells = document.querySelectorAll("td." + columnClass);
+        let statusIcon = document.querySelector(".status-icon[data-column='" + columnClass + "']");
+
+        if (localStorage.getItem(columnClass) === "hidden") {
+            columnHeaders.forEach(el => el.style.display = "none");
+            columnCells.forEach(el => el.style.display = "none");
+            statusIcon.classList.remove("fa-eye");
+            statusIcon.classList.add("fa-eye-slash");
+        }
+
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
+            if (localStorage.getItem(columnClass) === "hidden") {
+                columnHeaders.forEach(el => el.style.display = "table-cell");
+                columnCells.forEach(el => el.style.display = "table-cell");
+                localStorage.setItem(columnClass, "visible");
+                statusIcon.classList.remove("fa-eye-slash");
+                statusIcon.classList.add("fa-eye");
+            } else {
+                columnHeaders.forEach(el => el.style.display = "none");
+                columnCells.forEach(el => el.style.display = "none");
+                localStorage.setItem(columnClass, "hidden");
+                statusIcon.classList.remove("fa-eye");
+                statusIcon.classList.add("fa-eye-slash");
+            }
+        });
+    });
+});
+</script>
+
 
 {% endblock %}

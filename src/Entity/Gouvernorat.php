@@ -18,21 +18,22 @@ class Gouvernorat
     #[ORM\Column(length: 255)]
     private ?string $nomGouvernorat = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $image = null;
+    /**
+     * @var Collection<int, Ville>
+     */
+    #[ORM\OneToMany(targetEntity: Ville::class, mappedBy: 'gouvernorat')]
+    private Collection $villes;
 
     /**
-     * @var Collection<int, bien>
+     * @var Collection<int, Bien>
      */
-    #[ORM\OneToMany(targetEntity: bien::class, mappedBy: 'gouvernorat')]
-    private Collection $bien;
-
-    #[ORM\ManyToOne(inversedBy: 'gouvernorat')]
-    private ?Ville $ville = null;
+    #[ORM\OneToMany(targetEntity: Bien::class, mappedBy: 'gouvernorat')]
+    private Collection $biens;
 
     public function __construct()
     {
-        $this->bien = new ArrayCollection();
+        $this->villes = new ArrayCollection();
+        $this->biens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -52,56 +53,62 @@ class Gouvernorat
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): static
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
     /**
-     * @return Collection<int, bien>
+     * @return Collection<int, Ville>
      */
-    public function getBien(): Collection
+    public function getVilles(): Collection
     {
-        return $this->bien;
+        return $this->villes;
     }
 
-    public function addBien(bien $bien): static
+    public function addVille(Ville $ville): static
     {
-        if (!$this->bien->contains($bien)) {
-            $this->bien->add($bien);
-            $bien->setGouvernorat($this);
+        if (!$this->villes->contains($ville)) {
+            $this->villes->add($ville);
+            $ville->setGouvernorat($this);
         }
 
         return $this;
     }
 
-    public function removeBien(bien $bien): static
+    public function removeVille(Ville $ville): static
     {
-        if ($this->bien->removeElement($bien)) {
+        if ($this->villes->removeElement($ville)) {
             // set the owning side to null (unless already changed)
-            if ($bien->getGouvernorat() === $this) {
-                $bien->setGouvernorat(null);
+            if ($ville->getGouvernorat() === $this) {
+                $ville->setGouvernorat(null);
             }
         }
 
         return $this;
     }
 
-    public function getVille(): ?Ville
+    /**
+     * @return Collection<int, Bien>
+     */
+    public function getBiens(): Collection
     {
-        return $this->ville;
+        return $this->biens;
     }
 
-    public function setVille(?Ville $ville): static
+    public function addBien(Bien $bien): static
     {
-        $this->ville = $ville;
+        if (!$this->biens->contains($bien)) {
+            $this->biens->add($bien);
+            $bien->setGouvernorat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBien(Bien $bien): static
+    {
+        if ($this->biens->removeElement($bien)) {
+            // set the owning side to null (unless already changed)
+            if ($bien->getGouvernorat() === $this) {
+                $bien->setGouvernorat(null);
+            }
+        }
 
         return $this;
     }

@@ -28,6 +28,36 @@
         </div>
 
         <div class="mb-3">
+            {{ form_label(form.adresse, 'Adresse', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.adresse, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.adresse) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.localisation, 'Localisation', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.localisation, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.localisation) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.cin, 'CIN', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.cin, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.cin) }}
+        </div>
+
+       <div class="mb-3">
+            {{ form_label(form.poste, 'Poste', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.poste, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.poste) }}
+        </div>
+
+        <!-- Si tu veux afficher les choix sélectionnés -->
+        {% if form.poste.vars.value %}
+            <p>Postes sélectionnés : {{ form.poste.vars.value|join(', ') }}</p>
+        {% endif %}
+
+
+        <div class="mb-3">
             {{ form_label(form.roles, 'Roles', {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.roles, {'attr': {'class': 'form-control'}}) }} 
             {{ form_errors(form.roles) }}

@@ -44,4 +44,44 @@ class BienRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function findAllWithRelations()
+    {
+        return $this->createQueryBuilder('b')
+            ->leftJoin('b.type', 't')->addSelect('t') // Correction du typeBien -> type
+            ->leftJoin('b.imageBiens', 'i')->addSelect('i') // Correction des images
+            ->leftJoin('b.publierPar', 'u')->addSelect('u') // Correction de l'utilisateur
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findLastBiens(int $limit = 2)
+    {
+        return $this->createQueryBuilder('b')
+            ->orderBy('b.dateCreation', 'DESC') // Trier par date décroissante
+            ->setMaxResults($limit) // Limiter le nombre de résultats
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    public function findByTypeOffreAndTypeBien(string $typeOffre, string $typeBien)
+    {
+        return $this->createQueryBuilder('b')
+            ->leftJoin('b.type', 't') // Assure-toi que la relation entre `Bien` et `TypeBien` est bien définie
+            ->addSelect('t')
+            ->where('b.typeOffre = :typeOffre')
+            ->andWhere('t.nomType = :typeBien') // Filtrer par le nom du type (Villa)
+            ->setParameter('typeOffre', $typeOffre)
+            ->setParameter('typeBien', $typeBien)
+            ->getQuery()
+            ->getResult();
+    }
+
+ 
+
+
+
+
+
 }

@@ -20,6 +20,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
 
     
 
@@ -59,7 +61,7 @@
             <div class="row">
                 <div class="col-md-4 col-lg-3 col-xl-2 px-0">
                     <div class="dashboard-nav-area bg-secondary">
-                        <a class="navbar-brand w-100 d-table px-20 py-3 mb-3" href="index.html"><img src="{{ asset('assetsDashboard/images/logo/dash-logo.png') }}" alt="dashboard logo"></a>
+                        <a class="navbar-brand w-100 d-table px-20 py-3 mb-3" href="{{ path('app_back_dashboard')}}"><img src="{{ asset('assetsDashboard/images/logo/logohome.png') }}" alt="dashboard logo"></a>
                         <div class="collaps-dashboard m-3 px-3 rounded bg-white text-secondary clearfix d-md-none">
                             <span>Open Dashboard Navigation</span>
                             <span class="flaticon-menu text-secondary flat-mini float-end"></span>
@@ -116,22 +118,23 @@
                                     </a>
                                 </li>
 
-                                <li class="text-white pb-2 pt-4 px-20">Account Settings</li>
+                                <li class="text-white pb-2 pt-4 px-20">Paramètres du Compte</li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('app_profil') }}">
-                                        <i class="bi bi-person-circle pe-2"></i> Personal Profile
+                                    <a class="nav-link" href="{{ path('app_profil_user_profil') }}">
+                                        <i class="bi bi-person-circle pe-2"></i> Profil Personnel
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('app_mdp') }}">
-                                        <i class="bi bi-lock pe-2"></i> Change Password
+                                    <a class="nav-link" href="#">
+                                        <i class="bi bi-lock pe-2"></i> Changer le Mot de Passe
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ path('app_logout')}}">
-                                        <i class="bi bi-box-arrow-right pe-2"></i>Se Déconnecter
+                                        <i class="bi bi-box-arrow-right pe-2"></i> Se Déconnecter
                                     </a>
                                 </li>
+
                             </ul>
                         </nav>
 
@@ -178,7 +181,8 @@
                                                                 {{app.user.nom}} {{app.user.prenom}}
                                                                 
                                                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                                                                <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Voir le profil</a></li>
+                                                                <li><a class="dropdown-item" href="{{ path('app_front_accueil_accueil') }}"><i class="fas fa-arrow-left"></i> HabiLux</a></li>
+                                                                <li><a class="dropdown-item" href="{{ path('app_profil_user_profil') }}"><i class="fas fa-user"></i> Voir le profil</a></li>
                                                                 <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
                                                             </ul>
                                                         </div>

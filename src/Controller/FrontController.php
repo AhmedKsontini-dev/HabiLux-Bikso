@@ -8,22 +8,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class FrontController extends AbstractController
 {
-    #[Route('', name: 'app_front')]
-    public function index(): Response
-    {
-        return $this->render('front/accueil.html.twig', [
-            'controller_name' => 'FrontController',
-        ]);
-    }
 
 
-    #[Route('/Proprietes', name: 'app_Proprietes')]
-    public function Proprietes(): Response
-    {
-        return $this->render('front/liste_propriétés.html.twig', [
-            'controller_name' => 'FrontController',
-        ]);
-    }
+
+    
 
     #[Route('/agents', name: 'app_agents')]
     public function agents(): Response

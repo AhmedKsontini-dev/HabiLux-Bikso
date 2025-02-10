@@ -77,7 +77,11 @@
 
         <!--============== Styled Login Form ==============-->
         <div class="full-row">
+
+
             <div class="container">
+            
+           
                 <div class="row">
                     <div class="col-xl-5 col-lg-6 mx-auto">
                         <div class="bg-white xs-p-20 p-30 border rounded">
@@ -92,6 +96,12 @@
                                 {% if error %}
                                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                                 {% endif %}
+
+                                {% for label, messages in app.flashes %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-{{ label }}">{{ message }}</div>
+                                    {% endfor %}
+                                {% endfor %}
                                 
                                 <h4 class="mb-4">Me connecter</h4>
                                 <form method="post">
@@ -115,7 +125,7 @@
                                             <button class="btn btn-primary w-100" type="submit">Me connecter</button>
                                         </div>
                                         <div class="col text-center">
-                                            <a href="#" class="text-dark d-table py-1">Mot de passe oublié</a>
+                                            <a href="{{ path('app_forgot_password_request')}}" class="text-dark d-table py-1">Mot de passe oublié</a>
                                             <a href="{{ path('app_register') }}" class="text-dark d-table py-1"><u>Pas encore inscrit(e) ? M'inscrire</u></a>
                                         </div>
                                     </div>

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+
+
+<!-- Mirrored from unicoderbd.com/template/uniland/fullwidth/signin.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 28 Dec 2024 10:59:20 GMT -->
+<head>
+    <!-- Meta Tag -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Uniland - Real Estate HTML5 Template">
+    <meta name="keywords" content="real estate, property, property search, agent, apartments, booking, business, idx, housing, real estate agency, rental">
+    <meta name="author" content="unicoder">
+    <title>Me connecter</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400;700&amp;display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,700;1,400&amp;display=swap" rel="stylesheet">
+
+    <!-- Required style of the theme -->
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/bootstrap-select.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/animate.min.css') }}">
+    <link rel="stylesheet" href="assets/webfonts/flaticon/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/owl.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/jquery.fancybox.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/layerslider.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/template.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/colors/color.css') }}">
+    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/loader.css') }}">
+</head>
+
+<body>
+
+    <div class="preloader">
+		<div class="loader xy-center"></div>
+	</div>
+
+    <div id="page_wrapper" class="bg-light">
+        <!--============== Header Section Start ==============-->
+        <header class="header-style nav-on-top bg-white">
+            <div class="main-nav">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <nav class="navbar navbar-expand-lg nav-secondary nav-primary-hover nav-line-active">
+                                <a class="navbar-brand" href="#"><img class="nav-logo" src="assets/images/logo/logo1.png" alt="Image not found !"></a>
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon flaticon-menu flat-small text-primary"></span>
+                                  </button>
+                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <ul class="navbar-nav ms-auto">
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#">Home</a>
+                                            
+                                        </li>
+                                        
+                                    </ul>
+                                    
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!--============== Header Section End ==============-->
+
+        <!--============== Styled Login Form ==============-->
+        <div class="full-row">
+
+
+            <div class="container">
+            
+           
+                <div class="row">
+                    <div class="col-xl-5 col-lg-6 mx-auto">
+                        <div class="bg-white xs-p-20 p-30 border rounded">
+                            <div class="form-icon-left rounded form-boder">
+                                <h1>Réinitialiser votre mot de passe</h1>
+
+                                <p>
+                                Si un compte correspondant à votre adresse e-mail existe, alors un e-mail vient de vous être envoyé contenant un lien que vous pouvez utiliser pour réinitialiser votre mot de passe.  
+                                Ce lien expirera dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+                                </p>
+                                <p>Si vous ne recevez pas d'e-mail, veuillez vérifier votre dossier de spam ou <a href="{{ path('app_forgot_password_request') }}">réessayer</a>.</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+       
+
+
+        
+        
+    </div>
+
+    <!-- Javascript Files -->
+    <script src="{{ asset('assetsDashboard/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/popper.min.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/jquery.fancybox.min.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/owl.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/range/tmpl.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/range/jquery.dependClass.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/range/draggable.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/range/jquery.slider.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/wow.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/mixitup.min.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/paraxify.js') }}"></script>
+    <script src="{{ asset('assetsDashboard/js/custom.js') }}"></script>
+
+</body>
+
+
+<!-- Mirrored from unicoderbd.com/template/uniland/fullwidth/signin.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 28 Dec 2024 10:59:20 GMT -->
+</html>
+
+

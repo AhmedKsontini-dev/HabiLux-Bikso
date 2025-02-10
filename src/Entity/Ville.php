@@ -18,21 +18,18 @@ class Ville
     #[ORM\Column(length: 255)]
     private ?string $nomVille = null;
 
-    /**
-     * @var Collection<int, gouvernorat>
-     */
-    #[ORM\OneToMany(targetEntity: gouvernorat::class, mappedBy: 'ville')]
-    private Collection $gouvernorat;
+    #[ORM\ManyToOne(targetEntity: Gouvernorat::class, inversedBy: 'villes')]
+    #[ORM\JoinColumn(nullable: false)] // Si une ville doit obligatoirement appartenir à un gouvernorat
+    private ?Gouvernorat $gouvernorat = null;
 
     /**
      * @var Collection<int, Bien>
      */
-    #[ORM\OneToMany(targetEntity: Bien::class, mappedBy: 'ville')]
+    #[ORM\OneToMany(targetEntity: Bien::class, mappedBy: 'ville', cascade: ["persist", "remove"])]
     private Collection $biens;
 
     public function __construct()
     {
-        $this->gouvernorat = new ArrayCollection();
         $this->biens = new ArrayCollection();
     }
 
@@ -53,32 +50,14 @@ class Ville
         return $this;
     }
 
-    /**
-     * @return Collection<int, gouvernorat>
-     */
-    public function getGouvernorat(): Collection
+    public function getGouvernorat(): ?Gouvernorat
     {
         return $this->gouvernorat;
     }
 
-    public function addGouvernorat(gouvernorat $gouvernorat): static
+    public function setGouvernorat(?Gouvernorat $gouvernorat): static
     {
-        if (!$this->gouvernorat->contains($gouvernorat)) {
-            $this->gouvernorat->add($gouvernorat);
-            $gouvernorat->setVille($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGouvernorat(gouvernorat $gouvernorat): static
-    {
-        if ($this->gouvernorat->removeElement($gouvernorat)) {
-            // set the owning side to null (unless already changed)
-            if ($gouvernorat->getVille() === $this) {
-                $gouvernorat->setVille(null);
-            }
-        }
+        $this->gouvernorat = $gouvernorat;
 
         return $this;
     }

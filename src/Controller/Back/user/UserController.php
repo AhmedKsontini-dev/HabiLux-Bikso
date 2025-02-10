@@ -1,26 +1,52 @@
 <?php
-
 namespace App\Controller\Back\user;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Form\UserType;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use App\Service\FileUploader;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;  // Importer l'interface pour le hachage du mot de passe
+use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/back/user')]
 final class UserController extends AbstractController
 {
     #[Route(name: 'app_back_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
-    {
+    public function index(Request $request, UserRepository $userRepository): Response
+    {   
+        // Récupérer les statistiques des biens
+        $totalUsers = $userRepository->countAll();
+        $nbrAdmin = $userRepository->countByRoles('ROLE_ADMIN');
+        $nbrConnecte = $userRepository->countByStatus(1);
+
+
+
+        // Récupération du terme de recherche depuis la requête GET
+        $search = $request->query->get('search');
+
+        // Si un terme de recherche est présent, filtrer les utilisateurs
+        if ($search) {
+            $users = $userRepository->createQueryBuilder('u')
+                ->where('u.nom LIKE :search')
+                ->orWhere('u.prenom LIKE :search')
+                ->setParameter('search', '%' . $search . '%')
+                ->getQuery()
+                ->getResult();
+        } else {
+            // Si aucun terme de recherche, récupérer tous les utilisateurs
+            $users = $userRepository->findAll();
+        }
+
+        // Rendu de la vue avec les utilisateurs filtrés ou tous les utilisateurs
         return $this->render('back/user/listeUsers.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $users,
+            'search' => $search,
+            'total_users' => $totalUsers,
+            'nbr_admin' => $nbrAdmin,
+            'nbr_connecte' => $nbrConnecte,
+   
         ]);
     }
 
@@ -77,18 +103,29 @@ final class UserController extends AbstractController
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            // Si une nouvelle photo est uploadée, on met à jour la photo
+            /** @var UploadedFile $photoFile */
+            $photoFile = $form->get('photoProfil')->getData();
+    
+            if ($photoFile) {
+                // Utilisation du service pour uploader l'image
+                $photoFileName = $fileUploader->upload($photoFile);
+                $user->setPhotoProfil($photoFileName);  // Assurez-vous que la méthode 'setPhotoProfil' existe dans votre entité User
+            }
+    
             $entityManager->flush();
-
+    
             return $this->redirectToRoute('app_back_user_index', [], Response::HTTP_SEE_OTHER);
         }
-
+    
         return $this->render('back/user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
         ]);
     }
+    
 
     #[Route('/{id}', name: 'app_back_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response

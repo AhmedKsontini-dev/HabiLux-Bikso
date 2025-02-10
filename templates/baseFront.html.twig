@@ -146,7 +146,7 @@
             <div class="widget">
                 <div class="th-widget-about">
                     <div class="about-logo">
-                        <a href="index.html"><img src="{{ asset('assetsFront/img/logo.svg') }}" alt="Realar"></a>
+                        <a href="index.html"><img src="{{ asset('assetsFront/img/logohomeblack.png') }}" alt="Realar"></a>
                     </div>
                     <p class="about-text"> Créez rapidement un modèle de capital intellectuel multiplateforme. Développez de manière appropriée des infrastructures interactives.</p>
                 </div>
@@ -219,12 +219,12 @@
             <div class="th-mobile-menu">
                 <ul>
                     <li>
-                        <a href="{{ path('app_front') }}">
+                        <a href="{{ path('app_front_accueil_accueil') }}">
                             Accueil
                         </a>
                     </li>
                     <li>
-                        <a href="{{ path('app_propos') }}">
+                        <a href="{{ path('app_front_propos_propos') }}">
                             À Propos de Nous
                         </a>
                     </li>
@@ -232,7 +232,7 @@
 
                     
                     <li class="menu-item-has-children">
-                        <a href="#">
+                        <a href="{{ path('app_front_all_biens_louer') }}">
                             Propriétés
                         </a>
                         <ul class="sub-menu">
@@ -242,16 +242,13 @@
                                 </a>
                                     <ul class="sub-menu">
                                         <li>
-                                            <a href="{{ path('app_Proprietes') }}">
+                                            <a href="{{ path('app_front_habitation_villa_louer') }}">
                                                 Villa
                                             </a>
-                                            <a href="{{ path('app_Proprietes') }}">
+                                            <a href="{{ path('app_front_habitation_appartemant_louer')}}">
                                                 Appartement
                                             </a>
-                                            <a href="{{ path('app_Proprietes') }}">
-                                                Duplex
-                                            </a>
-                                            <a href="{{ path('app_Proprietes') }}">
+                                            <a href="{{ path('app_front_habitation_terrain_louer')}}">
                                                 Terrain
                                             </a>
                                         </li>
@@ -263,18 +260,13 @@
                                 </a>
                                     <ul class="sub-menu">
                                         <li>
-                                            <a href="{{ path('app_Proprietes') }}">
+                                            <a href="{{ path('app_front_commercial_bureau_louer')}}">
                                                 Bureau
                                             </a>
-                                            <a href="{{ path('app_Proprietes') }}">
+                                            <a href="{{ path('app_front_commercial_depot_louer')}}">
                                                 Depot
                                             </a>
-                                            <a href="{{ path('app_Proprietes') }}">
-                                                Terrain
-                                            </a>
-                                            <a href="{{ path('app_Proprietes') }}">
-                                                Usine
-                                            </a>
+
                                         </li>
                                     </ul>
                             </li>
@@ -283,22 +275,10 @@
 
 
 
-                    <li class="menu-item-has-children">
-                        <a href="{{ path('app_agents') }}">
-                            Agents
+                    <li>
+                        <a href="{{ path('app_front_team_team') }}">
+                            Nos Agents
                         </a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a href="{{ path('app_agents') }}">
-                                    Agents
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ path('app_details_agent') }}">
-                                    Détails de l'Agent
-                                </a>
-                            </li>
-                        </ul>
                     </li>
 
                     <li class="menu-item-has-children">
@@ -359,10 +339,25 @@
                     </li>
 
                     <li>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('app_back_dashboard') }}">Dashboard</a>
-                    {% endif %}
+                        {% if app.user %}
+                            <li>
+                                <a href="{{ path('app_profil_user_user_profil') }}">
+                                    Voir le profil
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i>
+                                    Se déconnecter
+                                </a>
+                            </li>    
+                        {% else %}
+                            <a href="{{ path('app_login') }}" class="th-btn style-border th-btn-icon">
+                                <i class="fas fa-sign-in-alt"></i> Connexion
+                            </a>
+                        {% endif %}
                     </li>
+
+                        
 
                 </ul>
             </div>
@@ -385,7 +380,7 @@
                         <div class="col-auto">
                             <div class="header-logo">
                                 <a href="index.html">
-                                    <img src="{{ asset('assetsFront/img/logo-white2.svg') }}" alt="Realar">
+                                    <img src="{{ asset('assetsFront/img/logohome.png') }}" alt="Realar">
                                 </a>
                             </div>
                         </div>
@@ -393,59 +388,50 @@
                             <nav class="main-menu d-none d-lg-inline-block">
                                 <ul>
                                     <li>
-                                        <a href="{{ path('app_front') }}">
+                                        <a href="{{ path('app_front_accueil_accueil') }}">
                                             Accueil
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{ path('app_propos') }}">
+                                        <a href="{{ path('app_front_propos_propos') }}">
                                             À Propos de Nous
                                         </a>
                                     </li>
                                     
                                     <li class="menu-item-has-children">
-                                        <a href="#">
+                                        <a href="{{ path('app_front_all_biens_louer') }}">
                                             Propriétés
                                         </a>
                                         <ul class="sub-menu">
                                             <li class="menu-item-has-children">
-                                                <a href="#">
+                                                <a >
                                                     Habitation
                                                 </a>
                                                     <ul class="sub-menu">
                                                         <li>
-                                                            <a href="{{ path('app_Proprietes') }}">
+                                                            <a href="{{ path('app_front_habitation_villa_louer') }}">
                                                                 Villa
                                                             </a>
-                                                            <a href="{{ path('app_Proprietes') }}">
+                                                            <a href="{{ path('app_front_habitation_appartemant_louer')}}">
                                                                 Appartement
                                                             </a>
-                                                            <a href="{{ path('app_Proprietes') }}">
-                                                                Duplex
-                                                            </a>
-                                                            <a href="{{ path('app_Proprietes') }}">
+                                                            <a href="{{ path('app_front_habitation_terrain_louer')}}">
                                                                 Terrain
                                                             </a>
                                                         </li>
                                                     </ul>
                                             </li>
                                             <li class="menu-item-has-children">
-                                                <a href="{{ path('app_details_proprietes') }}">
+                                                <a >
                                                     Commercial
                                                 </a>
                                                     <ul class="sub-menu">
                                                         <li>
-                                                            <a href="{{ path('app_Proprietes') }}">
+                                                            <a href="{{ path('app_front_commercial_bureau_louer')}}">
                                                                 Bureau
                                                             </a>
-                                                            <a href="{{ path('app_Proprietes') }}">
+                                                            <a href="{{ path('app_front_commercial_depot_louer')}}">
                                                                 Depot
-                                                            </a>
-                                                            <a href="{{ path('app_Proprietes') }}">
-                                                                Terrain
-                                                            </a>
-                                                            <a href="{{ path('app_Proprietes') }}">
-                                                                Usine
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -453,22 +439,10 @@
                                         </ul>
                                     </li>
 
-                                    <li class="menu-item-has-children">
-                                        <a href="{{ path('app_agents') }}">
-                                            Agents
+                                    <li>
+                                        <a href="{{ path('app_front_team_team') }}">
+                                            Nos Agents
                                         </a>
-                                        <ul class="sub-menu">
-                                            <li>
-                                                <a href="{{ path('app_agents') }}">
-                                                    Agents
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="{{ path('app_details_agent') }}">
-                                                    Détails de l'Agent
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
 
                                     <li class="menu-item-has-children">
@@ -528,11 +502,7 @@
                                         </a>
                                     </li>
 
-                                    <li>
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                        <a href="{{ path('app_back_dashboard') }}">Dashboard</a>
-                                    {% endif %}
-                                    </li>
+                                    
 
                                 </ul>
                             </nav>
@@ -550,7 +520,21 @@
                                     <div class="dropdown">
                                         <img src="{{ asset('uploads/photo_profil/' ~ app.user.photoProfil) }}" alt="Profile Picture" class="profile-picture dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                                            <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Voir le profil</a></li>
+                                            <li>
+                                                {% if is_granted('ROLE_ADMIN') %}
+                                                    <a class="dropdown-item" href="{{ path('app_back_dashboard') }}">
+                                                       <i class="fas fa-tachometer-alt"></i> Administration
+                                                    </a>
+                                                {% endif %}
+                                            </li>
+                                            <li>
+                                                {% if is_granted('ROLE_ADMIN') %}
+                                                    <a class="dropdown-item" href="{{ path('app_profil_user_profil')}}"><i class="fas fa-user"></i> Voir le profil</a>
+                                                {% else %}
+                                                    <a class="dropdown-item" href="{{ path('app_profil_user_user_profil')}}"><i class="fas fa-user"></i> Voir le profil</a>
+                                                {% endif %}  
+                                            </li>  
+
                                             <li><a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a></li>
                                         </ul>
                                     </div>
@@ -630,7 +614,7 @@
                             <div class="menu-all-pages-container">
                                 <ul class="menu">
                                     <li><a href="{{ path('app_propos') }}">À propos de nous</a></li>
-                                    <li><a href="{{ path('app_Proprietes') }}">Propriétés</a></li>
+                                    <li><a href="">Propriétés</a></li>
                                     <li><a href="{{ path('app_agents') }}">Nos agents</a></li>
                                     <li><a href="{{ path('app_contact') }}">Demander une visite</a></li>
                                     <li><a href="{{ path('app_boutique') }}">Boutique</a></li>

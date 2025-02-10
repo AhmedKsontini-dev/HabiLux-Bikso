@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-class dashboardController extends AbstractController
+class DashboardController extends AbstractController
 {
     #[Route('/back/dashboard', name: 'app_back_dashboard')]
     #[IsGranted('ROLE_ADMIN')]

@@ -76,6 +76,7 @@
         <!--============== Header Section End ==============-->
 
         <!--============== Styled Registration Form ==============-->
+       
         <div class="full-row">
             <div class="container">
                 <div class="row">
@@ -85,45 +86,79 @@
                                 <h4 class="mb-4">M'inscrire</h4>
                                 {{ form_errors(registrationForm) }}
                                 {{ form_start(registrationForm) }}
-                                <div class="row row-cols-1 g-3">
-                                    <div class="col">
-                                        <label class="mb-2" for="nom">Nom</label>
-                                        {{ form_widget(registrationForm.nom, { 'attr': {'class': 'form-control bg-light'} }) }}
-                                    </div>
-                                    <div class="col">
-                                        <label class="mb-2" for="prenom">Prénom</label>
-                                        {{ form_widget(registrationForm.prenom, { 'attr': {'class': 'form-control bg-light'} }) }}
-                                    </div>
-                                    <div class="col">
-                                        <label class="mb-2" for="email">Email</label>
-                                        {{ form_widget(registrationForm.email, { 'attr': {'class': 'form-control bg-light'} }) }}
-                                    </div>
-                                    <div class="col">
-                                        <label class="mb-2" for="tel">Téléphone</label>
-                                        {{ form_widget(registrationForm.tel, { 'attr': {'class': 'form-control bg-light'} }) }}
-                                    </div>
-                                    <div class="col">
-                                        <label class="mb-2" for="photoProfil">Photo de Profil (PNG/JPEG)</label>
-                                        {{ form_widget(registrationForm.photoProfil, { 'attr': {'class': 'form-control bg-light'} }) }}
-                                        {{ form_errors(registrationForm.photoProfil) }}
-                                    </div>
-                                    <div class="col">
-                                        <label class="mb-2" for="plainPassword">Mot de passe</label>
-                                        {{ form_widget(registrationForm.plainPassword, { 'attr': {'class': 'form-control bg-light'}, 'label': 'Mot de passe' }) }}
-                                    </div>
-                                    <div class="col">
-                                        <div class="form-check">
-                                            {{ form_widget(registrationForm.agreeTerms, { 'attr': {'class': 'form-check-input'} }) }}
-                                            <label class="form-check-label" for="agreeTerms">J'accepte les conditions</label>
+
+                                <!-- Étape 1 -->
+                                <div id="step1">
+                                    <div class="row row-cols-1 g-3">
+                                        <div class="col">
+                                            <label class="mb-2" for="nom">Nom</label>
+                                            {{ form_widget(registrationForm.nom, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                        </div>
+                                        <div class="col">
+                                            <label class="mb-2" for="prenom">Prénom</label>
+                                            {{ form_widget(registrationForm.prenom, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                        </div>
+                                        <div class="col">
+                                            <label class="mb-2" for="email">Email</label>
+                                            {{ form_widget(registrationForm.email, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                        </div>
+                                        <div class="col">
+                                            <label class="mb-2" for="tel">Téléphone</label>
+                                            {{ form_widget(registrationForm.tel, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                        </div>
+                                        <div class="col">
+                                            <button type="button" class="btn btn-primary w-100" onclick="nextStep()">Suivant</button>
+                                        </div>
+
+                                        <div class="col text-center">
+                                            <a href="{{ path('app_login') }}" class="text-dark d-table py-1"><u>Déjà inscrit(e) ? Se connecter</u></a>
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <button type="submit" class="btn btn-primary w-100">M'inscrire</button>
-                                    </div>
-                                    <div class="col text-center">
-                                        <p>Déjà inscrit(e) ? <a href="{{ path('app_login') }}" class="text-dark"><u>Me connecter</u></a></p>
+                                </div>
+
+                                <!-- Étape 2 (cachée au début) -->
+                                <div id="step2" style="display: none;">
+                                    <div class="row row-cols-1 g-3">
+                                        <div class="col">
+                                            <label class="mb-2" for="adresse">Adresse</label>
+                                            {{ form_widget(registrationForm.adresse, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                        </div>
+                                        <div class="col">
+                                            <label class="mb-2" for="localisation">Localisation</label>
+                                            {{ form_widget(registrationForm.localisation, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                        </div>
+                                        <div class="col">
+                                            <label class="mb-2" for="cin">CIN</label>
+                                            {{ form_widget(registrationForm.cin, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                        </div>
+                                        <div class="col">
+                                            <label class="mb-2" for="photoProfil">Photo de Profil (PNG/JPEG)</label>
+                                            {{ form_widget(registrationForm.photoProfil, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                            {{ form_errors(registrationForm.photoProfil) }}
+                                        </div>
+                                        <div class="col">
+                                            <label class="mb-2" for="plainPassword">Mot de passe</label>
+                                            {{ form_widget(registrationForm.plainPassword, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-check">
+                                                {{ form_widget(registrationForm.agreeTerms, { 'attr': {'class': 'form-check-input'} }) }}
+                                                <label class="form-check-label" for="agreeTerms">J'accepte les conditions</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <button type="button" class="btn btn-secondary w-100" onclick="prevStep()">Précédent</button>
+                                        </div>
+                                        <div class="col">
+                                            <button type="submit" class="btn btn-primary w-100">M'inscrire</button>
+                                        </div>
+
+                                        <div class="col text-center">
+                                            <a href="{{ path('app_login') }}" class="text-dark d-table py-1"><u>Déjà inscrit(e) ? Se connecter</u></a>
+                                        </div>
                                     </div>
                                 </div>
+
                                 {{ form_end(registrationForm) }}
                             </div>
                         </div>
@@ -131,13 +166,6 @@
                 </div>
             </div>
         </div>
-
-
-
-       
-
-
-     
     </div>
 
     <!-- Javascript Files -->
@@ -155,6 +183,18 @@
     <script src="{{ asset('assetsDashboard/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('assetsDashboard/js/paraxify.js') }}"></script>
     <script src="{{ asset('assetsDashboard/js/custom.js') }}"></script>
+
+    <script>
+        function nextStep() {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+        }
+
+        function prevStep() {
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step1').style.display = 'block';
+        }
+    </script>
 
 </body>
 

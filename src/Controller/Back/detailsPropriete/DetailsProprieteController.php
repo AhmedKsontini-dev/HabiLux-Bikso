@@ -42,20 +42,7 @@ final class DetailsProprieteController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_details_propriete_show', methods: ['GET'])]
-    public function show(DetailsProprieteRepository $detailsProprieteRepository, $id): Response
-    {
-        // Use the correct field name for the relation, e.g., 'bien'
-        $detailsProprietes = $detailsProprieteRepository->findBy(['bien' => $id]);
-
-        // Get the associated propriete (assuming you have a relation set up for propriete in the entity)
-        $propriete = $detailsProprietes ? $detailsProprietes[0]->getPropriete() : null;
-
-        return $this->render('back/details_propriete/show.html.twig', [
-            'details_proprietes' => $detailsProprietes,
-            'propriete' => $propriete
-        ]);
-    }
+    
 
 
 

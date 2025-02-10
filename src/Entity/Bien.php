@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\BienRepository;
+use App\Entity\TypeBien;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BienRepository::class)]
@@ -63,9 +65,24 @@ class Bien
     #[ORM\OneToMany(targetEntity: ImageBien::class, mappedBy: 'bien', cascade: ['persist', 'remove'])]
     private Collection $imageBiens;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateCreation = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $publierPar = null;
+
     public function __construct()
     {
         $this->imageBiens = new ArrayCollection();
+        $this->dateCreation = new \DateTime();
+    }
+
+    public function setCreationDate(): void
+    {
+        if ($this->dateCreation === null) {
+            $this->dateCreation = new \DateTime();
+        }
     }
 
     public function getId(): ?int
@@ -276,6 +293,29 @@ class Bien
             }
         }
 
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->dateCreation;
+    }
+
+    public function setDateCreation(?\DateTimeInterface $dateCreation): static
+    {
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    public function getPublierPar(): ?User
+    {
+        return $this->publierPar;
+    }
+
+    public function setPublierPar(?User $user): self
+    {
+        $this->publierPar = $user;
         return $this;
     }
 }

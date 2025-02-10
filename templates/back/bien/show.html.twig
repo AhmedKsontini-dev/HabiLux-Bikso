@@ -27,6 +27,13 @@
 .btn i {
     margin-right: 5px;
 }
+img.rounded-circle {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
 </style>
 {% endblock  %}
 
@@ -48,6 +55,7 @@
 
             <table class="table table-striped">
                 <tbody>
+                    <!-- Informations du Bien -->
                     <tr>
                         <th class="text-start">ID :</th>
                         <td>{{ bien.id }}</td>
@@ -70,47 +78,58 @@
                     </tr>
                     <tr>
                         <th class="text-start">Description :</th>
-                        <td>{{ bien.description }} </td>
+                        <td>{{ bien.description }}</td>
                     </tr>
                     <tr>
                         <th class="text-start">Localisation :</th>
                         <td>{{ bien.localisationBien }}</td>
                     </tr>
                     <tr>
-                        <th class="text-start">Prix afficher :</th>
-                        <td>{{ bien.AfficherPrix ? 'Oui' : 'Non' }}</td>
+                        <th class="text-start">Afficher Prix :</th>
+                        <td>
+                            {% if bien.AfficherPrix %}
+                                <i class="fas fa-check-circle text-success"></i> <!-- Coche verte -->
+                            {% else %}
+                                <i class="fas fa-times-circle text-danger"></i> <!-- Croix rouge -->
+                            {% endif %}
+                        </td>
                     </tr>
-                    
+
                     <!-- Affichage de la catégorie -->
                     <tr>
                         <th class="text-start">Type du bien :</th>
                         <td>{{ bien.type.nomType }}</td>
                     </tr>
 
-                    <!-- Affichage du plan -->
                     <tr>
-                        <th class="text-start">Plan :</th>
-                        <td>
-                            {% if bien.plan %}
-                                <a href="{{ asset('uploads/plans/' ~ bien.plan) }}" target="_blank">Voir le plan</a>
-                            {% else %}
-                                Aucun plan disponible
-                            {% endif %}
-                        </td>
+                        <th class="text-start">Date de création :</th>
+                        <td>{{ bien.dateCreation|date('d/m/Y') }}</td>
                     </tr>
 
-                    <!-- Affichage de la vidéo -->
+                    <!-- Séparation entre les informations du bien et l'admin -->
+                    <tr><td colspan="2" class="text-center"><hr></td></tr>
+
+                    <!-- Informations de l'Admin -->
                     <tr>
-                        <th class="text-start">Vidéo :</th>
+                        <th class="text-start">Ajouté par :</th>
                         <td>
-                            {% if bien.video %}
-                                <a href="{{ asset('uploads/videos/' ~ bien.video) }}" target="_blank">Voir la vidéo</a>
-                            {% else %}
-                                Aucune vidéo disponible
-                            {% endif %}
+                            <div class="d-flex align-items-center">
+                                <img src="{{ asset('uploads/photo_profil/' ~ bien.publierPar.photoProfil) }}" alt="Photo de profil" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                                <span class="ms-2">{{ bien.publierPar.nom }} {{ bien.publierPar.prenom }}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Poste :</th>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <span class="ms-2">{{ bien.publierPar.poste ? bien.publierPar.poste|join(', ') : '----' }}</span>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
+
+
             </table>
         </div>
         <div class="card-footer d-flex justify-content-between">
@@ -118,7 +137,7 @@
                 <i class="fas fa-arrow-left"></i> Retour à la liste
             </a>
 
-            <a href="{{ path('app_details_propriete_show', {'id': bien.id}) }}" class="btn btn-info">
+            <a href="{{ path('app_bien_propriete', {'id': bien.id}) }}" class="btn btn-info">
                 <i class="fas fa-cogs"></i> Voir les caractéristiques
             </a>
 

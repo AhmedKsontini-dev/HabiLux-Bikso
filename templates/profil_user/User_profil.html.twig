@@ -1,0 +1,210 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}Profil Utilisateur - HabiLux{% endblock %}
+
+{% block body %}
+<style>
+    .container-white {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 50px;
+    }
+
+
+    /* Container pour l'input et le label */
+    .wrap-custom-file {
+        position: relative;
+        display: inline-block;
+    }   
+
+    /* Masquer l'input file */
+    .wrap-custom-file input[type="file"] {
+        display: none;
+    }
+
+    /* Conteneur du label */
+    .change-photo-label {
+        display: flex;
+        flex-direction: column; /* Organisation verticale des éléments */
+        justify-content: flex-end; /* Aligner les éléments au bas */
+        align-items: center; /* Centrer horizontalement */
+        padding: 15px;
+        width: 100%;
+        background-color: #f0f0f0;
+        background-size: cover;
+        background-position: center;
+        color: white;
+        font-size: 16px;
+        font-weight: 500;
+        border-radius: 8px;
+        cursor: pointer;
+        text-align: center;
+        transition: background-color 0.3s, transform 0.3s;
+        height: 200px; /* Hauteur du label */
+    }
+
+    /* Spécifier le style de l'icône */
+    .change-photo-label i {
+        margin-right: 8px;
+        font-size: 18px;
+    }
+
+    /* Déplacer le texte au bas de l'image */
+    .change-photo-label span {
+        margin-top: auto; /* Pousse le texte vers le bas */
+    }
+
+    /* Ajouter des styles au survol */
+    .change-photo-label:hover {
+        background-color: #007bff; /* Couleur au survol */
+        transform: scale(1.05); /* Effet de zoom */
+    }
+
+    /* Positionner l'information sur les dimensions en dessous */
+    .photo-info {
+        font-size: 14px;
+        color: #777;
+        margin-top: 10px;
+    }
+    input.form-control {
+        background-color: #C0CDD1; /* La couleur de fond que vous voulez */
+    }
+</style>
+
+<div class="breadcumb-wrapper" data-bg-src="{{ asset('assetsFront/img/bg/breadcumb-bg.jpg') }}">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-9">
+                <div class="breadcumb-content">
+                    <h1 class="breadcumb-title">Profil</h1>
+                    <ul class="breadcumb-menu">
+                        <li><a href="{{ path('app_front_accueil_accueil')}}">Accueil</a></li>
+                        <li>Profil </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container profile-container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2 class="my-3">Mon Profil</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Container blanc pour le formulaire -->
+        <div class="col-12 container-white">
+          <!-- Message flash après mise à jour -->
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success mt-3">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <form action="{{ path('app_profil_user_user_profil_update') }}" class="form-boder" method="POST" enctype="multipart/form-data">
+                <div class="row">
+                    <!-- Photo de profil -->
+                    
+                            <div class="col-lg-12 text-center">
+                                <div class="wrap-custom-file">
+                                    <input type="file" name="photo_profil" id="image1" accept=".jpeg, .jpg, .png">
+                                    <label for="image1" id="profileLabel" class="change-photo-label" style="background-image: url({{ asset('uploads/photo_profil/' ~ user.photoProfil) }});">
+                                        <span><i class="flaticon-download"></i> Changer la photo </span>
+                                    </label>
+                                </div>
+                                <p class="photo-info">*minimum 260px x 260px</p>
+                            </div>
+
+
+                    <!-- Informations personnelles -->
+                    <div class="col-lg-6 mb-20">
+                        <label class="mb-2 font-fifteen font-500">Nom</label>
+                        <input class="form-control" name="nom" value="{{ user.nom }}" type="text" >
+                    </div>
+                    <div class="col-lg-6 mb-20">
+                        <label class="mb-2 font-fifteen font-500">Prénom</label>
+                        <input class="form-control" name="prenom" value="{{ user.prenom }}" type="text">
+                    </div>
+                    <div class="col-lg-6 mb-20">
+                        <label class="mb-2 font-fifteen font-500">Email</label>
+                        <input class="form-control" name="email" value="{{ user.email }}" type="email">
+                    </div>
+                    <div class="col-lg-6 mb-20">
+                        <label class="mb-2 font-fifteen font-500">Téléphone</label>
+                        <input class="form-control" name="tel" value="{{ user.tel }}" type="text">
+                    </div>
+                    <div class="col-lg-6 mb-20">
+                        <label class="mb-2 font-fifteen font-500">CIN</label>
+                        <input class="form-control" name="cin" value="{{ user.cin }}" type="text">
+                    </div>
+
+                    <!-- Informations supplémentaires -->
+                    <div class="col-xl-12">
+                        <h4 class="mb-4 font-400">Informations supplémentaires</h4>
+                    </div>
+                    <div class="col-lg-6 mb-20">
+                        <label class="mb-2 font-fifteen font-500">Localisation</label>
+                        <input class="form-control" name="localisation" value="{{ user.localisation }}" type="text">
+                    </div>
+                    <div class="col-lg-6 mb-20">
+                        <label class="mb-2 font-fifteen font-500">Adresse</label>
+                        <input class="form-control" name="adresse" value="{{ user.adresse }}" type="text">
+                    </div>
+                  
+
+                    <!-- Réseaux sociaux -->
+                    <div class="col-xl-12">
+                        <h4 class="mb-4 font-400">Réseaux Sociaux</h4>
+                    </div>
+                    <div class="col-lg-6 mb-20">
+                        <label class="mb-2 font-fifteen font-500">Instagram</label>
+                        <input class="form-control" name="instagram" value="{{ user.instagram }}" type="text">
+                    </div>
+                    <div class="col-lg-6 mb-20">
+                        <label class="mb-2 font-fifteen font-500">Facebook</label>
+                        <input class="form-control" name="facebook" value="{{ user.facebook }}" type="text">
+                    </div>
+
+                    <!-- Bouton de mise à jour -->
+                    <div class="col-12 mb-20">
+                        <button type="submit" class="th-btn style4 " >Mise à jour</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    
+
+  
+</div>
+
+
+  <script>
+        document.getElementById('image1').addEventListener('change', function(event) {
+            let file = event.target.files[0];
+            if (file) {
+                let formData = new FormData();
+                formData.append('photo_profil', file);
+
+                fetch('{{ path("app_profil_user_user_photo_update") }}', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('profileLabel').style.backgroundImage = `url('${data.photoUrl}')`;
+                    } else {
+                        alert("Erreur lors de l'upload de l'image.");
+                    }
+                })
+                .catch(error => console.error('Erreur:', error));
+            }
+        });
+    </script>
+{% endblock %}

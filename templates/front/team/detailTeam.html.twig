@@ -1,0 +1,124 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}HabiLux-Agent{% endblock %}
+
+
+
+{% block body %}
+ <div class="breadcumb-wrapper " data-bg-src="{{ asset('assetsFront/img/bg/breadcumb-bg.jpg') }}">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-9">
+                    <div class="breadcumb-content">
+                        <h1 class="breadcumb-title">Détails de l'agent</h1>
+                        <ul class="breadcumb-menu">
+                            <li><a href="{{ path('app_front_accueil_accueil')}}">Accueil</a></li>
+                            <li>Détails de l'agent</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--==============================
+Team Area  
+==============================-->
+    <section class="space">
+        <div class="container">
+            <div class="row gx-40 gy-40">
+                <div class="col-xl-4 col-lg-5 col-md-8">
+                    <div class="th-team team-card style4">
+                        <div class="img-wrap">
+                            <div class="team-img">
+                                <img src="{{ asset('uploads/photo_profil/' ~ agent.photoProfil) }}" alt="Team">
+                            </div>
+                            <div class="th-social-wrap">
+                                <div class="th-social">
+                                    <a target="_blank" href="{{ agent.facebook }}"><i class="fab fa-facebook-f"></i></a>
+                                    <a target="_blank" href="{{ agent.linkedin }}"><i class="fab fa-linkedin-in"></i></a>
+                                    <a target="_blank" href="{{ agent.instagram }}"><i class="fab fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="team-card-content">
+                            <div class="media-left">
+                                <h3 class="box-title" style="color:white;">{{ agent.nom }} {{ agent.prenom }}</h3>
+                                <span class="team-desig">{{ agent.poste is iterable ? agent.poste|join(', ') : agent.poste }}</span>
+                            </div>
+                            <a class="icon-btn" href="tel:{{ agent.tel }}">
+                                <img src="{{ asset('assetsFront/img/icon/phone.svg') }}" alt="img">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8 col-lg-7">
+                    <div class="about-card">
+                        <h2 class="about-card_title text-theme mb-45">
+                            Agent {{ agent.nom }} {{ agent.prenom }}
+                        </h2>
+                        <div class="row gy-3">
+                            <div class="col-md-6">
+                                <ul class="team-about-list">
+                                    <li><strong>Poste :</strong>{{ agent.poste is iterable ? agent.poste|join(', ') : agent.poste }}</li>
+                                    <li><strong>Expérience :</strong> {{ agent.experience }}</li>
+                                    <li><strong>Email :</strong> {{ agent.email }}</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="team-about-list"> 
+                                    <li><strong>Localisation :</strong> {{ agent.localisation }}</li>   
+                                    <li><strong>Adresse :</strong> {{ agent.adresse }}</li>
+                                    <li><strong>Téléphone :</strong> {{ agent.tel }}</li>
+                                    <li><strong>Membre depuis :</strong> {{ agent.creeEn|date('Y-m-d') }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <h2 class="about-card_title text-theme mb-45">
+                            Profil
+                        </h2>
+                        <p class="sec-text text-theme mt-30">
+                            {{ agent.description }}
+                        </p>
+                    
+                        <div class="title-area mb-35 mt-45">
+                            <h3 class="about-card_title text-theme mb-40">Réservez des solutions professionnelles</h3>
+                        </div>
+                        <form action="https://html.themeholy.com/realar/demo/mail.php" method="POST" class="appointment-form ajax-contact me-xl-5">
+                            <div class="row">
+                                <div class="form-group style-border style-radius col-md-6">
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="Votre Nom*">
+                                    <i class="fal fa-user"></i>
+                                </div>
+                                <div class="form-group style-border style-radius col-md-6">
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="Votre Email*">
+                                    <i class="fal fa-envelope"></i>
+                                </div>
+                                <div class="form-group style-border style-radius col-md-12">
+                                    <select name="subject" id="subject" class="form-select">
+                                        <option value="" disabled selected hidden>Sélectionnez le type de service</option>
+                                        <option value="Real Estate">Immobilier</option>
+                                        <option value="Apartment">Appartement</option>
+                                        <option value="Residencial">Résidentiel</option>
+                                        <option value="Deluxe">De luxe</option>
+                                    </select>
+                                    <i class="fal fa-angle-down"></i>
+                                </div>
+                                <div class="col-12 form-group style-border style-radius">
+                                    <i class="far fa-comments"></i>
+                                    <textarea placeholder="Écrivez votre message" class="form-control"></textarea>
+                                </div>
+                                <div class="col-12 form-btn mt-4">
+                                    <button class="th-btn">Envoyer le message <span class="btn-icon"><img src="{{ asset('assetsFront/img/icon/paper-plane.svg') }}" alt="img"></span></button>
+                                </div>
+                            </div>
+                            <p class="form-messages mb-0 mt-3"></p>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+{% endblock %}
+
+

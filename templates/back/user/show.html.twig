@@ -39,7 +39,7 @@
         <div class="card-body">
             <table class="table table-striped">
                 <tbody>
-
+                    <!-- Informations Générales -->
                     <tr>
                         <th class="text-start">Photo Profil :</th>
                         <td>
@@ -54,7 +54,6 @@
                         <th class="text-start">ID :</th>
                         <td>{{ user.id }}</td>
                     </tr>
-                    
                     <tr>
                         <th class="text-start">Nom :</th>
                         <td>{{ user.nom }}</td>
@@ -72,8 +71,45 @@
                         <td>{{ user.tel }}</td>
                     </tr>
                     <tr>
+                        <th class="text-start">CIN :</th>
+                        <td>{{ user.cin }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Localisation :</th>
+                        <td>{{ user.localisation }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Adresse :</th>
+                        <td>{{ user.adresse }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Expérience :</th>
+                        <td>{{ user.experience is not empty ? user.experience : '----' }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Description :</th>
+                        <td>{{ user.description is not empty ? user.description : '----' }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Poste(s) :</th>
+                        <td>{{ user.poste ? user.poste|join(', ') : '----' }}</td>
+
+                    </tr>
+
+                   
+                    <tr>
                         <th class="text-start">Roles :</th>
-                        <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                        <td>
+                            {% if 'ROLE_ADMIN' in user.roles %}
+                                <span class="badge" style="background-color: #DFB266FF; color: white; padding: 5px 10px; border-radius: 5px;">
+                                            Admin
+                                </span>
+                            {% else %}
+                                <span class="badge" style="background-color: #78A6C7FF; color: white; padding: 5px 10px; border-radius: 5px;">
+                                            Client
+                                </span>
+                            {% endif %}
+                        </td>
                     </tr>
                     <tr>
                         <th class="text-start">Vérifier :</th>
@@ -85,8 +121,27 @@
                             {% endif %}
                         </td>
                     </tr>
+                    <tr>
+                        <th class="text-start">Date d'inscription :</th>
+                        <td>{{ user.creeEn|date('Y-m-d') }}</td>
+                    </tr>
 
-                   
+                    <!-- Séparation avec un titre "Réseaux Sociaux" -->
+                    <tr><td colspan="2" class="text-center font-weight-bold">Réseaux Sociaux</td></tr>
+                    <tr>
+                        <th class="text-start">Instagram :</th>
+                        <td>{{ user.instagram is not empty ? user.instagram : '----' }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Facebook :</th>
+                        <td>{{ user.facebook is not empty ? user.facebook : '----' }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-start">Linkedin :</th>
+                        <td>{{ user.linkedin is not empty ? user.linkedin : '----' }}</td>
+                    </tr>
+
+                  
                 </tbody>
             </table>
         </div>
