@@ -1,0 +1,265 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Messages de contact{% endblock %}
+
+{% block style %}
+<style>
+    .page-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #fff;
+        background: linear-gradient(45deg, #1C2D37, #2E495A);
+        padding: 15px;
+        text-align: center;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .bg-dark {
+    background-color: #202D3A86 !important; /* Exemple de fond sombre */
+}
+
+.text-white {
+    color: white !important;
+}
+
+
+.message-item {
+    position: relative;
+}
+
+
+.badge-warning {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(14%, -28%); 
+    z-index: 10; 
+    background-color: #FF0707FF;
+}
+
+
+</style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="page-header-left">
+        <h3 class="page-title">📩 Messages de contact</h3>
+    </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <input type="text" id="searchInput" class="form-control mb-2" placeholder="Rechercher par nom ou email">
+            <div class="list-group" id="messageList" style="max-height: 400px; overflow-y: auto;">
+                {% for message in messages %}
+    <a href="#" class="list-group-item list-group-item-action message-item {% if not message.isRead %}bg-dark text-white{% endif %}" 
+        data-id="{{ message.id }}" 
+        data-name="{{ message.name }}" 
+        data-tel="{{ message.tel }}"
+        data-email="{{ message.email }}" 
+        data-message="{{ message.message }}" 
+        data-date="{{ message.createdAt|date('d/m/Y H:i') }}"
+        data-status="{{ message.status }}">
+        
+        <strong class="message-name">{{ message.name }}</strong> <br>
+        <small class="message-email">
+ 
+            {% if message.status == 'confirmer' %}
+                {{ message.email }}✅
+            {% elseif message.status == 'en_attente' %}
+                {{ message.email }}⏳
+            {% elseif message.status == 'annuler' %}
+                {{ message.email }}❌
+            {% endif %}
+        </small>
+
+        {% if not message.isRead %}
+            <span class="badge badge-warning position-absolute top-0 end-0 m-2">Non lu</span>
+        {% endif %}
+    </a>
+{% endfor %}
+
+            </div>
+        </div>
+
+
+
+
+
+        <!-- Détails du message -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Détails du message</h4>
+                    <hr>
+                    <p><strong>Nom :</strong> <span id="messageName">Sélectionnez un message</span></p>
+                    <p><strong>Tel :</strong> <span id="messageTel"></span></p>
+                    <p><strong>Email :</strong> <span id="messageEmail"></span></p>
+                    <p><strong>Date :</strong> <span id="messageDate"></span></p>
+                    <p><strong>Message :</strong></p>
+                    <p id="messageContent" class="border p-3 bg-light">Aucun message sélectionné</p>
+
+                    <p><strong>Statut :</strong> <span id="messageStatus">Non défini</span></p>
+                    <div>
+                        <button class="btn btn-success status-btn" data-status="confirmer">✅ Confirmer</button>
+                        <button class="btn btn-warning status-btn" data-status="en_attente">⏳ En attente</button>
+                        <button class="btn btn-danger status-btn" data-status="annuler">❌ Annuler</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript pour gérer l'affichage des messages -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".message-item").forEach(item => {
+            item.addEventListener("click", function (e) {
+                e.preventDefault();
+                document.getElementById("messageName").textContent = this.getAttribute("data-name");
+                document.getElementById("messageTel").textContent = this.getAttribute("data-tel");
+                document.getElementById("messageEmail").textContent = this.getAttribute("data-email");
+                document.getElementById("messageDate").textContent = this.getAttribute("data-date");
+                document.getElementById("messageContent").textContent = this.getAttribute("data-message");
+            });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".message-item").forEach(item => {
+            item.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                // Si le message n'est pas encore marqué comme lu
+                if (this.classList.contains("bg-dark")) {
+                    // On marque le message comme lu en utilisant AJAX
+                    let messageId = this.getAttribute("data-id");
+
+                    fetch('/back/contact/messages/mark-as-read/' + messageId, {
+                        method: 'GET',
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            // Mettre à jour l'interface (passer le message en "Lu")
+                            this.classList.remove("bg-dark", "text-white");
+                            this.classList.add("bg-white");  // Fond clair
+                            let badge = this.querySelector('.badge');
+                            badge.classList.remove('badge-warning');
+                            
+                            // Mettre à jour le nombre de messages non lus via AJAX
+                            updateUnreadCount();
+                        } else {
+                            console.error("Erreur lors de la mise à jour du message : ", data.message);
+                        }
+                    });
+                }
+
+                // Afficher les détails du message dans la section de détails
+                document.getElementById("messageName").textContent = this.getAttribute("data-name");
+                document.getElementById("messageTel").textContent = this.getAttribute("data-tel");
+                document.getElementById("messageEmail").textContent = this.getAttribute("data-email");
+                document.getElementById("messageDate").textContent = this.getAttribute("data-date");
+                document.getElementById("messageContent").textContent = this.getAttribute("data-message");
+            });
+        });
+    });
+
+    // Fonction pour mettre à jour le badge du nombre de messages non lus
+    function updateUnreadCount() {
+        fetch('/back/contact/messages/unread-count')
+            .then(response => response.json())
+            .then(data => {
+                let unreadBadge = document.getElementById("unreadBadge");
+
+                if (data.unreadCount > 0) {
+                    unreadBadge.textContent = data.unreadCount;
+                    unreadBadge.style.display = 'inline-block';
+                } else {
+                    unreadBadge.style.display = 'none';
+                }
+            });
+    }
+</script>
+
+<script>
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+        let filter = this.value.toLowerCase();
+        let messages = document.querySelectorAll(".message-item");
+
+        messages.forEach(message => {
+            let name = message.querySelector(".message-name").textContent.toLowerCase();
+            let email = message.querySelector(".message-email").textContent.toLowerCase();
+
+            if (name.includes(filter) || email.includes(filter)) {
+                message.style.display = "";
+            } else {
+                message.style.display = "none";
+            }
+        });
+    });
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let selectedMessageId = null;
+
+    document.querySelectorAll(".message-item").forEach(item => {
+        item.addEventListener("click", function (e) {
+            e.preventDefault();
+            selectedMessageId = this.getAttribute("data-id");
+            document.getElementById("messageStatus").textContent = this.getAttribute("data-status") || "Non défini";
+        });
+    });
+
+    document.querySelectorAll(".status-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            if (!selectedMessageId) {
+                alert("Veuillez sélectionner un message d'abord.");
+                return;
+            }
+
+            let newStatus = this.getAttribute("data-status");
+
+            fetch(`/back/contact/messages/update-status/${selectedMessageId}/${newStatus}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById("messageStatus").textContent = data.newStatus;
+
+                    // Mettre à jour directement l'icône dans la liste des messages
+                    let selectedMessage = document.querySelector(`.message-item[data-id="${selectedMessageId}"] .message-email`);
+                    if (selectedMessage) {
+                        selectedMessage.innerHTML = selectedMessage.textContent.split(" ")[0] + " " + getStatusIcon(newStatus);
+                    }
+                } else {
+                    console.error("Erreur :", data.message);
+                }
+            })
+            .catch(error => console.error("Erreur :", error));
+        });
+    });
+
+    function getStatusIcon(status) {
+        switch (status) {
+            case 'confirmer': return '✅';
+            case 'en_attente': return '⏳';
+            case 'annuler': return '❌';
+            default: return '';
+        }
+    }
+});
+
+
+</script>
+{% endblock %}

@@ -57,7 +57,7 @@ class UserType extends AbstractType
                 'multiple' => false,
                 'attr' => ['class' => 'form-control'],
             ])
-            ->add('password')
+         
             
         ;
     }

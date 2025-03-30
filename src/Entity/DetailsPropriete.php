@@ -22,6 +22,9 @@ class DetailsPropriete
     #[ORM\ManyToOne(inversedBy: 'detailsProprietes')]
     private ?bien $bien = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $afficher = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class DetailsPropriete
     public function setBien(?bien $bien): static
     {
         $this->bien = $bien;
+
+        return $this;
+    }
+
+    public function isAfficher(): ?bool
+    {
+        return $this->afficher;
+    }
+
+    public function setAfficher(?bool $afficher): static
+    {
+        $this->afficher = $afficher;
 
         return $this;
     }

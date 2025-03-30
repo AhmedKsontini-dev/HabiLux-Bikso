@@ -37,6 +37,13 @@ security:
         - { path: ^/back/type/bien, roles: ROLE_ADMIN }        # Accès uniquement pour ADMIN
         - { path: ^/back/user, roles: ROLE_ADMIN }             # Accès uniquement pour ADMIN
         - { path: ^/admin, roles: ROLE_ADMIN }                 # Accès uniquement pour ADMIN
+        - { path: ^/front/all/biens/louer, roles: ROLE_USER }
+        - { path: ^/front/habitation/villa/louer, roles: ROLE_USER }
+        - { path: ^/front/habitation/appartemant/louer, roles: ROLE_USER }
+        - { path: ^/front/habitation/terrain/louer, roles: ROLE_USER }
+        - { path: ^/front/commercial/bureau/louer, roles: ROLE_USER }
+        - { path: ^/front/commercial/depot/louer, roles: ROLE_USER }
+        
 
 
 

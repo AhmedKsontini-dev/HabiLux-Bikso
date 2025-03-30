@@ -1,5 +1,41 @@
+<style>
+ .alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        padding: 15px;
+        color: white;
+        border-radius: 5px;
+        font-size: 16px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert.alert-success {
+        background-color: #D6F4D7FF;
+        color: #3E8B33FF;
+        border-color: #D6F4D7FF;
+
+    }
+
+    .alert.alert-danger {
+        color: #a94442;
+        background-color: #f2dede;
+        border-color: #ebccd1;
+    }
+</style>
 <div class="container py-4">
-    <h2 class="text-center mb-4">Ajouter / Modifier une Propriété</h2>
+            {% if app.session.flashBag.has('success') %}
+                <div id="alert" class="alert alert-success" style="display: none;" role="alert">
+                    <strong>Succès!</strong> {{ app.session.flashBag.get('success')[0] }}
+                </div>
+            {% endif %}
+            {% if app.session.flashBag.has('error') %}
+                <div id="alert-error" class="alert alert-danger" style="display: none;" role="alert">
+                    <strong>Erreur!</strong> {{ app.session.flashBag.get('error')[0] }}
+                </div>
+            {% endif %}
+
     <div class="card shadow p-4">
         {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
 
@@ -16,10 +52,27 @@
         </div>
 
         <div class="d-flex justify-content-between mt-3">
-            <a href="javascript:history.back()" class="btn btn-secondary">Retour</a>
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle pe-2"></i> Retour
+            </a>
             <button type="submit" class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
         </div>
 
         {{ form_end(form) }}
     </div>
 </div>
+
+
+<!-- style notification -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+    // Lorsque la page est prête
+    $(document).ready(function() {
+        // Si un message flash 'success' est présent
+        if ($('#alert').length) {
+            // Afficher l'alerte avec fadeIn
+            $('#alert').fadeIn(500).delay(5000).fadeOut(500); // 5 secondes d'affichage
+        }
+    });
+</script>

@@ -3,27 +3,37 @@ namespace App\Controller\ProfilUser;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\User;
+use App\Service\UnreadMessageService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ProfilController extends AbstractController
 {
     private $userRepository;
     private $entityManager;
+    private $unreadMessageService;
 
     // Injection de UserRepository et EntityManagerInterface dans le constructeur
-    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager)
+    public function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager, UnreadMessageService $unreadMessageService)
     {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
+        $this->unreadMessageService = $unreadMessageService;
     }
 
     #[Route('/profil/user/profil', name: 'app_profil_user_profil')]
     public function index(): Response
     {
+
+        // Récupérer le nombre de messages non lus
+        $unreadCount = $this->unreadMessageService->getUnreadCount();
+        
         // Récupérer l'ID de l'utilisateur connecté depuis la session
         $userId = $this->getUser()->getId();
 
@@ -36,6 +46,7 @@ class ProfilController extends AbstractController
 
         return $this->render('profil_user/Admin_profil.html.twig', [
             'user' => $user,
+            'unreadCount' => $unreadCount,
         ]);
     }
 
@@ -158,6 +169,71 @@ class ProfilController extends AbstractController
         }
 
         return $this->json(['success' => false, 'message' => 'Aucune image reçue'], Response::HTTP_BAD_REQUEST);
+    }
+
+    #[Route('/change-password', name: 'change_password', methods: ['POST'])]
+    public function changePassword(
+        Request $request,
+        UserPasswordHasherInterface $passwordHasher,
+        EntityManagerInterface $entityManager,
+        TokenStorageInterface $tokenStorage
+    ): Response {
+        $user = $tokenStorage->getToken()?->getUser();
+
+        // Récupérer le nombre de messages non lus
+        $unreadCount = $this->unreadMessageService->getUnreadCount();
+        
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $currentPassword = $request->request->get('current_password');
+        $newPassword = $request->request->get('new_password');
+
+        // Vérifier si l'ancien mot de passe est correct
+        if (!$passwordHasher->isPasswordValid($user, $currentPassword)) {
+            $this->addFlash('error', 'Mot de passe actuel incorrect.');
+            return $this->render('profil_user/Admin_profil.html.twig', [
+                'user' => $user,
+            ]);
+        }
+
+        // Vérifier la complexité du nouveau mot de passe
+        if (!preg_match('/^(?=.*[A-Z])(?=.*\d).{8,}$/', $newPassword)) {
+            $this->addFlash('error', 'Le mot de passe doit contenir au moins une lettre majuscule, un chiffre et avoir une longueur minimale de 8 caractères.');
+            return $this->render('profil_user/Admin_profil.html.twig', [
+                'user' => $user,
+            ]);
+        }
+
+        // Encoder le nouveau mot de passe
+        $encodedNewPassword = $passwordHasher->hashPassword($user, $newPassword);
+        $user->setPassword($encodedNewPassword);
+
+        // Sauvegarde dans la base de données
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Mot de passe changé avec succès.');
+        return $this->render('profil_user/Admin_profil.html.twig', [
+            'user' => $user,
+            'unreadCount' => $unreadCount,
+        ]);
+    }
+
+
+
+
+    #[Route('/change-password', name: 'change_password_form', methods: ['GET'])]
+    public function showChangePasswordForm(): Response 
+    {
+        // Récupérer le nombre de messages non lus
+        $unreadCount = $this->unreadMessageService->getUnreadCount();
+
+        return $this->render('profil_user/Admin_profil.html.twig', [
+            'user' => $user,
+            'unreadCount' => $unreadCount,
+        ]);
     }
 
     

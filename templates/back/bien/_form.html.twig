@@ -1,80 +1,118 @@
 <div class="container py-4">
-    <h2 class="text-center mb-4">Ajouter / Modifier un Bien</h2>
     <div class="card shadow p-4">
         {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
 
-        <div class="mb-3">
-            {{ form_label(form.nomBien, 'Nom du Bien', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.nomBien, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.nomBien) }}
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_label(form.nomBien, 'Nom du Bien', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.nomBien, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.nomBien) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.type, 'Type de Bien', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.type) }}
+            </div>
         </div>
 
-        <div class="mb-3">
-            {{ form_label(form.type, 'Type de Bien', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.type) }}
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_label(form.typeOffre, 'Type de l\'offre', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.typeOffre, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.typeOffre) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.adresseBien, 'Adresse du Bien', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.adresseBien, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.adresseBien) }}
+            </div>
         </div>
 
-        <div class="mb-3">
-            {{ form_label(form.typeOffre, 'Type de l\'offre', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.typeOffre, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.typeOffre) }}
+        <div class="row mb-3">
+             <div class="col-md-6">
+                {{ form_label(form.ville, 'Ville', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.ville, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.ville) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form_label(form.gouvernorat, 'Gouvernorat', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.gouvernorat, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.gouvernorat) }}
+            </div>
         </div>
 
-        <div class="mb-3">
-            {{ form_label(form.adresseBien, 'Adresse du Bien', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.adresseBien, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.adresseBien) }}
+        <div class="row mb-3">
+           
+            <div class="col-md-6">
+                {{ form_label(form.prixBien, 'Prix du Bien', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.prixBien, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.prixBien) }}
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-check form-switch">
+                        {{ form_label(form.AfficherPrix, 'Afficher le Prix', {'label_attr': {'class': 'form-check-label'}}) }}
+                        {{ form_widget(form.AfficherPrix, {'attr': {'class': 'form-check-input'}}) }}
+                </div>
+            </div>
         </div>
 
-        <div class="mb-3">
-            {{ form_label(form.localisationBien, 'Localisation du Bien', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.localisationBien, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.localisationBien) }}
+        <div class="row mb-3">
+            
+            <div class="col-md-6">
+                {{ form_label(form.imageBien, 'Images du Bien', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.imageBien, {'attr': {'class': 'form-control', 'multiple': 'multiple'}}) }}
+                {{ form_errors(form.imageBien) }}
+            </div>
+                
+            <div class="col-md-6">
+                {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.description) }}
+            </div>
         </div>
 
-        <div class="mb-3">
-            {{ form_label(form.gouvernorat, 'Gouvernorat', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.gouvernorat, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.gouvernorat) }}
+        <h3>Informations du Propriétaire</h3>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_label(form.nomClient, 'Nom du client', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.nomClient, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.nomClient) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form_label(form.telClient, 'Téléphone du client', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.telClient, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.telClient) }}
+            </div>
         </div>
 
-        <div class="mb-3">
-            {{ form_label(form.ville, 'Ville', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.ville, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.ville) }}
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_label(form.telClient2, 'Téléphone secondaire du client', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.telClient2, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.telClient2) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form_label(form.adresseClient, 'Adresse du client', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.adresseClient, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.adresseClient) }}
+            </div>
         </div>
 
-        <div class="mb-3">
-            {{ form_label(form.prixBien, 'Prix du Bien', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.prixBien, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.prixBien) }}
+        <div class="col-md-12">
+                {{ form_label(form.positionMap, 'Position sur la carte', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.positionMap, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
+                {{ form_errors(form.positionMap) }}
+                <div id="map" style="height: 300px;"></div>
         </div>
-
-        <div class="mb-3">
-            {{ form_label(form.AfficherPrix, 'Afficher le Prix', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.AfficherPrix, {'attr': {'class': 'form-check-input'}}) }}
-            {{ form_errors(form.AfficherPrix) }}
-        </div>
-
-        
-        <div class="mb-3">
-            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
-            {{ form_errors(form.description) }}
-        </div>
-
-
-        <div class="mb-3">
-            {{ form_label(form.imageBien, 'Images du Bien', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.imageBien, {'attr': {'class': 'form-control', 'multiple': 'multiple'}}) }}
-            {{ form_errors(form.imageBien) }}
-        </div>
-
-     
 
         <div class="d-flex justify-content-between mt-3">
-            <a href="javascript:history.back()" class="btn btn-secondary">Retour</a>
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle pe-2"></i> Retour
+            </a>
             <button type="submit" class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
         </div>
 
@@ -84,3 +122,35 @@
 
 
 
+
+<!-- 📌 Leaflet.js pour afficher OpenStreetMap -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var map = L.map('map').setView([36.8065, 10.1815], 13); // 📍 Par défaut : Tunis
+
+        // Charger les tuiles OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Ajouter un marqueur draggable
+        var marker = L.marker([36.8065, 10.1815], {
+            draggable: true
+        }).addTo(map);
+
+        // Mettre à jour l'input positionMap quand le marqueur est déplacé
+        marker.on('dragend', function (event) {
+            var position = marker.getLatLng();
+            document.getElementById('{{ form.positionMap.vars.id }}').value = position.lat + ',' + position.lng;
+        });
+
+        // Mettre à jour le marqueur quand on clique sur la carte
+        map.on('click', function (event) {
+            marker.setLatLng(event.latlng);
+            document.getElementById('{{ form.positionMap.vars.id }}').value = event.latlng.lat + ',' + event.latlng.lng;
+        });
+    });
+</script>

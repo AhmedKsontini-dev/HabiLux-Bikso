@@ -33,12 +33,6 @@ class Bien
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $plan = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $video = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $localisationBien = null;
 
     #[ORM\Column]
@@ -65,6 +59,10 @@ class Bien
     #[ORM\OneToMany(targetEntity: ImageBien::class, mappedBy: 'bien', cascade: ['persist', 'remove'])]
     private Collection $imageBiens;
 
+    
+    #[ORM\OneToMany(targetEntity: Favoris::class, mappedBy: 'bien')]
+    private collection $favoris;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateCreation = null;
 
@@ -72,10 +70,37 @@ class Bien
     #[ORM\JoinColumn(nullable: false)]
     private ?User $publierPar = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $positionMap = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $nomClient = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $telClient = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $telClient2 = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $adresseClient = null;
+
+    #[ORM\OneToMany(mappedBy: 'bien', targetEntity: Transaction::class)]
+    private Collection $transactions;
+
+    #[ORM\Column]
+    private ?bool $bienAfficher = null;
+
+ 
+
+
+
     public function __construct()
     {
         $this->imageBiens = new ArrayCollection();
         $this->dateCreation = new \DateTime();
+        $this->favoris = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     public function setCreationDate(): void
@@ -152,29 +177,7 @@ class Bien
         return $this;
     }
 
-    public function getPlan(): ?string
-    {
-        return $this->plan;
-    }
-
-    public function setPlan(?string $plan): static
-    {
-        $this->plan = $plan;
-
-        return $this;
-    }
-
-    public function getVideo(): ?string
-    {
-        return $this->video;
-    }
-
-    public function setVideo(?string $video): static
-    {
-        $this->video = $video;
-
-        return $this;
-    }
+   
 
     public function getLocalisationBien(): ?string
     {
@@ -318,4 +321,88 @@ class Bien
         $this->publierPar = $user;
         return $this;
     }
+
+    public function getPositionMap(): ?string
+    {
+        return $this->positionMap;
+    }
+
+    public function setPositionMap(?string $positionMap): static
+    {
+        $this->positionMap = $positionMap;
+
+        return $this;
+    }
+
+
+    public function getNomClient(): ?string
+    {
+        return $this->nomClient;
+    }
+
+    public function setNomClient(string $nomClient): static
+    {
+        $this->nomClient = $nomClient;
+
+        return $this;
+    }
+
+    public function getTelClient(): ?string
+    {
+        return $this->telClient;
+    }
+
+    public function setTelClient(string $telClient): static
+    {
+        $this->telClient = $telClient;
+
+        return $this;
+    }
+
+    public function getTelClient2(): ?string
+    {
+        return $this->telClient2;
+    }
+
+    public function setTelClient2(?string $telClient2): static
+    {
+        $this->telClient2 = $telClient2;
+
+        return $this;
+    }
+
+    public function getAdresseClient(): ?string
+    {
+        return $this->adresseClient;
+    }
+
+    public function setAdresseClient(string $adresseClient): static
+    {
+        $this->adresseClient = $adresseClient;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Transaction[]
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function isBienAfficher(): ?bool
+    {
+        return $this->bienAfficher;
+    }
+
+    public function setBienAfficher(bool $bienAfficher): static
+    {
+        $this->bienAfficher = $bienAfficher;
+
+        return $this;
+    }
+
+
+
 }

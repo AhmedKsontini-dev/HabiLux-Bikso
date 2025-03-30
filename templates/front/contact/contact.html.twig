@@ -1,0 +1,191 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %} HabiLux-Contact{% endblock %}
+
+{% block stylesheet %}
+<style>
+    .alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        padding: 15px;
+        color: white;
+        border-radius: 5px;
+        font-size: 16px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert.alert-success {
+        background-color: #D6F4D7FF;
+        color: #3E8B33FF;
+        border-color: #D6F4D7FF;
+
+    }
+
+    .alert.alert-danger {
+        color: #a94442;
+        background-color: #f2dede;
+        border-color: #ebccd1;
+    }
+
+</style>
+{% endblock %}
+
+
+{% block body %}
+
+
+    <div class="breadcumb-wrapper " data-bg-src="{{ asset('assetsFront/img/bg/breadcumb-bg.jpg') }}">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-9">
+                    <div class="breadcumb-content">
+                        <h1 class="breadcumb-title">Contact</h1>
+                        <ul class="breadcumb-menu">
+                            <li><a href="{{ path('app_front_accueil_accueil')}}">Accueil</a></li>
+                            <li>Contact</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--==============================
+    Contact Area  
+    ==============================-->
+    <div class="space">
+        <div class="container">
+            <div class="title-area text-center">
+                <span class="sub-title">Contactez-Nous</span>
+                <h2 class="sec-title text-theme">Nos Informations de Contact</h2>
+            </div>
+            <div class="row gy-4 justify-content-center">
+                <div class="col-xl-4 col-lg-6">
+                    <div class="about-contact-grid style2">
+                        <div class="about-contact-icon">
+                            <i class="fal fa-location-dot"></i>
+                        </div>
+                        <div class="about-contact-details">
+                            <h6 class="about-contact-details-title">Notre Adresse</h6>
+                            <p class="about-contact-details-text">Hammamet-Nabeul</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6">
+                    <div class="about-contact-grid style2">
+                        <div class="about-contact-icon">
+                            <i class="fal fa-phone"></i>
+                        </div>
+                        <div class="about-contact-details">
+                            <h6 class="about-contact-details-title">Numéro de Téléphone</h6>
+                            <p class="about-contact-details-text"><a href="tel:+21693313278">+216 93 313 278</a></p>
+                            <p class="about-contact-details-text"><a href="tel:+21690388911">+216 90 388 911</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6">
+                    <div class="about-contact-grid style2">
+                        <div class="about-contact-icon">
+                            <i class="fal fa-envelope"></i>
+                        </div>
+                        <div class="about-contact-details">
+                            <h6 class="about-contact-details-title">Adresse Email</h6>
+                            <p class="about-contact-details-text"><a href="mailto:Contact@Habilux.com">Contact@Habilux.com</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--==============================
+    Contact Area   
+    ==============================-->
+    <div class="space contact-area-3 z-index-common" data-bg-src="{{ asset('assetsFront/img/bg/contact-bg-1-1.png') }}" data-overlay="title" data-opacity="3" id="contact-sec">
+        <div class="contact-bg-shape3-1 spin shape-mockup " data-bottom="5%" data-left="12%">
+            <img src="{{ asset('assetsFront/img/shape/section_shape_2_1.jpg') }}" alt="img">
+        </div>
+        <div class="container">
+            <div class="row gx-35">
+                <div class="col-lg-6">
+                    <div class="appointment-wrap2 bg-white me-xxl-5">
+                        <h2 class="form-title text-theme">Nous-Contactez</h2>
+                        <form id="visitForm" action="{{ path('app_front_contact_visit') }}" method="POST" class="appointment-form">
+                            <div class="row">
+                                <div class="form-group style-border style-radius col-12">
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="Votre Nom et prénom*" required>
+                                    <i class="fal fa-user"></i>
+                                </div>
+                                <div class="form-group style-border style-radius col-12">
+                                    <input type="number" class="form-control" name="tel" id="tel" placeholder="Votre téléphone*" required>
+                                    <i class="fal fa-phone"></i>
+                                </div>
+                                <div class="form-group style-border style-radius col-12">
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="Votre Email*" required>
+                                    <i class="fal fa-envelope"></i>
+                                </div>
+                                <div class="col-12 form-group style-border style-radius">
+                                    <i class="far fa-comments"></i>
+                                    <textarea name="message" placeholder="Tapez Votre Message" class="form-control" required></textarea>
+                                </div>
+                                <div class="col-12 form-btn mt-4">
+                                    <button type="submit" class="th-btn">Envoyer le Message 
+                                        <span class="btn-icon"><img src="{{ asset('assetsFront/img/icon/paper-plane.svg') }}" alt="img"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="form-messages mb-0 mt-3"></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="location-map contact-sec-map z-index-common">
+            <div class="contact-map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1134.6640871258962!2d10.724600027801994!3d36.449950800776904!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x130298949a74de6b%3A0x1a76446435f868a9!2sElite%20nabeul!5e0!3m2!1sfr!2stn!4v1734806725822!5m2!1sfr!2stn" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            
+        </div>
+    </div>
+
+<script>
+    document.getElementById('visitForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    let formData = new FormData(this);
+
+    let response = await fetch(this.action, {
+        method: 'POST',
+        body: formData
+    });
+
+    let result = await response.json();
+
+    let alertDiv = document.createElement('div');
+    alertDiv.classList.add('alert');
+    
+    if (result.success) {
+        alertDiv.classList.add('alert-success');
+        alertDiv.innerText = result.message;
+        this.reset(); // Réinitialiser le formulaire après l'envoi
+    } else {
+        alertDiv.classList.add('alert-danger');
+        alertDiv.innerText = result.message;
+    }
+
+    document.body.appendChild(alertDiv);
+
+    // Supprimer l'alerte après 5 secondes
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 5000);
+});
+
+</script>
+{% endblock %}
+
+
+
+
+

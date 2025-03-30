@@ -3,11 +3,14 @@ namespace App\Controller\ProfilUser;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserProfilController extends AbstractController
 {
@@ -153,4 +156,86 @@ class UserProfilController extends AbstractController
 
         return $this->json(['success' => false, 'message' => 'Aucune image reçue'], Response::HTTP_BAD_REQUEST);
     }
+
+    #[Route('/change-password-user', name: 'change_password_user', methods: ['POST'])]
+    public function changePassword(
+        Request $request,
+        UserPasswordHasherInterface $passwordHasher,
+        EntityManagerInterface $entityManager,
+        TokenStorageInterface $tokenStorage
+    ): Response {
+        $user = $tokenStorage->getToken()?->getUser();
+        
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $currentPassword = $request->request->get('current_password');
+        $newPassword = $request->request->get('new_password');
+
+        // Vérifier si l'ancien mot de passe est correct
+        if (!$passwordHasher->isPasswordValid($user, $currentPassword)) {
+            $this->addFlash('error', 'Mot de passe actuel incorrect.');
+            return $this->render('profil_user/User_profil.html.twig', [
+                'user' => $user,
+            ]);
+        }
+
+        // Vérifier la complexité du nouveau mot de passe
+        if (!preg_match('/^(?=.*[A-Z])(?=.*\d).{8,}$/', $newPassword)) {
+            $this->addFlash('error', 'Le mot de passe doit contenir au moins une lettre majuscule, un chiffre et avoir une longueur minimale de 8 caractères.');
+            return $this->render('profil_user/User_profil.html.twig', [
+                'user' => $user,
+            ]);
+        }
+
+        // Encoder le nouveau mot de passe
+        $encodedNewPassword = $passwordHasher->hashPassword($user, $newPassword);
+        $user->setPassword($encodedNewPassword);
+
+        // Sauvegarde dans la base de données
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Mot de passe changé avec succès.');
+        return $this->render('profil_user/User_profil.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
+
+
+    #[Route('/change-password-user', name: 'change_password_form_user', methods: ['GET'])]
+    public function showChangePasswordForm(): Response {
+        return $this->render('profil_user/User_profil.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
+    #[Route('/delete-account', name: 'delete_account', methods: ['GET'])]
+    public function deleteAccount(
+        EntityManagerInterface $entityManager,
+        TokenStorageInterface $tokenStorage,
+        Request $request
+    ): Response {
+        $user = $tokenStorage->getToken()?->getUser();
+
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Suppression de l'utilisateur
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        // Déconnexion de l'utilisateur
+        $tokenStorage->setToken(null);
+        $request->getSession()->invalidate();
+
+        $this->addFlash('success', 'Votre compte a été supprimé avec succès.');
+
+        return $this->redirectToRoute('app_login'); // Redirection vers la page de connexion
+    }
+
+
 }

@@ -1,83 +1,19 @@
-<!doctype html>
-<html lang="en">
+{% extends 'baseInscription.html.twig' %}
 
+{% block title %}HabiLux-Inscription{% endblock %}
 
-<!-- Mirrored from unicoderbd.com/template/uniland/fullwidth/signin.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 28 Dec 2024 10:59:20 GMT -->
-<head>
-    <!-- Meta Tag -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Uniland - Real Estate HTML5 Template">
-    <meta name="keywords" content="real estate, property, property search, agent, apartments, booking, business, idx, housing, real estate agency, rental">
-    <meta name="author" content="unicoder">
-    <title>M'inscrire</title>
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
+{% block body %}
 
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com/">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+    .password-input.is-invalid {
+        border: 2px solid red;
+    }
+    
+    .password-input.is-valid {
+        border: 2px solid green;
+    }
+</style>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com/">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,700;1,400&amp;display=swap" rel="stylesheet">
-
-    <!-- Required style of the theme -->
-    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/bootstrap-select.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/animate.min.css') }}">
-    <link rel="stylesheet" href="assets/webfonts/flaticon/flaticon.css') }}">
-    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/owl.css') }}">
-    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/jquery.fancybox.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/layerslider.css') }}">
-    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/template.css') }}">
-    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/colors/color.css') }}">
-    <link rel="stylesheet" href="{{ asset('assetsDashboard/css/loader.css') }}">
-</head>
-
-<body>
-
-    <div class="preloader">
-		<div class="loader xy-center"></div>
-	</div>
-
-    <div id="page_wrapper" class="bg-light">
-        <!--============== Header Section Start ==============-->
-        <header class="header-style nav-on-top bg-white">
-            <div class="main-nav">
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <nav class="navbar navbar-expand-lg nav-secondary nav-primary-hover nav-line-active">
-                                <a class="navbar-brand" href="#"><img class="nav-logo" src="assets/images/logo/logo1.png" alt="Image not found !"></a>
-                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                    <span class="navbar-toggler-icon flaticon-menu flat-small text-primary"></span>
-                                  </button>
-                                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                    <ul class="navbar-nav ms-auto">
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#">Home</a>
-                                            
-                                        </li>
-                                        
-                                    </ul>
-                                    
-                                </div>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!--============== Header Section End ==============-->
-
-        <!--============== Styled Registration Form ==============-->
-       
-        <div class="full-row">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-5 col-lg-6 mx-auto">
@@ -92,19 +28,19 @@
                                     <div class="row row-cols-1 g-3">
                                         <div class="col">
                                             <label class="mb-2" for="nom">Nom</label>
-                                            {{ form_widget(registrationForm.nom, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                            {{ form_widget(registrationForm.nom, { 'attr': {'class': 'form-control bg-light', 'required': true, 'placeholder': 'Nom'} }) }}
                                         </div>
                                         <div class="col">
                                             <label class="mb-2" for="prenom">Prénom</label>
-                                            {{ form_widget(registrationForm.prenom, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                            {{ form_widget(registrationForm.prenom, { 'attr': {'class': 'form-control bg-light', 'required': true, 'placeholder': 'Prénom'} }) }}
                                         </div>
                                         <div class="col">
                                             <label class="mb-2" for="email">Email</label>
-                                            {{ form_widget(registrationForm.email, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                            {{ form_widget(registrationForm.email, { 'attr': {'class': 'form-control bg-light', 'required': true, 'placeholder': 'Email'} }) }}
                                         </div>
                                         <div class="col">
                                             <label class="mb-2" for="tel">Téléphone</label>
-                                            {{ form_widget(registrationForm.tel, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                            {{ form_widget(registrationForm.tel, { 'attr': {'class': 'form-control bg-light', 'required': true, 'placeholder': 'Téléphone'} }) }}
                                         </div>
                                         <div class="col">
                                             <button type="button" class="btn btn-primary w-100" onclick="nextStep()">Suivant</button>
@@ -121,25 +57,40 @@
                                     <div class="row row-cols-1 g-3">
                                         <div class="col">
                                             <label class="mb-2" for="adresse">Adresse</label>
-                                            {{ form_widget(registrationForm.adresse, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                            {{ form_widget(registrationForm.adresse, { 'attr': {'class': 'form-control bg-light', 'required': true, 'placeholder': 'Adresse'} }) }}
                                         </div>
                                         <div class="col">
                                             <label class="mb-2" for="localisation">Localisation</label>
-                                            {{ form_widget(registrationForm.localisation, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                            {{ form_widget(registrationForm.localisation, { 'attr': {'class': 'form-control bg-light', 'required': true, 'placeholder': 'Localisation'} }) }}
                                         </div>
                                         <div class="col">
                                             <label class="mb-2" for="cin">CIN</label>
-                                            {{ form_widget(registrationForm.cin, { 'attr': {'class': 'form-control bg-light'} }) }}
+                                            {{ form_widget(registrationForm.cin, { 'attr': {'class': 'form-control bg-light', 'required': true, 'placeholder': 'CIN'} }) }}
                                         </div>
                                         <div class="col">
                                             <label class="mb-2" for="photoProfil">Photo de Profil (PNG/JPEG)</label>
                                             {{ form_widget(registrationForm.photoProfil, { 'attr': {'class': 'form-control bg-light'} }) }}
                                             {{ form_errors(registrationForm.photoProfil) }}
                                         </div>
-                                        <div class="col">
-                                            <label class="mb-2" for="plainPassword">Mot de passe</label>
-                                            {{ form_widget(registrationForm.plainPassword, { 'attr': {'class': 'form-control bg-light'} }) }}
-                                        </div>
+                                        <div class="col position-relative">
+    <label class="mb-2" for="plainPassword">Mot de passe</label>
+    <div class="input-group">
+        {{ form_widget(registrationForm.plainPassword, { 
+            'attr': {
+                'class': 'form-control bg-light password-input', 
+                'required': true, 
+                'placeholder': 'Mot de passe', 
+                'oninput': 'validatePassword()'
+            } 
+        }) }}
+        <span class="input-group-text" onclick="togglePasswordVisibility()" style="cursor: pointer;">
+            <i id="togglePasswordIcon" class="fas fa-eye"></i>
+        </span>
+    </div>
+    <small id="passwordHelp" class="text-danger d-none">
+        Le mot de passe doit contenir au moins une majuscule, un chiffre et 8 caractères.
+    </small>
+</div>
                                         <div class="col">
                                             <div class="form-check">
                                                 {{ form_widget(registrationForm.agreeTerms, { 'attr': {'class': 'form-check-input'} }) }}
@@ -165,42 +116,53 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        
 
-    <!-- Javascript Files -->
-    <script src="{{ asset('assetsDashboard/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('assetsDashboard/js/popper.min.js') }}"></script>
-    <script src="{{ asset('assetsDashboard/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assetsDashboard/js/bootstrap-select.min.js') }}"></script>
-    <script src="{{ asset('assetsDashboard/js/jquery.fancybox.min.js') }}"></script>
-    <script src="{{ asset('assetsDashboard/js/owl.js') }}"></script>
-    <script src="{{ asset('assetsDashboard/js/range/tmpl.js') }}"></script>
-    <script src="{{ asset('assetsDashboard/js/range/jquery.dependClass.js') }}"></script>
-    <script src="{{ asset('assetsDashboard/js/range/draggable.js') }}"></script>
-    <script src="{{ asset('assetsDashboard/js/range/jquery.slider.js') }}"></script>
-    <script src="{{ asset('assetsDashboard/js/wow.js') }}"></script>
-    <script src="{{ asset('assetsDashboard/js/mixitup.min.js') }}"></script>
-    <script src="{{ asset('assetsDashboard/js/paraxify.js') }}"></script>
-    <script src="{{ asset('assetsDashboard/js/custom.js') }}"></script>
+            <script>
+                function nextStep() {
+                    document.getElementById("step1").style.display = 'none';
+                    document.getElementById("step2").style.display = 'block';
+                }
 
-    <script>
-        function nextStep() {
-            document.getElementById('step1').style.display = 'none';
-            document.getElementById('step2').style.display = 'block';
+                function prevStep() {
+                    document.getElementById("step2").style.display = 'none';
+                    document.getElementById("step1").style.display = 'block';
+                }
+            </script>
+
+            <script>
+    function validatePassword() {
+        let passwordField = document.querySelector('.password-input');
+        let passwordHelp = document.getElementById('passwordHelp');
+        let password = passwordField.value;
+        let regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/; // Au moins 1 majuscule, 1 chiffre, 8 caractères
+        
+        if (regex.test(password)) {
+            passwordField.classList.remove('is-invalid');
+            passwordField.classList.add('is-valid');
+            passwordHelp.classList.add('d-none');
+        } else {
+            passwordField.classList.remove('is-valid');
+            passwordField.classList.add('is-invalid');
+            passwordHelp.classList.remove('d-none');
         }
+    }
 
-        function prevStep() {
-            document.getElementById('step2').style.display = 'none';
-            document.getElementById('step1').style.display = 'block';
+    function togglePasswordVisibility() {
+        let passwordField = document.querySelector('.password-input');
+        let toggleIcon = document.getElementById('togglePasswordIcon');
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = "password";
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
         }
-    </script>
+    }
+</script>
 
-</body>
-
-
-<!-- Mirrored from unicoderbd.com/template/uniland/fullwidth/signin.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 28 Dec 2024 10:59:20 GMT -->
-</html>
-
-
+{% endblock %}
 

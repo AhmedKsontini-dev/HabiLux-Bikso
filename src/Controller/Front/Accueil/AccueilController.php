@@ -23,9 +23,23 @@ class AccueilController extends AbstractController
         // Récupérer tous les biens avec leurs relations
         $biens = $bienRepository->findAllWithRelations();
 
+        // Récupérer le nombre total de biens par type
+        $biensCounts = $bienRepository->countByType();
+
+        $biens = $bienRepository->findLastFiveBiens();
+
+
+        // Reformater les résultats pour un accès plus facile dans Twig
+        $stats = [];
+        foreach ($biensCounts as $row) {
+            $stats[$row['nomType']] = $row['total'];
+        }
+
+
         return $this->render('front/accueil/accueil.html.twig', [
             'admins' => $adminsWithRole,
             'biens' => $biens,
+            'stats' => $stats,
         ]);
     }
 }

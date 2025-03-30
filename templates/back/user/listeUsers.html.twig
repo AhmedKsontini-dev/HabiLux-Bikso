@@ -2,65 +2,189 @@
 
 {% block title %}Liste des Utilisateurs{% endblock %}
 
+
+{% block style %}
+<style>
+/*style tableau*/
+.nav-tab-border .nav-link.mixitup-control-active, .page-item.active .page-link {
+    border-color: #1C2D37 !important;
+}
+.hover-bg-primary:hover, .nav-tab-border .nav-link.mixitup-control-active, .page-item.active .page-link, .down-line::before {
+    background-color: #1C2D37 !important;
+}
+.page-link {
+    color: #1C2D37 !important;
+}
+.page-item.active .page-link {
+    color: #FFFFFFFF !important;
+}
+
+.small-circle {
+    font-size: 12px; /* Ajuste la taille de la boule */
+    margin-right: 5px; /* Espacement entre l'icône et le texte */
+}
+.text-success {
+    color: green; /* Couleur verte pour 'Actif' */
+}
+.text-danger {
+    color: red; /* Couleur rouge pour 'Inactif' */
+}
+
+.accordion-button {
+    padding: 0rem 1.25rem !important;
+}
+   
+
+    .alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        padding: 15px;
+        color: white;
+        border-radius: 5px;
+        font-size: 16px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert.alert-success {
+        background-color: #D6F4D7FF;
+        color: #3E8B33FF;
+        border-color: #D6F4D7FF;
+
+    }
+
+    .alert.alert-danger {
+        color: #a94442;
+        background-color: #f2dede;
+        border-color: #ebccd1;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #fff;
+        background: linear-gradient(45deg, #1C2D37, #2E495A);
+        padding: 15px;
+        text-align: center;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}
+
 {% block body %}
 
-    <div class="container-fluid bg-light p-4" style="border: 5px solid #1C2D37;">
-        <div class="page-header">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="page-header-left">
-                        <h3>
-                            <small>Liste des Utilisateurs</small>
-                        </h3>
-                    </div>
+
+
+<div class="container-fluid bg-light p-4" style="border: 2px solid #1C2D37;">
+    <div class="page-header">
+        <div class="row">
+                <div class="page-header-left">
+                    <h3 class="page-title">Liste d'utilisateurs</h3>
                 </div>
-            </div>
-               <!-- Barre de recherche -->
-                <div class="container-fluid bg-light p-4">
-                    <form method="get" action="{{ path('app_back_user_index') }}">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <input type="text" name="search" class="form-control" placeholder="Rechercher par Nom ou Prénom " value="{{ app.request.query.get('search') }}">
-                            </div>
-                            <div class="col-sm-2">
-                                <button type="submit" class="btn btn-primary">Rechercher</button>
+        </div>
+
+        <!-- Row pour afficher les deux accordion côte à côte -->
+        <div class="row">
+
+           <!-- Accordion Statistiques -->
+            <div class="col-md-6">
+                <div class="accordion" id="accordion-stats">
+                    <!-- Section Statistiques -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingStats">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStats" aria-expanded="true" aria-controls="collapseStats">
+                                <span class="fw-semibold text-dark">Statistiques des Utilisateurs</span>
+                            </button>
+                        </h2>
+                        <div id="collapseStats" class="accordion-collapse collapse show" aria-labelledby="headingStats" data-bs-parent="#accordion-stats">
+                            <div class="accordion-body">
+                                <!-- Section des statistiques avec un design moderne et compact -->
+                                <div class="row g-3">
+                                    <!-- Total Utilisateurs -->
+                                    <div class="col-12 col-md-4">
+                                        <div class="ball p-4 text-white rounded shadow-sm" style="background-color: #78A6C7FF;">
+                                            <i class="fa-solid fa-users fa-bounce flat-medium float-start pe-3"></i> <!-- Icône pour utilisateurs -->
+                                            <h4 class="m-0 text-white">{{ total_users }}</h4>
+                                            <span class="d-table">Total Utilisateurs</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Nombre des Admins -->
+                                    <div class="col-12 col-md-4">
+                                        <div class="ball p-4 text-white rounded shadow-sm" style="background-color: #DFB266FF;">
+                                            <i class="fa-solid fa-user-shield fa-beat flat-medium float-start pe-3"></i> <!-- Icône pour Admins -->
+                                            <h4 class="m-0 text-white">{{ nbr_admin }}</h4>
+                                            <span class="d-table">Admins</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Utilisateurs Connectés -->
+                                    <div class="col-12 col-md-4">
+                                        <div class="ball p-4 text-white rounded shadow-sm" style="background-color: #55e3b0;">
+                                            <i class="fa-solid fa-circle-check fa-shake flat-medium float-start pe-3"></i> <!-- Icône pour connectés -->
+                                            <h4 class="m-0 text-white">{{ nbr_connecte }}</h4>
+                                            <span class="d-table">Connectés</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </form>
-                </div>
-
-
-                <div class="row row-cols-xxl-4 row-cols-lg-2 row-cols-1 g-4 mb-30">
-                <!-- Total Utilisateurs -->
-                <div class="col">
-                    <div class="ball p-4 position-relative text-white rounded" style="background-color: #78A6C7FF;">
-                        <i class="fa-solid fa-users flat-medium float-start pe-3"></i> <!-- Icône pour utilisateurs -->
-                        <h4 class="m-0 text-white">{{ total_users }}</h4>
-                        <span class="d-table">Total Utilisateurs</span>
                     </div>
                 </div>
+            </div> 
 
-                <!-- Nombre des Admins -->
-                <div class="col">
-                    <div class="ball p-4 position-relative text-white rounded" style="background-color: #DFB266FF;">
-                        <i class="fa-solid fa-user-shield flat-medium float-start pe-3"></i> <!-- Icône pour Admins -->
-                        <h4 class="m-0 text-white">{{ nbr_admin }}</h4>
-                        <span class="d-table">Nombre des Admins</span>
-                    </div>
-                </div>
 
-                <!-- Utilisateurs Connectés -->
-                <div class="col">
-                    <div class="ball p-4 position-relative text-white rounded" style="background-color: #55e3b0;">
-                        <i class="fa-solid fa-circle-check flat-medium float-start pe-3"></i> <!-- Icône pour connectés -->
-                        <h4 class="m-0 text-white">{{ nbr_connecte }}</h4>
-                        <span class="d-table">Connecté</span>
+
+            <!-- Accordion Recherche -->
+            <div class="col-md-6">
+                <div class="accordion" id="accordion-search">
+                    <!-- Section Recherche -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingSearch">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch">
+                                <span class="fw-semibold text-dark">Filtrage</span>
+                            </button>
+                        </h2>
+                        <div id="collapseSearch" class="accordion-collapse collapse" aria-labelledby="headingSearch" data-bs-parent="#accordion-search">
+                            <div class="accordion-body">
+                                <!-- Formulaire de recherche avec style épuré -->
+                                <form method="get" action="{{ path('app_back_user_index') }}">
+                                    <div class="d-flex flex-column">
+                                        <!-- Champ pour rechercher par Nom ou Prénom -->
+                                        <input type="text" name="search" class="form-control form-control-sm rounded-pill border-light shadow-sm mb-2" placeholder="Rechercher par Nom ou Prénom" value="{{ app.request.query.get('search') }}">
+
+                                        <!-- Champ pour filtrer par rôle -->
+                                        <select name="role" class="form-control form-control-sm rounded-pill border-light shadow-sm mb-2">
+                                            <option value="">Sélectionner un rôle</option>
+                                            <option value="ROLE_ADMIN" {% if app.request.query.get('role') == 'ROLE_ADMIN' %}selected{% endif %}>Administrateur</option>
+                                            <option value="ROLE_USER" {% if app.request.query.get('role') == 'ROLE_USER' %}selected{% endif %}>Utilisateur</option>
+                                            <!-- Ajouter d'autres rôles selon vos besoins -->
+                                        </select>
+
+                                        <!-- Champ pour filtrer par poste -->
+                                        <input type="text" name="poste" class="form-control form-control-sm rounded-pill border-light shadow-sm mb-2" placeholder="Filtrer par poste" value="{{ app.request.query.get('poste') }}">
+
+
+                                        <!-- Bouton pour filtrer -->
+                                        <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4">Filtrer</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
 
-        </div>
+            
+        </div> <!-- Fin de la row -->
     </div>
+</div>
+
+
+
 
 
 
@@ -102,11 +226,21 @@
  
 
     <div class="container-fluid bg-light p-4 mt-4">
-        <div class="dashboard-panel border bg-white rounded overflow-hidden w-100">
-            <div style="overflow-x: auto; width: 100%; max-width: 100%;">
-                <table class="w-100 items-list bg-transparent" style="min-width: 1200px;">
-                    <thead>
-                        <tr class="bg-white">
+            {% if app.session.flashBag.has('success') %}
+                <div id="alert" class="alert alert-success" style="display: none;" role="alert">
+                    <strong>Succès!</strong> {{ app.session.flashBag.get('success')[0] }}
+                </div>
+            {% endif %}
+            {% if app.session.flashBag.has('error') %}
+                <div id="alert-error" class="alert alert-danger" style="display: none;" role="alert">
+                    <strong>Erreur!</strong> {{ app.session.flashBag.get('error')[0] }}
+                </div>
+            {% endif %}
+        <div class="dashboard-panel border bg-white rounded overflow-hidden shadow-sm p-3">
+            <div class="table-responsive">
+                <table id="dataTable" class="table table-striped table-hover table-bordered w-100">
+                    <thead style="background-color:#1C2D37;color: white;">
+                        <tr>
                             <th id="col-id">ID</th>
                             <th id="col-photo">Photo de Profil</th>
                             <th id="col-nom">Nom</th>
@@ -126,7 +260,7 @@
                                 <td class="col-id">{{ user.id }}</td>
                                 <td class="col-photo">
                                     {% if user.photoProfil %}
-                                        <img src="{{ asset('uploads/photo_profil/' ~ user.photoProfil) }}" alt="Photo de Profil" width="50">
+                                        <img src="{{ asset('uploads/photo_profil/' ~ user.photoProfil) }}" alt="Photo de Profil" width="50" style="border-radius:10%;">
                                     {% else %}
                                         <span>Aucune photo de profil</span>
                                     {% endif %}
@@ -152,15 +286,21 @@
                                 </td>
                                 <td class="col-status">
                                     {% if user.status %}
-                                        <i class="fas fa-circle text-success"></i>
+                                        <span class="badge badge-light text-success">
+                                            <i class="fas fa-circle small-circle"></i> Actif
+                                        </span>
                                     {% else %}
-                                        <i class="fas fa-circle text-danger"></i>
+                                        <span class="badge badge-light text-danger">
+                                            <i class="fas fa-circle small-circle"></i> Inactif
+                                        </span>
                                     {% endif %}
                                 </td>
+
+
                                 <td class="col-actions">
                                     <div class="dropdown">
                                         <a href="#" class="text-dark" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
-                                            <i class="fa fa-info-circle"></i>
+                                            <i class="fa fa-ellipsis-v"></i>
                                         </a>
                                         <ul class="dropdown-menu dropdown-menu-end">
                                             <li><a class="dropdown-item text-primary" href="{{ path('app_back_user_show', {'id': user.id}) }}"><i class="fas fa-eye"></i> Voir</a></li>
@@ -184,8 +324,7 @@
                             </tr>
                         {% endfor %}
                     </tbody>
-
-                </table>           
+                </table>
             </div>
         </div>
     </div>
@@ -226,6 +365,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+</script>
+
+<!-- style notification -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+    // Lorsque la page est prête
+    $(document).ready(function() {
+        // Si un message flash 'success' est présent
+        if ($('#alert').length) {
+            // Afficher l'alerte avec fadeIn
+            $('#alert').fadeIn(500).delay(5000).fadeOut(500); // 5 secondes d'affichage
+        }
+    });
 </script>
 
 

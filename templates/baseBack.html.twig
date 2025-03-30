@@ -13,7 +13,7 @@
     <meta name="author" content="unicoder">
     <title>{% block title %}Bienvenue {% endblock %}</title>
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ asset('assetsDashboard/images/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ asset('assetsDashboard/images/iconH.png') }}">
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -21,6 +21,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Ajout des styles DataTables et Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.bootstrap5.min.css">
+
+    
 
 
     
@@ -61,7 +67,7 @@
             <div class="row">
                 <div class="col-md-4 col-lg-3 col-xl-2 px-0">
                     <div class="dashboard-nav-area bg-secondary">
-                        <a class="navbar-brand w-100 d-table px-20 py-3 mb-3" href="{{ path('app_back_dashboard')}}"><img src="{{ asset('assetsDashboard/images/logo/logohome.png') }}" alt="dashboard logo"></a>
+                        <a class="navbar-brand w-100 d-table px-20 py-3 mb-3" href="{{ path('app_back_dashboard')}}"><img src="{{ asset('assetsDashboard/images/logo/logohomedore.png') }}" alt="dashboard logo"></a>
                         <div class="collaps-dashboard m-3 px-3 rounded bg-white text-secondary clearfix d-md-none">
                             <span>Open Dashboard Navigation</span>
                             <span class="flaticon-menu text-secondary flat-mini float-end"></span>
@@ -73,6 +79,28 @@
                                     <a class="nav-link" href="{{ path('app_back_dashboard') }}">
                                         <i class="bi bi-speedometer2 pe-2"></i> Dashboard
                                     </a>
+
+                                    <a class="nav-link" href="{{ path('app_back_contact_messages') }}">
+                                        <i class="bi bi-chat-dots pe-2"></i>Contact
+                                        {% if unreadCount > 0 %}
+                                            <span id="unreadBadge" class="badge bg-danger">{{ unreadCount }}</span>
+                                        {% endif %}
+                                    </a>
+
+                                    <a class="nav-link" href="{{ path('app_back_calendrier_visite') }}">
+                                        <i class="bi bi-calendar pe-2"></i> Calendrier
+                                    </a>
+                                    
+                                    <li class="text-white pb-2 pt-4 px-20">Gèrer les transactions</li>
+                                    <a class="nav-link" href="{{ path('app_back_transaction_new') }}">
+                                        <i class="bi bi-credit-card pe-2"></i> Ajouter des transactions
+                                    </a>
+
+                                    <a class="nav-link" href="{{ path('app_transactions') }}">
+                                        <i class="bi bi-credit-card pe-2"></i> Liste des transactions
+                                    </a>
+
+                                    
                                 </li>
 
                                 <li class="text-white pb-2 pt-4 px-20">Gérer les Utilisateurs</li>
@@ -106,27 +134,21 @@
                                     </a>
                                 </li>
 
+
+                                <!--
                                 <li class="text-white pb-2 pt-4 px-20">Gérer les Types des biens</li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('app_back_type_bien_new') }}">
-                                        <i class="bi bi-tools pe-2"></i> Ajouter Type bien
-                                    </a>
-                                </li>
+                                
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ path('app_back_type_bien_index') }}">
                                         <i class="bi bi-list pe-2"></i> Liste des Types bien
                                     </a>
                                 </li>
+                                -->
 
                                 <li class="text-white pb-2 pt-4 px-20">Paramètres du Compte</li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ path('app_profil_user_profil') }}">
                                         <i class="bi bi-person-circle pe-2"></i> Profil Personnel
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <i class="bi bi-lock pe-2"></i> Changer le Mot de Passe
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -152,20 +174,8 @@
                                         <nav class="navbar navbar-expand-lg nav-secondary nav-primary-hover nav-line-active px-3">
                                             <div class="navbar-collapse justify-content-between sm-ml-0">
                                                 <ul class="navbar-nav sm-mx-none">
-                                                    <li class="nav-item dropdown">
-                                                        <a class="nav-link dropdown-toggle" href="blog-grid-classic.html">Dashboard Options</a>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item" href="#">Messages</a></li>
-                                                            <li><a class="dropdown-item" href="#">My Listing</a></li>
-                                                            <li><a class="dropdown-item" href="#">My Account</a></li>
-                                                            <li><a class="dropdown-item" href="#">Submit Property</a></li>
-                                                        </ul>
-                                                    </li>
                                                     <li class="nav-item">
-                                                        <a class="nav-link" href="#"><i class="flaticon-notification flat-mini"></i><sup>10</sup></a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="#"><i class="flaticon-comments flat-mini"></i><sup>2</sup></a>
+                                                       
                                                     </li>
                                                 </ul>
                                                 <ul class="navbar-nav user-option">
@@ -177,11 +187,17 @@
                                                                 class="profile-picture dropdown-toggle" 
                                                                 id="profileDropdown" 
                                                                 data-bs-toggle="dropdown" 
-                                                                aria-expanded="false">
+                                                                aria-expanded="false" style="height:43px; width:43px;">
                                                                 {{app.user.nom}} {{app.user.prenom}}
                                                                 
                                                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                                                                <li><a class="dropdown-item" href="{{ path('app_front_accueil_accueil') }}"><i class="fas fa-arrow-left"></i> HabiLux</a></li>
+                                                                <li>
+                                                                    <a class="dropdown-item" href="{{ path('app_front_accueil_accueil') }}">
+                                                                        <img src="{{ asset('assetsDashboard/images/iconH.png') }}" alt="Icon H" style="width: 16px; height: 16px; margin-right: 5px;">
+                                                                        HabiLux
+                                                                    </a>
+                                                                </li>
+
                                                                 <li><a class="dropdown-item" href="{{ path('app_profil_user_profil') }}"><i class="fas fa-user"></i> Voir le profil</a></li>
                                                                 <li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
                                                             </ul>
@@ -212,7 +228,7 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-12 text-center"><span><p class="copyright-text">
-                                    Copyright <i class="fal fa-copyright"></i> 2024 <a href="{{ path('app_back_dashboard')}}">Habilux / BiKso</a>, Tous droits réservés.</p></span></div>
+                                    Copyright <i class="fa-regular fa-copyright"></i> 2024 <a href="{{ path('app_back_dashboard')}}">Habilux / BiKso</a>, Tous droits réservés.</p></span></div>
                             </div>
                         </div>
                     </div>
@@ -262,6 +278,33 @@
                 data: data,
             });
         }
+    </script>
+
+    <!-- Ajout des scripts DataTables et jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/responsive.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                responsive: true,
+                autoWidth: false,
+                language: {
+                    search: "Rechercher :",
+                    lengthMenu: "Afficher _MENU_ entrées",
+                    info: "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
+                    paginate: {
+                        first: "Premier",
+                        last: "Dernier",
+                        next: "Suivant",
+                        previous: "Précédent"
+                    }
+                }
+            });
+        });
     </script>
 
 </body>

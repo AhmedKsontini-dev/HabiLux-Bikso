@@ -10,8 +10,13 @@
 }
 
 .card-header {
-    font-size: 1.5rem;
-    font-weight: bold;
+     font-size: 2rem;
+        font-weight: bold;
+        background: linear-gradient(45deg, #1C2D37, #2E495A);
+        padding: 15px;
+        text-align: center;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .table th {
@@ -34,12 +39,18 @@
 <div class="container mt-5">
     <div class="card shadow-lg">
         <div class="card-header bg-primary text-white">
-            <h1 class="text-center">Détails des Propriétés</h1>
+            <h1 class="text-center" style="color:white;">Détails des Propriétés</h1>
         </div>
         <div class="card-body">
             <!-- Vérification des données existantes -->
             {% if proprietebien is not empty %}
-                <form method="post" action="{{ path('app_propriete_update') }}">
+            <div class="d-flex align-items-center mb-3">
+                <input type="number" id="nombreProprietes" class="form-control me-2" placeholder="Nombre de propriétés à ajouter" min="1">
+                <button type="button" id="ajouterProprietes" class="btn btn-success">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+                <form method="post" action="{{ path('app_propriete_update', {'id': idBien}) }}">
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -47,16 +58,25 @@
                                 <th>Valeur de la Propriété</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="proprietesContainer">
                             {% for propriete in proprietebien %}
                                 <tr>
-                                    <td>{{ propriete.propriete.nomPropriete }}</td>
+                                    <td>
+                                        <input type="checkbox" 
+                                            name="proprietes[{{ propriete.id }}][afficher]" 
+                                            value="1"
+                                            class="form-check-input"
+                                            {{ propriete.afficher ? 'checked' : '' }}
+                                        >
+                                        {{ propriete.propriete.nomPropriete }}
+                                    </td>
                                     <td>
                                         <input 
                                             type="text" 
                                             name="proprietes[{{ propriete.id }}][valeurPropriete]" 
                                             value="{{ propriete.valeurPropriete }}" 
-                                            class="form-control">
+                                            class="form-control"
+                                        >
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -78,4 +98,34 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let ajouterBtn = document.getElementById("ajouterProprietes");
+        let nombreInput = document.getElementById("nombreProprietes");
+        let container = document.getElementById("proprietesContainer");
+        
+        ajouterBtn.addEventListener("click", function() {
+            let nombre = parseInt(nombreInput.value);
+            if (isNaN(nombre) || nombre <= 0) {
+                alert("Veuillez entrer un nombre valide !");
+                return;
+            }
+
+            for (let i = 0; i < nombre; i++) {
+                let row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>
+                        <input type="text" name="newProprietes[nouveau_${Date.now()}][nomPropriete]" class="form-control" placeholder="Nom de la propriété">
+                    </td>
+                    <td>
+                        <input type="text" name="newProprietes[nouveau_${Date.now()}][valeurPropriete]" class="form-control" placeholder="Valeur">
+                    </td>
+                `;
+                container.appendChild(row);
+            }
+        });
+    });
+</script>
+
 {% endblock %}

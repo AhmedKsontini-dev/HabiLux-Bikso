@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -89,7 +91,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $experience = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $cin = null; // Date de création de compte
+    private ?string $cin = null;
+
+    /**
+     * @var Collection<int, Transaction>
+     */
+    #[ORM\OneToMany(targetEntity: Transaction::class, mappedBy: 'agent')]
+    private Collection $transactions;
+
+
+    public function __construct()
+    {
+        $this->nomAcheteur = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
+    } // Date de création de compte
         
     // Ajout des getters et setters pour confirmationToken
     public function getConfirmationToken(): ?string
@@ -387,4 +402,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Transaction>
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transaction $transaction): static
+    {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions->add($transaction);
+            $transaction->setAgent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransaction(Transaction $transaction): static
+    {
+        if ($this->transactions->removeElement($transaction)) {
+            // set the owning side to null (unless already changed)
+            if ($transaction->getAgent() === $this) {
+                $transaction->setAgent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
+
+ 
+
+    
 }

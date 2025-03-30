@@ -31,6 +31,7 @@ services:
         tags:
             - { name: 'kernel.event_listener', event: 'security.logout', method: 'onLogout' }
 
+
     # UserAuthenticator service
     App\Security\UserAuthenticator:
         autowire: true

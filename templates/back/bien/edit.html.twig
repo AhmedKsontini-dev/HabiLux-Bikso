@@ -1,13 +1,29 @@
 {% extends 'baseBack.html.twig' %}
 
 {% block title %}HabiLux-Edit proprietes{% endblock %}
+{% block style %}
+<style>
+    .page-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #fff;
+        background: linear-gradient(45deg, #1C2D37, #2E495A);
+        padding: 15px;
+        text-align: center;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
+
+</style>
+{% endblock %}
 {% block body %}
+    <h3 class="page-title">Modifier le Bien</h3>
+
+
+    {{ include('back/bien/_form.html.twig', {'button_label': 'Modifer'}) }}
+
     
 
-    {{ include('back/bien/_form.html.twig', {'button_label': 'Update'}) }}
 
-    
-
-    {{ include('back/bien/_delete_form.html.twig') }}
 {% endblock %}

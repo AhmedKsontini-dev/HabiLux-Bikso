@@ -4,27 +4,83 @@
 
 {% block title %}Liste des Types de Biens{% endblock %}
 
+{% block style %}
+<style>
+
+/*style tableau */
+.nav-tab-border .nav-link.mixitup-control-active, .page-item.active .page-link {
+    border-color: #1C2D37 !important;
+}
+.hover-bg-primary:hover, .nav-tab-border .nav-link.mixitup-control-active, .page-item.active .page-link, .down-line::before {
+    background-color: #1C2D37 !important;
+}
+.page-link {
+    color: #1C2D37 !important;
+}
+.page-item.active .page-link {
+    color: #FFFFFFFF !important;
+}
+
+.alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        padding: 15px;
+        color: white;
+        border-radius: 5px;
+        font-size: 16px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert.alert-success {
+        background-color: #D6F4D7FF;
+        color: #3E8B33FF;
+        border-color: #D6F4D7FF;
+
+    }
+
+    .alert.alert-danger {
+        color: #a94442;
+        background-color: #f2dede;
+        border-color: #ebccd1;
+    }
+</style>
+{% endblock  %}
+
+
+
 {% block body %}
-    <div class="container-fluid bg-light p-4" style="border: 5px solid #1C2D37;">
+    <div class="container-fluid bg-light p-4" style="border: 2px solid #1C2D37;">
         <div class="page-header">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="page-header-left">
-                        <h3>
+                        <h4>
                             <small>Liste des Types de Biens</small>
-                        </h3>
+                        </h4>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container-fluid bg-light p-4 mt-4" >
-        <div class="dashboard-panel border bg-white rounded overflow-hidden w-100">
-            <div class="overflow-x-scroll font-fifteen">
-                <table class="w-100 items-list bg-transparent">
-                    <thead>
-                        <tr class="bg-white">
+    <div class="container-fluid bg-light p-4 mt-4">
+            {% if app.session.flashBag.has('success') %}
+                <div id="alert" class="alert alert-success" style="display: none;" role="alert">
+                    <strong>Succès!</strong> {{ app.session.flashBag.get('success')[0] }}
+                </div>
+            {% endif %}
+            {% if app.session.flashBag.has('error') %}
+                <div id="alert-error" class="alert alert-danger" style="display: none;" role="alert">
+                    <strong>Erreur!</strong> {{ app.session.flashBag.get('error')[0] }}
+                </div>
+            {% endif %}
+        <div class="dashboard-panel border bg-white rounded overflow-hidden shadow-sm p-3">
+            <div class="table-responsive">
+                <table id="dataTable" class="table table-striped table-hover table-bordered w-100">
+                    <thead style="background-color:#1C2D37;color: white;">
+                        <tr>
                             <th>ID</th>
                             <th>Nom du Type</th>
                             <th>Actions</th>
@@ -38,7 +94,7 @@
                                 <td>
                                     <div class="dropdown">
                                         <a href="#" class="text-dark" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa fa-info-circle"></i> <!-- Icône pour ouvrir la dropdown -->
+                                             <i class="fa fa-ellipsis-v"></i> <!-- Icône pour ouvrir la dropdown -->
                                         </a>
                                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                             <li>
@@ -71,5 +127,20 @@
         </div>
     </div>
 
+
+
+<!-- style notification -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+    // Lorsque la page est prête
+    $(document).ready(function() {
+        // Si un message flash 'success' est présent
+        if ($('#alert').length) {
+            // Afficher l'alerte avec fadeIn
+            $('#alert').fadeIn(500).delay(5000).fadeOut(500); // 5 secondes d'affichage
+        }
+    });
+</script>
     
 {% endblock %}

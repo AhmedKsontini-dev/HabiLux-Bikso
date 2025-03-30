@@ -1,0 +1,135 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Détails de la Transaction{% endblock %}
+
+{% block style %}
+<style>
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card-header {
+     font-size: 2rem;
+        font-weight: bold;
+        background: linear-gradient(45deg, #1C2D37, #2E495A);
+        padding: 15px;
+        text-align: center;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+    width: 30%;
+    font-weight: bold;
+    color: #555;
+}
+
+.table td {
+    color: #333;
+}
+
+.btn i {
+    margin-right: 5px;
+}
+
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h1 class="text-center" style="color:white;">Détails de la Propriété</h1>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <tbody>
+                    <tr><th>ID :</th><td>{{ transaction.id }}</td></tr>
+                    <tr><th>Référence du bien :</th><td>{{ transaction.bien.id }}</td></tr>
+                    <tr><th>Nom de l'Acheteur :</th><td>{{ transaction.nomAcheteur }}</td></tr>
+                    <tr><th>Téléphone de l'Acheteur :</th><td>{{ transaction.telAcheteur }}</td></tr>
+                    <tr><th>CIN de l'Acheteur :</th><td>{{ transaction.cinAcheteur }}</td></tr>
+                    <tr>
+                        <th>Type de Transaction :</th>
+                        <td class="col-TypesOffre">
+                            {% if transaction.typeTransaction == 'Vente' %}
+                                <span class="badge" style="background-color: #dc69f1; color: white; padding: 5px 10px; border-radius: 5px;">
+                                    Vente
+                                </span>
+                            {% else %}
+                                <span class="badge" style="background-color: #f1c643; color: white; padding: 5px 10px; border-radius: 5px;">
+                                    {{ transaction.typeTransaction }}
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Prix Initial :</th>
+                        <td>
+                            <span class="badge" style="background-color: #23B4EDC1; color: white; padding: 5px 10px; border-radius: 5px;">
+                                {{ transaction.prixInitial }} DT
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Prix Final :</th>
+                        <td>
+                            <span class="badge" style="background-color: #22586EC1; color: white; padding: 5px 10px; border-radius: 5px;">
+                                {{ transaction.prixFinal }} DT
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr><th>Commission :</th><td>{{ transaction.commission }} DT</td></tr>
+                    <tr><th>Date de la Transaction :</th><td>{{ transaction.dateTransaction ? transaction.dateTransaction|date('Y-m-d') : 'Non spécifiée' }}</td></tr>
+                    <tr><th>Mode de Paiement :</th><td>{{ transaction.modePaiement }}</td></tr>
+                    <tr><th>Nombre de Mois :</th><td>{{ transaction.nbrMois }}</td></tr>
+                    <tr><th>Prix par Mois :</th><td>{{ transaction.prixParMois }} DT</td></tr>
+                    <tr>
+                        <th>Payé :</th>
+                        <td class="col-Payer">
+                            {% if transaction.payer == 'Payé' %}
+                                <span class="badge" style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 5px;">
+                                    Payé
+                                </span>
+                            {% else %}
+                                <span class="badge" style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 5px;">
+                                    En cours
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Statut de la Transaction :</th>
+                        <td class="col-StatutTransaction">
+                            {% if transaction.statutTransaction == 'Validée' %}
+                                <span class="badge" style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 5px;">
+                                    Validée
+                                </span>
+                            {% else %}
+                                <span class="badge" style="background-color: #fd7e14; color: white; padding: 5px 10px; border-radius: 5px;">
+                                    {{ transaction.statutTransaction }}
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <a href="{{ path('app_transactions') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </a>
+            <a href="{{ path('app_back_transaction_edit', {'id': transaction.id}) }}" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Modifier
+            </a>
+           
+        </div>
+    </div>
+</div>
+{% endblock %}

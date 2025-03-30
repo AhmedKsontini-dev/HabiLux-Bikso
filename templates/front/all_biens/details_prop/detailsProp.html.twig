@@ -1,0 +1,594 @@
+{% extends 'baseFront.html.twig' %}
+
+{% block title %}HabiLux-Propriétés{% endblock %}
+
+
+
+{% block body %}
+<style>
+.gallery-scrollable {
+    display: flex;
+    overflow-x: auto;  /* Permet le défilement horizontal */
+    padding-bottom: 10px;
+}
+
+.property-gallery-card {
+    min-width: 250px;  /* Taille minimum pour chaque carte d'image */
+    margin-right: 15px;
+}
+
+.gallery-scrollable::-webkit-scrollbar {
+    height: 8px;
+}
+
+.gallery-scrollable::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.gallery-scrollable::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.property-overview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.property-overview-item {
+    display: flex;
+    align-items: center;
+    background-color: #1C2D37;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+
+
+.property-overview-icon {
+    font-size: 24px;
+    color: #C0CDD1;
+    margin-right: 15px;
+}
+
+.property-overview-details {
+    flex: 1;
+}
+
+.property-overview-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #C0CDD1;
+}
+
+.property-overview-text {
+    font-size: 14px;
+    color: #C0CDD1 !important;
+}
+
+
+
+
+.property-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #1C2D37;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.property-feature {
+    display: flex;
+    align-items: center;
+    background: #C0CDD1;
+    padding: 12px;
+    border-radius: 8px;
+    transition: 0.3s ease-in-out;
+}
+
+.property-feature:hover {
+    background: #e9ecef;
+}
+
+.feature-icon {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.check-icon {
+    color: #1C2D37;
+}
+
+.cross-icon {
+    color: #1C2D37;
+}
+
+.info-icon {
+    color: #1C2D37;
+}
+
+.feature-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.property-name {
+    font-weight: 400;
+    color: #1C2D37;
+}
+
+.property-value {
+    font-size: 14px;
+    color: #1C2D37;
+    font-weight:bold;
+}
+
+
+
+.alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        padding: 15px;
+        color: white;
+        border-radius: 5px;
+        font-size: 16px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert.alert-success {
+        background-color: #D6F4D7FF;
+        color: #3E8B33FF;
+        border-color: #D6F4D7FF;
+
+    }
+
+    .alert.alert-danger {
+        color: #a94442;
+        background-color: #f2dede;
+        border-color: #ebccd1;
+    }
+
+
+.favorite-container {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Espacement entre l'icône et le texte */
+}
+
+.favorite-icon {
+    font-size: 18px;
+    color: red; /* Modifier la couleur si nécessaire */
+}
+
+.favorite-text {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+.widget-title {
+    display: flex;
+    align-items: center; /* Aligne verticalement l'élément au centre */
+    justify-content: space-between; /* Crée un espacement entre les éléments */
+}
+
+.widget_subtitle {
+    margin-right: 10px; /* Espacement entre le titre et l'icône */
+}
+
+.favorite-icon {
+    font-size: 24px; /* Ajuste la taille de l'icône */
+    cursor: pointer; /* Change le curseur lorsque l'on passe sur l'icône */
+}
+.widget .form-control, .widget textarea{
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: transparent;
+    border-radius: 50px;
+    color: var(--white-color);
+    height: 44px;
+}
+</style>
+    <div class="breadcumb-wrapper " data-bg-src="{{ asset('assetsFront/img/bg/breadcumb-bg.jpg') }}">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-9">
+                    <div class="breadcumb-content">
+                        <h1 class="breadcumb-title">Plus de détails</h1>
+                        <ul class="breadcumb-menu">
+                            <li><a href="{{ path('app_front_accueil_accueil')}}">Accueil</a></li>
+                            <li>{{ bien.type.nomType }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--==============================
+Property Page Area
+==============================-->
+    <section class="space-top space-extra-bottom">
+        <div class="container">
+        {% if app.session.flashBag.has('success') %}
+            <div id="alert" class="alert alert-success" style="display: none;" role="alert">
+                <strong>Succès!</strong> {{ app.session.flashBag.get('success')[0] }}
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+
+        {% if app.session.flashBag.has('error') %}
+            <div id="alert-error" class="alert alert-danger" style="display: none;" role="alert">
+                <strong>Erreur!</strong> {{ app.session.flashBag.get('error')[0] }}
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+
+            <div class="slider-area property-slider1">
+                <div class="swiper th-slider mb-4" id="propertySlider" data-slider-options='{"effect":"fade","loop":true,"thumbs":{"swiper":".property-thumb-slider"},"autoplayDisableOnInteraction":"true"}'>
+                    <div class="swiper-wrapper">
+                        {% for image in images %}
+                            <div class="swiper-slide">
+                                <div class="property-slider-img">
+                                    <img src="{{ asset('uploads/images_bien/' ~ image.nomImage) }}" alt="Image du bien" height="500px" width="80%" style="display: block; margin: auto;">
+
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="swiper-slide">
+                                <div class="property-slider-img">
+                                    <img src="{{ asset('assetsFront/img/property/default-image.jpg') }}" alt="Image par défaut" >
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="swiper th-slider property-thumb-slider" data-slider-options='{"effect":"slide","loop":true,"breakpoints":{"0":{"slidesPerView":2},"576":{"slidesPerView":"2"},"768":{"slidesPerView":"3"},"992":{"slidesPerView":"3"},"1200":{"slidesPerView":"4"}},"autoplayDisableOnInteraction":"true"}'>
+                    <div class="swiper-wrapper">
+                        {% for image in images %}
+                            <div class="swiper-slide">
+                                <div class="property-slider-img">
+                                    <img src="{{ asset('uploads/images_bien/' ~ image.nomImage) }}" alt="Image de la propriété" height="150px" width="100%">
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="swiper-slide">
+                                <div class="property-slider-img">
+                                    <img src="{{ asset('assetsFront/img/property/default-image.jpg') }}" alt="Image par défaut">
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <button data-slider-prev="#propertySlider" class="slider-arrow style3 slider-prev">
+                    <img src="{{ asset('assetsFront/img/icon/arrow-left.svg') }}" alt="icon">
+                </button>
+                <button data-slider-next="#propertySlider" class="slider-arrow style3 slider-next">
+                    <img src="{{ asset('assetsFront/img/icon/arrow-right.svg') }}" alt="icon">
+                </button>
+            </div>
+
+            <div class="row gx-30">
+                <div class="col-xxl-8 col-lg-7">
+                    <div class="property-page-single">
+                        <div class="page-content">
+                            <div class="property-meta mb-30">
+                                <a class="property-tag">En vedette</a>
+                                <a >
+                                    <img src="{{ asset('assetsFront/img/icon/calendar.svg') }}" alt="img">
+                                    {{ date_creation|date("d M, Y") }}  <!-- Formater la date comme '05 Juin, 2024' -->
+                                </a>
+
+                                <a id="favorite-count">
+                                    <img src="{{ asset('assetsFront/img/icon/comments.svg') }}" alt="img">
+                                    <span id="favoris-total">{{ nbFavoris }}</span> favori(s)
+                                </a>
+                            </div>
+                            <h2 class="page-title">À propos de cette propriété</h2>
+                            <p class="mb-30">{{ description }}</p>  <!-- Afficher la description du bien -->
+
+                            <h2 class="page-title mb-20">Vue d'ensemble de la propriété</h2>
+                            <div class="property-overview">
+                                <div class="property-overview-item">
+                                    <div class="property-overview-icon">
+                                        <i class="fal fa-tag"></i> <!-- Icone pour la référence -->
+                                    </div>
+                                    <div class="property-overview-details">
+                                        <h4 class="property-overview-title">Référence ID</h4>
+                                        <p class="property-overview-text">#{{ bien.id }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="property-overview-item">
+                                    <div class="property-overview-icon">
+                                        <i class="fal fa-home"></i> <!-- Icone pour le nom du bien -->
+                                    </div>
+                                    <div class="property-overview-details">
+                                        <h4 class="property-overview-title">Nom du Bien</h4>
+                                        <p class="property-overview-text">{{ bien.nomBien }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="property-overview-item">
+                                    <div class="property-overview-icon">
+                                        <i class="fal fa-map-marker-alt"></i> <!-- Icone pour l'adresse -->
+                                    </div>
+                                    <div class="property-overview-details">
+                                        <h4 class="property-overview-title">Gouvernorat</h4>
+                                        <p class="property-overview-text">{{ bien.gouvernorat.nomGouvernorat }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="property-overview-item">
+                                    <div class="property-overview-icon">
+                                        <i class="fal fa-clipboard-list"></i> <!-- Icone pour le type d'offre -->
+                                    </div>
+                                    <div class="property-overview-details">
+                                        <h4 class="property-overview-title">Type d'offre</h4>
+                                        <p class="property-overview-text">{{ bien.typeOffre }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="property-overview-item">
+                                    <div class="property-overview-icon">
+                                        <i class="fal fa-cogs"></i> <!-- Icone pour le type de bien -->
+                                    </div>
+                                    <div class="property-overview-details">
+                                        <h4 class="property-overview-title">Type de Bien</h4>
+                                        <p class="property-overview-text">{{ bien.type.nomType }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="property-overview-item">
+                                    <div class="property-overview-icon">
+                                        <i class="fal fa-map-pin"></i> <!-- Icone pour le gouvernorat -->
+                                    </div>
+                                    <div class="property-overview-details">
+                                        <h4 class="property-overview-title">Ville</h4>
+                                        <p class="property-overview-text">{{ bien.ville.nomVille }}</p>
+                                    </div>
+                                </div>
+                            </div>
+           
+                            <h3 class="page-title mt-50 mb-30">Gallerie</h3>
+                            <div class="row gy-4 gallery-scrollable">
+                                {% for image in images %}
+                                    <div class="col-xl-3">
+                                        <div class="property-gallery-card">
+                                            <div class="property-gallery-card-img">
+                                                <img class="w-100" src="{{ asset('uploads/images_bien/' ~ image.nomImage) }}" alt="img">
+                                            </div>
+                                            <a class="icon-btn popup-image" href="{{ asset('uploads/images_bien/' ~ image.nomImage) }}">
+                                                <i class="fal fa-magnifying-glass-plus"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="col-xl-3">
+                                        <div class="property-gallery-card">
+                                            <div class="property-gallery-card-img">
+                                                <img class="w-100" src="{{ asset('assetsFront/img/property/default-image.jpg') }}" alt="Image par défaut">
+                                            </div>
+                                            <a class="icon-btn popup-image" href="{{ asset('assetsFront/img/property/default-image.jpg') }}">
+                                                <i class="fal fa-magnifying-glass-plus"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+ 
+                        </div>
+                    </div>
+                </div>
+                            <div class="col-xxl-4 col-lg-5">
+                                <aside class="sidebar-area">
+                                    <div class="widget widget-property-contact">
+                                        
+                                        <div class="widget-title">
+                                            <h4 class="widget_subtitle">{{ typeOffre }}</h4>
+                                            {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
+                                                <div class="favorite-container">
+                                                    <i class="{% if is_favori %}fa-solid{% else %}fa-regular{% endif %} fa-heart favorite-icon" 
+                                                    data-id="{{ bien.id }}">
+                                                    </i>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        
+
+                                        {% if afficherPrix == 1 %}
+                                            <h4 class="widget_price">
+                                                <i class="fal fa-money-bill-alt"></i> &nbsp;{{ prixBien }} DT
+                                            </h4>
+                                        {% else %}
+                                            <h4 class="widget_price">
+                                                <i class="fal fa-info-circle"></i> Contactez nous pour le prix
+                                            </h4>
+                                        {% endif %}
+
+
+
+                                        <p class="widget_text">Je suis intéressé par cette propriété</p>
+                                        <form action="{{ path('app_front_all_biens_details_prop', {'id': bien.id}) }}" method="POST" class="widget-property-contact-form">
+                                            <div class="form-group">
+                                                <input type="text" name="nom" class="form-control style-border" placeholder="Nom et Prénom" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="email" name="email" class="form-control style-border" placeholder="Adresse e-mail" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" name="telephone" class="form-control style-border" placeholder="Numéro de téléphone" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <textarea name="message" class="form-control style-border" placeholder="Votre message et l'ID de bien*" required></textarea>
+                                            </div>
+                                            <input type="hidden" name="id_bien" value="{{ bien.id }}">
+                                            <button type="submit" class="th-btn style-white th-btn-icon mt-15">Contactez-Nous</button>
+                                        </form>
+
+
+                                    </div>
+                                    
+                                    <div class="widget widget_banner" data-bg-src="{{ asset('assetsFront/img/widget/widget-banner.png') }}">
+                                        <div class="widget-banner text-center">
+                                            <h3 class="title">Besoin d'Aide ? Nous sommes là pour vous aider</h3>
+                                            <div class="logo"><img src="{{ asset('assetsFront/img/logohomeblack.png') }}" alt="img"></div>
+                                            <h4 class="subtitle">Vous obtenez un support en ligne</h4>
+                                            <h5 class="link"><a href="tel:+21693313278">+216 93 313 278</a></h5>
+                                            <h5 class="link"><a href="tel:+21690388911">+216 90 388 911</a></h5>
+                                        </div>
+                                    </div>
+                                </aside>
+                            </div>
+                        </div>
+
+                        <div class="property-container">
+                            <h3 class="page-title" style="color:#C0CDD1;">Caractéristiques & Commodités</h3>
+                            <div class="property-grid">
+                                {% for detail in detailsProprietes %}
+                                    {% if detail.valeurPropriete is not empty %}
+                                        <div class="property-feature">
+                                            <div class="feature-icon">
+                                                {% if detail.valeurPropriete in ['Oui', 'oui'] %}
+                                                    <i class="fas fa-check-circle check-icon"></i>
+                                                {% elseif detail.valeurPropriete in ['Non', 'non'] %}
+                                                    <i class="fas fa-times-circle cross-icon"></i>
+                                                {% else %}
+                                                    <i class="fas fa-info-circle info-icon"></i>
+                                                {% endif %}
+                                            </div>
+                                            <div>
+                                                <span class="property-name">{{ detail.propriete.nomPropriete }}</span>
+                                                {% if detail.valeurPropriete not in ['Oui', 'oui', 'Non', 'non'] %}
+                                                    <span class="property-value">: {{ detail.valeurPropriete }}</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+                        <h3 class="page-title mt-45 mb-30">Emplacement</h3>
+                            <div class="location-map">
+                                <div class="contact-map" id="map" style="width: 100%; height: 400px; z-index:-1;"></div> <!-- Div pour la carte -->
+                            </div>
+                            
+                            {% if positionMap %}
+                                {% set coordinates = positionMap | split(',') %}
+                                {% set latitude = coordinates[0] %}
+                                {% set longitude = coordinates[1] %}
+                                
+                                <!-- Inclure Leaflet CSS -->
+                                <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+                                <!-- Inclure Leaflet JS -->
+                                <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+                                <script>
+                                    // Initialiser la carte Leaflet
+                                    var map = L.map('map').setView([{{ latitude }}, {{ longitude }}], 13); // Centre la carte sur les coordonnées
+
+                                    // Ajouter la couche OpenStreetMap
+                                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                    }).addTo(map);
+
+                                    // Ajouter un marqueur
+                                    var marker = L.marker([{{ latitude }}, {{ longitude }}]).addTo(map);
+
+                                    // Ajouter un popup au marqueur
+                                    marker.bindPopup("<b>Propriété ici</b><br>Voir cette propriété sur la carte.").openPopup();
+                                </script>
+                            {% else %}
+                                <p>Emplacement non disponible</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </section>
+
+
+<!-- style notification -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+    // Lorsque la page est prête
+    $(document).ready(function() {
+        // Si un message flash 'success' est présent
+        if ($('#alert').length) {
+            // Afficher l'alerte avec fadeIn
+            $('#alert').fadeIn(500).delay(5000).fadeOut(500); // 5 secondes d'affichage
+        }
+    });
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".favorite-icon").forEach(icon => {
+        icon.addEventListener("click", function() {
+            let bienId = this.dataset.id;
+            let iconElement = this;
+
+            fetch(`/toggle-favori/${bienId}`, {
+                method: "POST",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.isFavori) {
+                        iconElement.classList.remove("fa-regular");
+                        iconElement.classList.add("fa-solid");
+                    } else {
+                        iconElement.classList.remove("fa-solid");
+                        iconElement.classList.add("fa-regular");
+                    }
+
+                    // Mise à jour du compteur des favoris
+                    document.getElementById("favoris-total").innerText = data.totalFavoris;
+                }
+            })
+            .catch(error => console.error("Erreur AJAX :", error));
+        });
+    });
+});
+
+</script>
+
+
+
+{% endblock %}
+
+
+

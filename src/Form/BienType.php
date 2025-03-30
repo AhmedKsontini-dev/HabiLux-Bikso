@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Bien;
+use App\Entity\bien;
 use App\Entity\Gouvernorat;
 use App\Entity\TypeBien;
 use App\Entity\Ville;
@@ -12,6 +12,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
+
+
 
 class BienType extends AbstractType
 {
@@ -30,18 +35,11 @@ class BienType extends AbstractType
                 'attr' => ['class' => 'form-control'],
             ])
             ->add('description')
-            ->add('localisationBien')
-            ->add('AfficherPrix', ChoiceType::class, [
-                'choices' => [
-                    'Oui' => true,  // Affiche "Oui" dans le formulaire, enregistre `true` en base de données.
-                    'Non' => false, // Affiche "Non" dans le formulaire, enregistre `false` en base de données.
-                ],
+            ->add('AfficherPrix', CheckboxType::class, [
                 'label' => 'Afficher le Prix',
-                'expanded' => false,  // Change l'affichage en boutons radio
-                'multiple' => false, // Uniquement une option peut être sélectionnée
-                'attr' => ['class' => 'form-check'], // Ajoute une classe pour le style
+                'required' => false,
+                'attr' => ['class' => 'form-check-input'],
             ])
-            
             ->add('gouvernorat', EntityType::class, [
                 'class' => Gouvernorat::class,
                 'choice_label' => 'nomGouvernorat',
@@ -56,6 +54,27 @@ class BienType extends AbstractType
                 'label' => 'Type de bien',
                 'attr' => ['class' => 'form-control'],
             ])
+            ->add('positionMap', null, [
+                'label' => 'Position sur la carte',
+                'attr' => ['class' => 'form-control', 'placeholder' => 'Cliquez sur la carte pour obtenir les coordonnées'],
+            ])
+            ->add('nomClient', TextType::class, [
+                'label' => 'Nom du client',
+                'required' => true,
+            ])
+            ->add('telClient', TelType::class, [
+                'label' => 'Téléphone du client',
+                'required' => true,
+            ])
+            ->add('telClient2', TelType::class, [
+                'label' => 'Téléphone secondaire du client',
+                'required' => false,
+            ])
+            ->add('adresseClient', TextType::class, [
+                'label' => 'Adresse du client',
+                'required' => true,
+            ])
+            
             ->add('imageBien', FileType::class, [
                 'label' => 'Ajouter des images',
                 'mapped' => false,

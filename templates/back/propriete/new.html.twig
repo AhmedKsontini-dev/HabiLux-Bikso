@@ -2,9 +2,26 @@
 
 {% block title %}HabiLux-Ajouter proprietes{% endblock %}
 
-{% block body %}
-    <h1>Create new Propriete</h1>
+{% block style %}
+<style>
+    .page-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #fff;
+        background: linear-gradient(45deg, #1C2D37, #2E495A);
+        padding: 15px;
+        text-align: center;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
+
+</style>
+{% endblock %}
+
+{% block body %}
+
+    <h3 class="page-title">Ajouter des proprietes</h3>
     {{ include('back/propriete/_form.html.twig') }}
 
   

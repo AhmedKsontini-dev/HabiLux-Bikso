@@ -1,0 +1,116 @@
+<div class="container py-4">
+
+    <div class="card shadow p-4">
+        {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_label(form.nomAcheteur, 'Nom de l\'Acheteur', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.nomAcheteur, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.nomAcheteur) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.telAcheteur, 'Téléphone de l\'Acheteur', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.telAcheteur, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.telAcheteur) }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_label(form.cinAcheteur, 'CIN de l\'Acheteur', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.cinAcheteur, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.cinAcheteur) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.typeTransaction, 'Type de Transaction', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.typeTransaction, {'attr': {'class': 'form-select'}}) }}
+                {{ form_errors(form.typeTransaction) }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_label(form.prixInitial, 'Prix Initial', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.prixInitial, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.prixInitial) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.prixFinal, 'Prix Final', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.prixFinal, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.prixFinal) }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_label(form.commission, 'Commission', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.commission, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.commission) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.modePaiement, 'Mode de Paiement', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.modePaiement, {'attr': {'class': 'form-select'}}) }}
+                {{ form_errors(form.modePaiement) }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_label(form.nbrMois, 'Nombre de Mois', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.nbrMois, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.nbrMois) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.prixParMois, 'Prix par Mois', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.prixParMois, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.prixParMois) }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_label(form.payer, 'Statut de Paiement', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.payer, {'attr': {'class': 'form-select'}}) }}
+                {{ form_errors(form.payer) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.statutTransaction, 'Statut de la Transaction', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.statutTransaction, {'attr': {'class': 'form-select'}}) }}
+                {{ form_errors(form.statutTransaction) }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_label(form.bien, 'Réference de bien', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.bien, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.bien) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.agent, 'Agent Responsable', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.agent, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.agent) }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                    {{ form_label(form.dateTransaction, 'Date de la Transaction', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.dateTransaction, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.dateTransaction) }}
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-3">
+            <a href="javascript:history.back()" class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle pe-2"></i> Retour
+            </a>
+            <button type="submit" class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+        </div>
+        
+
+
+        {{ form_end(form) }}
+    </div>
+</div>

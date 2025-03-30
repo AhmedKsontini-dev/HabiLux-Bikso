@@ -186,7 +186,7 @@ embed,
 object,
 video {
   max-width: 100%;
-  height: auto;
+  
 }
 
 ul {
@@ -20954,7 +20954,7 @@ span.select2-selection.select2-selection--single:focus {
   font-weight: 600;
   font-family: var(--body-font);
   margin-top: -0.3em;
-  margin-bottom: 26px;
+  margin-bottom: 51px;
 }
 
 @media (max-width: 375px) {

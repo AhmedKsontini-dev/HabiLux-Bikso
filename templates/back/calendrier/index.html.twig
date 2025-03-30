@@ -1,0 +1,443 @@
+{% extends 'baseBack.html.twig' %}
+
+
+{% block stylesheet %}
+<style>
+    .calendar {
+        max-width: 1200px;
+        margin: 30px auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        padding: 25px;
+    }
+
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding: 0 15px;
+    }
+
+    .current-month {
+        font-size: 24px;
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .nav-button {
+        padding: 10px 20px;
+        background: #aa8453;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .nav-button:hover {
+        background: #;
+        transform: translateY(-2px);
+    }
+
+    .calendar-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 8px;
+    }
+
+    .calendar-table th {
+        padding: 15px;
+        font-weight: 600;
+        color: #7f8c8d;
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+
+    .calendar-table td {
+        height: 120px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 10px;
+        vertical-align: top;
+        transition: all 0.3s ease;
+    }
+
+    .calendar-table td:hover {
+        background: #e9ecef;
+        transform: translateY(-2px);
+    }
+
+    .date-number {
+        font-size: 16px;
+        font-weight: 600;
+        color: #34495e;
+        margin-bottom: 8px;
+    }
+
+    .event-container {
+        margin-top: 5px;
+    }
+
+    .event-item {
+        background: #3498db;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        margin-bottom: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .event-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 500px;
+        z-index: 1000;
+    }
+
+    .modal-backdrop {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;
+    }
+
+    .modal-title {
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #34495e;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 2px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+
+    .btn-delete {
+        background: #e74c3c;
+        color: white;
+    }
+
+    .btn-cancel {
+        background: #95a5a6;
+        color: white;
+    }
+
+    .today {
+        background: #e3f2fd !important;
+        border: 2px solid #aa8453;
+    }
+    .page-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #fff;
+        background: linear-gradient(45deg, #1C2D37, #2E495A);
+        padding: 15px;
+        text-align: center;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="page-header-left">
+                                <h3 class="page-title">Calendrier des affaires</h3>
+                            </div>
+<div class="calendar">
+    <div class="calendar-header">
+        <button class="nav-button" onclick="navigateMonth(-1)">← Mois précédent</button>
+        <h2 class="current-month" id="currentMonthYear"></h2>
+        <button class="nav-button" onclick="navigateMonth(1)">Mois suivant →</button>
+    </div>
+    
+    <table class="calendar-table">
+        <thead>
+            <tr>
+                <th>Lundi</th>
+                <th>Mardi</th>
+                <th>Mercredi</th>
+                <th>Jeudi</th>
+                <th>Vendredi</th>
+                <th>Samedi</th>
+                <th>Dimanche</th>
+            </tr>
+        </thead>
+        <tbody id="calendarBody"></tbody>
+    </table>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop"></div>
+<div class="event-modal" id="eventModal">
+    <h3 class="modal-title" id="modalTitle">Nouvelle visite</h3>
+    <form id="eventForm">
+        <input type="hidden" id="eventId">
+        <div class="form-group">
+            <label for="eventTitle">Titre</label>
+            <input type="text" id="eventTitle" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="startDate">Date de début</label>
+            <input type="date" id="startDate" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="endDate">Date de fin</label>
+            <input type="date" id="endDate" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" class="form-control" rows="4"></textarea>
+        </div>
+        <div class="modal-buttons">
+            <button type="button" class="btn btn-delete" id="deleteButton" onclick="deleteEvent()" style="display: none;">Supprimer</button>
+            <div>
+                <button type="button" class="btn btn-cancel" onclick="closeModal()">Annuler</button>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+let currentDate = new Date();
+let events = [];
+
+async function initCalendar() {
+    await loadEvents();
+    updateCalendar();
+}
+
+async function loadEvents() {
+    try {
+        const response = await fetch('/back/calendrier/events');
+        events = await response.json();
+    } catch (error) {
+        console.error('Erreur lors du chargement des événements:', error);
+    }
+}
+
+function updateCalendar() {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    
+    document.getElementById('currentMonthYear').textContent = 
+        new Date(year, month).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+    
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const startingDay = firstDay.getDay() || 7;
+    const monthLength = lastDay.getDate();
+    
+    let html = '';
+    let day = 1;
+    let dayCount = 1;
+    
+    for (let i = 0; i < 6; i++) {
+        html += '<tr>';
+        for (let j = 1; j <= 7; j++) {
+            if (dayCount < startingDay || day > monthLength) {
+                html += '<td></td>';
+                dayCount++;
+            } else {
+                const currentDay = new Date(year, month, day);
+                const dateStr = currentDay.toISOString().split('T')[0];
+                const dayEvents = getEventsForDate(dateStr);
+                const isToday = isSameDate(currentDay, new Date());
+                
+                html += `
+                    <td class="${isToday ? 'today' : ''}" onclick="openNewEventModal('${dateStr}')">
+                        <div class="date-number">${day}</div>
+                        <div class="event-container">
+                            ${dayEvents.map(event => `
+                                <div class="event-item" onclick="openEventModal(event, ${event.id})">
+                                    ${event.title}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </td>`;
+                day++;
+            }
+        }
+        html += '</tr>';
+        if (day > monthLength) break;
+    }
+    
+    document.getElementById('calendarBody').innerHTML = html;
+}
+
+function getEventsForDate(date) {
+    return events.filter(event => {
+        const eventStart = new Date(event.startDate);
+        const eventEnd = new Date(event.endDate);
+        const currentDate = new Date(date);
+        return currentDate >= eventStart && currentDate <= eventEnd;
+    });
+}
+
+function openNewEventModal(date) {
+    document.getElementById('eventId').value = '';
+    document.getElementById('eventTitle').value = '';
+    document.getElementById('startDate').value = date;
+    document.getElementById('endDate').value = date;
+    document.getElementById('description').value = '';
+    document.getElementById('deleteButton').style.display = 'none';
+    document.getElementById('modalTitle').textContent = 'Nouvelle visite';
+    
+    showModal();
+}
+
+function openEventModal(e, eventId) {
+    e.stopPropagation();
+    const event = events.find(e => e.id === eventId);
+    if (event) {
+        document.getElementById('eventId').value = event.id;
+        document.getElementById('eventTitle').value = event.title;
+        document.getElementById('startDate').value = event.startDate;
+        document.getElementById('endDate').value = event.endDate;
+        document.getElementById('description').value = event.description;
+        document.getElementById('deleteButton').style.display = 'block';
+        document.getElementById('modalTitle').textContent = 'Modifier l\'événement';
+        
+        showModal();
+    }
+}
+
+async function handleSubmit(e) {
+    e.preventDefault();
+    
+    const eventId = document.getElementById('eventId').value;
+    const eventData = {
+        title: document.getElementById('eventTitle').value,
+        startDate: document.getElementById('startDate').value,
+        endDate: document.getElementById('endDate').value,
+        description: document.getElementById('description').value
+    };
+    
+    try {
+        const url = eventId ? 
+            `/back/calendrier/event/${eventId}` : 
+            '/back/calendrier/event';
+            
+        const method = eventId ? 'PUT' : 'POST';
+        
+        const response = await fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                // Ajout du token CSRF si nécessaire
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+            },
+            body: JSON.stringify(eventData)
+        });
+        
+        if (response.ok) {
+            await loadEvents();
+            updateCalendar();
+            closeModal();
+        } else {
+            console.error('Erreur lors de la sauvegarde');
+        }
+    } catch (error) {
+        console.error('Erreur:', error);
+    }
+}
+
+async function deleteEvent() {
+    const eventId = document.getElementById('eventId').value;
+    if (eventId && confirm('Voulez-vous vraiment supprimer cet événement ?')) {
+        try {
+            const response = await fetch(`/back/calendrier/event/${eventId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+                }
+            });
+            
+            if (response.ok) {
+                await loadEvents();
+                updateCalendar();
+                closeModal();
+            }
+        } catch (error) {
+            console.error('Erreur lors de la suppression:', error);
+        }
+    }
+}
+
+function showModal() {
+    document.getElementById('modalBackdrop').style.display = 'block';
+    document.getElementById('eventModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('modalBackdrop').style.display = 'none';
+    document.getElementById('eventModal').style.display = 'none';
+}
+
+function navigateMonth(direction) {
+    currentDate.setMonth(currentDate.getMonth() + direction);
+    updateCalendar();
+}
+
+function isSameDate(date1, date2) {
+    return date1.getDate() === date2.getDate() && 
+           date1.getMonth() === date2.getMonth() && 
+           date1.getFullYear() === date2.getFullYear();
+}
+
+// Initialisation
+document.addEventListener('DOMContentLoaded', function() {
+    // Attacher le gestionnaire d'événements au formulaire
+    const form = document.getElementById('eventForm');
+    form.addEventListener('submit', handleSubmit);
+    
+    // Initialiser le calendrier
+    initCalendar();
+});
+</script>
+{% endblock %}

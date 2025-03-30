@@ -23,4 +23,5 @@ class detailTeamController extends AbstractController
             'agent' => $admin,
         ]);
     }
+
 }

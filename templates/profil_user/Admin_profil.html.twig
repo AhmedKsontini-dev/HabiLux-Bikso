@@ -11,105 +11,169 @@ input.form-control {
 textarea.form-control {
     background-color: #C0CDD1; /* La couleur de fond que vous voulez */
 }
+
+    .alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        padding: 15px;
+        color: white;
+        border-radius: 5px;
+        font-size: 16px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert.alert-success {
+        background-color: #D6F4D7FF;
+        color: #3E8B33FF;
+        border-color: #D6F4D7FF;
+
+    }
+
+    .alert.alert-danger {
+        color: #a94442;
+        background-color: #f2dede;
+        border-color: #ebccd1;
+    }
+
+     .page-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #fff;
+        background: linear-gradient(45deg, #1C2D37, #2E495A);
+        padding: 15px;
+        text-align: center;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 </style>
+
+    <h3 class="page-title">Votre profil</h3>
     <div class="full-row px-40 py-30 xs-p-0">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col">
-                    <h3 class="my-3">Mon Profil</h3>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="border rounded bg-white p-30 mb-30">
+                    {% if app.session.flashBag.has('success') %}
+                        <div id="alert" class="alert alert-success" style="display: none;" role="alert">
+                            <strong>Succès!</strong> {{ app.session.flashBag.get('success')[0] }}
+                        </div>
+                    {% endif %}
+                    {% if app.session.flashBag.has('error') %}
+                        <div id="alert" class="alert alert-danger" style="display: none;" role="alert">
+                            <strong>Erreur!</strong> {{ app.session.flashBag.get('error')[0] }}
+                        </div>
+                    {% endif %}
+                    <h4 class="mb-4 font-400">Informations du profil</h4>
+
+                    <form action="{{ path('app_profil_user_profil_update') }}" class="form-boder" method="POST" enctype="multipart/form-data">
+                        <div class="row">
+                            <!-- Photo de profil -->
+                            <div class="col-lg-12">
+                                <div class="wrap-custom-file">
+                                    <input type="file" name="photo_profil" id="image1" accept=".jpeg, .jpg, .png">
+                                    <label for="image1" id="profileLabel" style="background-image: url({{ asset('uploads/photo_profil/' ~ user.photoProfil) }});">
+                                        <span><i class="flaticon-download"></i> Changer la photo </span>
+                                    </label>
+                                </div>
+                                <p>*maximum 1200px x 1300px</p>
+                            </div>
+
+                            <!-- Informations personnelles -->
+                            <div class="col-lg-6 mb-20">
+                                <label class="mb-2 font-fifteen font-500">Nom</label>
+                                <input class="form-control" name="nom" value="{{ user.nom }}" type="text">
+                            </div>
+                            <div class="col-lg-6 mb-20">
+                                <label class="mb-2 font-fifteen font-500">Prénom</label>
+                                <input class="form-control" name="prenom" value="{{ user.prenom }}" type="text">
+                            </div>
+                            <div class="col-lg-6 mb-20">
+                                <label class="mb-2 font-fifteen font-500">Email</label>
+                                <input class="form-control" name="email" value="{{ user.email }}" type="email">
+                            </div>
+                            <div class="col-lg-6 mb-20">
+                                <label class="mb-2 font-fifteen font-500">Téléphone</label>
+                                <input class="form-control" name="tel" value="{{ user.tel }}" type="text">
+                            </div>
+
+                            <!-- Informations supplémentaires -->
+                            <div class="col-xl-12">
+                                <h4 class="mb-4 font-400">Informations supplémentaires</h4>
+                            </div>
+                            <div class="col-lg-6 mb-20">
+                                <label class="mb-2 font-fifteen font-500">Localisation</label>
+                                <input class="form-control" name="localisation" value="{{ user.localisation }}" type="text">
+                            </div>
+                            <div class="col-lg-6 mb-20">
+                                <label class="mb-2 font-fifteen font-500">Adresse</label>
+                                <input class="form-control" name="adresse" value="{{ user.adresse }}" type="text">
+                            </div>
+                            <div class="col-lg-12 mb-20">
+                                <label class="mb-2 font-fifteen font-500">Description</label>
+                                <textarea class="form-control" name="description" rows="4">{{ user.description }}</textarea>
+                            </div>
+                            <div class="col-lg-12 mb-20">
+                                <label class="mb-2 font-fifteen font-500">Expérience</label>
+                                <input class="form-control" name="experience" value="{{ user.experience }}" type="text" >
+                            </div>
+
+                            <!-- Réseaux sociaux -->
+                            <div class="col-xl-12">
+                                <h4 class="mb-4 font-400">Réseaux Sociaux</h4>
+                            </div>
+                            <div class="col-lg-6 mb-20">
+                                <label class="mb-2 font-fifteen font-500">LinkedIn</label>
+                                <input class="form-control" name="linkedin" value="{{ user.linkedin }}" type="text">
+                            </div>
+                            <div class="col-lg-6 mb-20">
+                                <label class="mb-2 font-fifteen font-500">Instagram</label>
+                                <input class="form-control" name="instagram" value="{{ user.instagram }}" type="text">
+                            </div>
+                            <div class="col-lg-6 mb-20">
+                                <label class="mb-2 font-fifteen font-500">Facebook</label>
+                                <input class="form-control" name="facebook" value="{{ user.facebook }}" type="text">
+                            </div>
+
+                            <!-- Bouton de mise à jour -->
+                            <div class="col-12 d-flex justify-content-between mb-20">
+                                <button type="submit" class="btn btn-primary">Mise à jour</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <div class="border rounded bg-white p-30 mb-30">
-                        {% for message in app.flashes('success') %}
-                            <div class="alert alert-success mt-3">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                        <h4 class="mb-4 font-400">Informations du profil</h4>
+        </div>
 
-                        <form action="{{ path('app_profil_user_profil_update') }}" class="form-boder" method="POST" enctype="multipart/form-data">
-                            <div class="row">
-                                <!-- Photo de profil -->
-                                <div class="col-lg-12">
-                                    <div class="wrap-custom-file">
-                                        <input type="file" name="photo_profil" id="image1" accept=".jpeg, .jpg, .png">
-                                        <label for="image1" id="profileLabel" style="background-image: url({{ asset('uploads/photo_profil/' ~ user.photoProfil) }});">
-                                            <span><i class="flaticon-download"></i> Changer la photo </span>
-                                        </label>
-                                    </div>
-                                    <p>*minimum 260px x 260px</p>
-                                </div>
+        <div class="row">
+            <div class="col">
+                <div class="border rounded bg-white p-30 mb-30">
+                    <!-- Formulaire de changement de mot de passe -->
+                    <h4 class="mb-4 font-400">Changer le mot de passe</h4>
+                    <form method="post" action="{{ path('change_password') }}" class="form-boder">
+                        <div class="col-lg-6 mb-20">
+                            <label for="current_password" class="mb-2 font-fifteen font-500">Mot de passe actuel</label>
+                            <input type="password" id="current_password" name="current_password" class="form-control" required>
+                        </div>
 
-                                <!-- Informations personnelles -->
-                                <div class="col-lg-6 mb-20">
-                                    <label class="mb-2 font-fifteen font-500">Nom</label>
-                                    <input class="form-control" name="nom" value="{{ user.nom }}" type="text">
-                                </div>
-                                <div class="col-lg-6 mb-20">
-                                    <label class="mb-2 font-fifteen font-500">Prénom</label>
-                                    <input class="form-control" name="prenom" value="{{ user.prenom }}" type="text">
-                                </div>
-                                <div class="col-lg-6 mb-20">
-                                    <label class="mb-2 font-fifteen font-500">Email</label>
-                                    <input class="form-control" name="email" value="{{ user.email }}" type="email">
-                                </div>
-                                <div class="col-lg-6 mb-20">
-                                    <label class="mb-2 font-fifteen font-500">Téléphone</label>
-                                    <input class="form-control" name="tel" value="{{ user.tel }}" type="text">
-                                </div>
+                        <div class="col-lg-6 mb-20">
+                            <label for="new_password" class="mb-2 font-fifteen font-500">Nouveau mot de passe</label>
+                            <input type="password" id="new_password" name="new_password" class="form-control" required>
+                            <small class="text-muted">⚠️ Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule et un chiffre.</small>
+                        </div>
 
-                                <!-- Informations supplémentaires -->
-                                <div class="col-xl-12">
-                                    <h4 class="mb-4 font-400">Informations supplémentaires</h4>
-                                </div>
-                                <div class="col-lg-6 mb-20">
-                                    <label class="mb-2 font-fifteen font-500">Localisation</label>
-                                    <input class="form-control" name="localisation" value="{{ user.localisation }}" type="text">
-                                </div>
-                                <div class="col-lg-6 mb-20">
-                                    <label class="mb-2 font-fifteen font-500">Adresse</label>
-                                    <input class="form-control" name="adresse" value="{{ user.adresse }}" type="text">
-                                </div>
-                                <div class="col-lg-12 mb-20">
-                                    <label class="mb-2 font-fifteen font-500">Description</label>
-                                    <textarea class="form-control" name="description" rows="4">{{ user.description }}</textarea>
-                                </div>
-                                <div class="col-lg-12 mb-20">
-                                    <label class="mb-2 font-fifteen font-500">Expérience</label>
-                                    <input class="form-control" name="experience" value="{{ user.experience }}" type="text" >
-                                </div>
 
-                                <!-- Réseaux sociaux -->
-                                <div class="col-xl-12">
-                                    <h4 class="mb-4 font-400">Réseaux Sociaux</h4>
-                                </div>
-                                <div class="col-lg-6 mb-20">
-                                    <label class="mb-2 font-fifteen font-500">LinkedIn</label>
-                                    <input class="form-control" name="linkedin" value="{{ user.linkedin }}" type="text">
-                                </div>
-                                <div class="col-lg-6 mb-20">
-                                    <label class="mb-2 font-fifteen font-500">Instagram</label>
-                                    <input class="form-control" name="instagram" value="{{ user.instagram }}" type="text">
-                                </div>
-                                <div class="col-lg-6 mb-20">
-                                    <label class="mb-2 font-fifteen font-500">Facebook</label>
-                                    <input class="form-control" name="facebook" value="{{ user.facebook }}" type="text">
-                                </div>
+                        <input type="hidden" name="_token" value="{{ csrf_token('change_password') }}">
 
-                                <!-- Bouton de mise à jour -->
-                                <div class="col-12 mb-20">
-                                    <button type="submit" class="btn btn-primary">Mise à jour</button>
-                                </div>
-                            </div>
-                        </form>
-
-                    </div>
+                        <button type="submit" class="btn btn-primary">Changer le mot de passe</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
 
     <!-- JavaScript pour mise à jour en temps réel -->
     <script>
@@ -135,4 +199,19 @@ textarea.form-control {
             }
         });
     </script>
+
+
+    <!-- style notification -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+    // Lorsque la page est prête
+    $(document).ready(function() {
+        // Si un message flash 'success' est présent
+        if ($('#alert').length) {
+            // Afficher l'alerte avec fadeIn
+            $('#alert').fadeIn(500).delay(5000).fadeOut(500); // 5 secondes d'affichage
+        }
+    });
+</script>
 {% endblock %}

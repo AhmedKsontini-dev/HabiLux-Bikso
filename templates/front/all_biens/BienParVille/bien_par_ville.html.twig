@@ -29,14 +29,155 @@
     color: white; /* Couleur blanche au survol */
 }
 
+.no-result {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
+.no-result-img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.no-result p {
+    font-size: 16px;
+    color: #33333382;
+    font-weight: bold;
+}
+
+.property-card2 {
+			position: relative;
+			overflow: hidden;
+            height: 400px;
+		}
+
+		.property-card-thumb {
+			position: relative;
+		}
+
+		.property-price-badge {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			background-color: #28a745; /* Vert */
+			color: white;
+			padding: 5px 10px;
+			font-size: 14px;
+			font-weight: bold;
+			border-radius: 50px; /* Arrondi comme une bulle */
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+		}
+
+		.private-price {
+			background-color: #6c757d; /* Gris pour "Prix Privée" */
+		}
+
+
+		.property-card-thumb img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		.property-card-overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.7);
+			color: white;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			opacity: 0;
+			transition: opacity 0.3s ease-in-out;
+			padding: 15px;
+			text-align: center;
+		}
+
+		.property-card2:hover .property-card-overlay {
+			opacity: 1;
+		}
+
+		.property-card-title,
+		.property-card-price,
+		.property-card-location {
+			margin: 5px 0;
+		}
+
+		.property-btn-wrap {
+			margin-top: 10px;
+		}
+
+		.th-btnn {
+			background-color: #2E495A;
+			color: white;
+			padding: 8px 12px;
+			border-radius: 5px;
+			text-decoration: none;
+		}
+
+		.th-btn:hover {
+			background-color: #2E495A;
+			color: white;
+		}
+        .property-features {
+        list-style: none; /* Supprime les puces */
+        padding-left: 0; /* Supprime l’indentation */
+        }
+
+        .property-features li {
+            display: flex;
+            align-items: center;
+        }
+        .offer-tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #ff4d4d; /* Rouge pour 'A Vendre' */
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .tag-sale {
+            background-color: #ff4d4d; /* Rouge pour 'A Vendre' */
+        }
+
+        .tag-rent {
+            background-color: #f1c643; /* Vert pour 'A Louer' */
+        }
+
+        .property-status-badge {
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			background-color: red;
+			color: white;
+			padding: 5px 10px;
+			font-size: 14px;
+			font-weight: bold;
+			border-radius: 20px;
+			z-index: 10;  /* Assure-toi qu'il soit au-dessus de l'image */
+		}
+
+
+
+        
 </style>
     <div class="breadcumb-wrapper " data-bg-src="{{ asset('assetsFront/img/bg/breadcumb-bg.jpg') }}">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-xl-9">
                     <div class="breadcumb-content">
-                        <h1 class="breadcumb-title">Toutes les propriétés</h1>
+                        <h1 class="breadcumb-title">Propriétés à {{nomVille}}</h1>
                         <ul class="breadcumb-menu">
                             <li><a href="{{ path('app_front_accueil_accueil') }}">Accueil</a></li>
                             <li>Propriétés</li>
@@ -52,194 +193,357 @@ Property Page Area
     <section class="space-top space-extra-bottom">
         <div class="container">
             <ul class="nav nav-tabs property-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a href="?typeOffre=" class="nav-link {% if selectedTypeOffre is empty %}active{% endif %}">
-                            Tous
-                        </a>
-                    </li>
-                {% for type in typesOffres %}
-                    <li class="nav-item" role="presentation">
-                        <a href="?typeOffre={{ type }}" class="nav-link {% if type == selectedTypeOffre %}active{% endif %}">
-                            {{ type }}
-                        </a>
-                    </li>
-                {% endfor %}
+                <li class="nav-item" role="presentation">
+                    <a href="?typeOffre=" class="nav-link {% if selectedTypeOffre is empty %}active{% endif %}">
+                        Tous
+                    </a>
+                </li>
             </ul>
 
 
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="rent-tab-pane" role="tabpanel" aria-labelledby="rent-tab" tabindex="0">
-                    <form class="property-search-form">
+                    <form class="property-search-form" method="GET" action="{{ path('app_front_all_biens_par_ville', {'nomVille': nomVille}) }}">
                         <label>Recherche de propriété</label>
+
+                        <!-- Champ de recherche par ID ou emplacement -->
                         <div class="form-group">
                             <i class="far fa-search"></i>
-                            <input class="form-control" type="text" placeholder="ID de la liste ou emplacement">
+                            <input class="form-control" type="text" name="id" placeholder="Référence du propriété" >
                         </div>
-                        <select class="form-select">
-                            <option value="category" selected="selected">Catégorie</option>
-                            <option value="luxury">Luxe</option>
-                            <option value="commercial">Commercial</option>
+
+                        <!-- Sélection de la catégorie (Type de bien) -->
+                        <select class="form-select" name="nomType">
+                            <option value="">Catégories</option>
+                            <option value="Villa" {% if selectedNomType == 'Villa' %}selected{% endif %}>Villa</option>
+                            <option value="Appartement" {% if selectedNomType == 'Appartement' %}selected{% endif %}>Appartement</option>
+                            <option value="Bureau Commercial" {% if selectedNomType == 'Bureau Commercial' %}selected{% endif %}>Bureau Commercial</option>
+                            <option value="Depot" {% if selectedNomType == 'Depot' %}selected{% endif %}>Depôt</option>
+                            <option value="Terrain" {% if selectedNomType == 'Terrain' %}selected{% endif %}>Terrain</option>
                         </select>
-                        <select class="form-select">
-                            <option value="offer_type" selected="selected">Type d'offre</option>
-                            <option value="popularity">Popularité</option>
-                            <option value="rating">Note</option>
-                            <option value="date">Derniers</option>
+
+                        <!-- Sélection de typeOffre -->
+                        <select class="form-select" name="typeOffre">
+                            <option value="">Type de l'offre</option>
+                            <option value="A Louer" {% if typeOffre == 'Villa' %}selected{% endif %}>A Louer</option>
+                            <option value="A Vendre" {% if typeOffre == 'Appartement' %}selected{% endif %}>A Vendre</option>
                         </select>
+
                         <button class="th-btn" type="submit"><i class="far fa-search"></i> Rechercher</button>
                     </form>
                 </div>
+            
+            
+     
+
                 <div class="tab-pane fade" id="buy-tab-pane" role="tabpanel" aria-labelledby="buy-tab" tabindex="0">
-                    <form class="property-search-form">
+                    <form class="property-search-form" method="GET" action="{{ path('app_front_all_biens_par_ville', {'nomVille': ville.nomVille}) }}">
                         <label>Recherche de propriété</label>
+                        
+                        <!-- Champ de recherche par ID ou emplacement -->
                         <div class="form-group">
                             <i class="far fa-search"></i>
-                            <input class="form-control" type="text" placeholder="ID de la liste ou emplacement">
+                            <input class="form-control" type="text" name="id" placeholder="Référence du propriété">
                         </div>
-                        <select class="form-select">
-                            <option value="category" selected="selected">Catégorie</option>
-                            <option value="luxury">Luxe</option>
-                            <option value="commercial">Commercial</option>
+
+                        <!-- Sélection de la catégorie (Type de bien) -->
+                        <select class="form-select" name="nomType">
+                            <option value="">Catégories</option>
+                            <option value="Villa">Villa</option>
+                            <option value="Appartement">Appartement</option>
+                            <option value="Bureau Commercial">Bureau Commercial</option>
+                            <option value="Depot">Depôt</option>
+                            <option value="Terrain">Terrain</option>
                         </select>
-                        <select class="form-select">
-                            <option value="offer_type" selected="selected">Type d'offre</option>
-                            <option value="popularity">Popularité</option>
-                            <option value="rating">Note</option>
-                            <option value="date">Derniers</option>
+
+                        <!-- Sélection de typeOffre -->
+                        <select class="form-select" name="typeOffre">
+                            <option value="">Type de l'offre</option>
+                            <option value="A Louer" {% if typeOffre == 'Villa' %}selected{% endif %}>A Louer</option>
+                            <option value="A Vendre" {% if typeOffre == 'Appartement' %}selected{% endif %}>A Vendre</option>
                         </select>
+
                         <button class="th-btn" type="submit"><i class="far fa-search"></i> Rechercher</button>
                     </form>
                 </div>
             </div>
-            <div class="th-sort-bar">
-                <div class="row justify-content-between align-items-center">
-                    <div class="col-md">
-                        <p class="woocommerce-result-count">Affichage de 1 à 9 sur 16 résultats</p>
-                    </div>
+            
 
-                    <div class="col-md-auto">
-                        <div class="sorting-filter-wrap">
-                            <form class="woocommerce-ordering" method="get">
-                                <select name="orderby" class="orderby" aria-label="Ordre du magasin">
-                                    <option value="menu_order" selected="selected">Tri par défaut</option>
-                                    <option value="popularity">Trier par popularité</option>
-                                    <option value="rating">Trier par note moyenne</option>
-                                    <option value="date">Trier par date</option>
-                                    <option value="price">Trier par prix : du moins cher au plus cher</option>
-                                    <option value="price-desc">Trier par prix : du plus cher au moins cher</option>
-                                </select>
-                            </form>
-                            <div class="nav" role="tablist">
-                                <a class="active" href="#" id="tab-shop-list" data-bs-toggle="tab" data-bs-target="#tab-list" role="tab" aria-controls="tab-grid" aria-selected="false"><i class="fa-light fa-grid-2"></i></a>
-                                <a href="#" id="tab-shop-grid" data-bs-toggle="tab" data-bs-target="#tab-grid" role="tab" aria-controls="tab-grid" aria-selected="true"><i class="fa-solid fa-list"></i></a>
+            {% set biensVisibles = biens|filter(bien => bien.transactions|filter(t => t.typeTransaction == 'Vente') is empty) %}
+			{% if biensVisibles|length > 0 %}
+                <div class="th-sort-bar">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-md">
+                            
+                        </div>
+
+                        <div class="col-md-auto">
+                            <div class="sorting-filter-wrap">
+                                <form class="woocommerce-ordering" method="get" id="sorting-form">
+                                    <select name="orderby" class="orderby" aria-label="Ordre du magasin" id="orderby">
+                                        <option value="menu_order" selected="selected">Tri par défaut</option>
+                                        <option value="date" {% if app.request.query.get('orderby') == 'date' %}selected{% endif %}>Trier par date</option>
+                                        <option value="price" {% if app.request.query.get('orderby') == 'price' %}selected{% endif %}>Trier par prix : du moins cher au plus cher</option>
+                                        <option value="price-desc" {% if app.request.query.get('orderby') == 'price-desc' %}selected{% endif %}>Trier par prix : du plus cher au moins cher</option>
+                                    </select>
+                                </form>
+                                <div class="nav" role="tablist">
+                                    <a class="active" href="#" id="tab-shop-list" data-bs-toggle="tab" data-bs-target="#tab-list" role="tab" aria-controls="tab-grid" aria-selected="false"><i class="fa-light fa-grid-2"></i></a>
+                                    <a href="#" id="tab-shop-grid" data-bs-toggle="tab" data-bs-target="#tab-grid" role="tab" aria-controls="tab-grid" aria-selected="true"><i class="fa-solid fa-list"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}    
 
 
             <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade active show" id="tab-list" role="tabpanel" aria-labelledby="tab-shop-list">
-                    <div class="row gy-40">
-                        {% if biens is empty %}
-                            <div class="col-12">
-                                <div class="no-results-message">
-                                    <p>Il n'y a pas de biens disponibles dans cette ville pour le moment.</p>
-                                </div>
-                            </div>
-                        {% else %}
-                            {% for bien in biens %}
-                                <div class="col-md-6 col-xl-4">
-                                    <div class="property-card2">
-                                        <div class="property-card-thumb img-shine">
-                                            <img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien">
-                                        </div>
-                                        <div class="property-card-details">
-                                            <div class="media-left">
-                                                <h4 class="property-card-title"><a href="property-details.html">{{ bien.nomBien }}</a></h4>
-                                                <h5 class="property-card-price">{{ bien.afficherPrix ? bien.prixBien ~ ' DT' : 'Prix Privée' }}</h5>
-                                                <p class="property-card-location">{{ bien.localisationBien }}</p>
-                                            </div>
-                                            <div class="btn-wrap">
-                                                <a href="property-details.html" class="th-btn style-border2 th-btn-icon"><i class="fas fa-info-circle"></i>Details</a>
+				<div class="tab-pane fade active show" id="tab-list" role="tabpanel" aria-labelledby="tab-shop-list">
+					<div class="row gy-40">
+						{% if biens is empty %}
+							<div class="no-result">
+								<img src="{{ asset('assetsFront/img/icon/aucun-resultat.png') }}" alt="Aucun résultat" class="no-result-img">
+								<h4 style="color:#1C2D37;">Aucun bien disponible pour le moment.</h4>
+							</div>
+						{% else %}
+							{% for bien in biens %}
+                                {# Vérification si une transaction "Location" existe #}
+								{% set isLocation = bien.transactions|filter(t => t.typeTransaction == 'Location') is not empty %}
+						
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="property-card2">
+                                            <div class="property-card-thumb img-shine">
+                                                
+                                                {# Badge du type d'offre à gauche #}
+                                                <span class="offer-tag {{ bien.typeOffre == 'A Vendre' ? 'tag-sale' : 'tag-rent' }}">
+                                                    {{ bien.typeOffre }}
+                                                </span>
+
+                                                <img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien">
+
+                                                {# Afficher le badge "Loué" si le bien a une transaction de type "Location" #}
+												{% if isLocation %}
+													<div class="property-status-badge">Loué</div>
+												{% endif %}
+
+												{# Badge du prix en haut à droite #}
+												{% if not isLocation %}
+													{% if bien.afficherPrix %}
+														<div class="property-price-badge">
+															{{ bien.prixBien }} DT
+														</div>
+													{% else %}
+														<div class="property-price-badge private-price">
+															Prix Privée
+														</div>
+													{% endif %}
+												{% endif %}
+
+                                                <div class="property-card-overlay">
+                                                    <h4 class="property-card-title" style="color:#FFFFFFFF;">{{ bien.nomBien }}</h4>
+                                                    <p class="property-card-location" style="color:#FFFFFFFF;">
+                                                        {{ bien.ville.nomVille }}, {{ bien.ville.gouvernorat.nomGouvernorat }}
+                                                    </p>
+
+                                                    {# Détails des propriétés #}
+                                                    <div class="property-btn-wrap">
+                                                        {% if bien.detailsProprietes|filter(p => p.afficher) is not empty %}
+                                                            <ul class="property-features">
+                                                                {% for propriete in bien.detailsProprietes|filter(p => p.afficher) %}
+                                                                    <li>
+                                                                        <i class="fas fa-check-circle" style="color:#C0CDD1;"></i>
+                                                                        <strong>
+                                                                            {{ propriete.propriete.nomPropriete|slice(0, 15) }}
+                                                                            {% if propriete.propriete.nomPropriete|length > 20 %}...{% endif %}:
+                                                                        </strong>
+                                                                        {{ propriete.valeurPropriete }}
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        {% else %}
+                                                            <p class="text-muted">Aucun détail disponible.</p>
+                                                        {% endif %}
+                                                    </div>
+
+                                                    <div class="btn-wrap">
+                                                        <a href="{{ path('app_front_all_biens_details_prop', {'id': bien.id}) }}" class="th-btnn">
+                                                            <i class="fas fa-info-circle"></i> Details
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                  
                             {% endfor %}
-                        {% endif %}
-                    </div>
-
-                </div>
+						{% endif %}
+					</div>
+				</div>
 
                 <div class="tab-pane fade" id="tab-grid" role="tabpanel" aria-labelledby="tab-shop-grid">
-                    {% if biens is empty %}
-                            <div class="col-12">
-                                <div class="no-results-message">
-                                    <p>Il n'y a pas de biens disponibles dans cette ville pour le moment.</p>
-                                </div>
-                            </div>
-                    {% else %}
-                        {% for bien in biens %}
-                            <div class="property-card-wrap style-dark">
-                                <div class="property-thumb">
-                                    <img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien">
-                                </div>
-                                <div class="property-card style-dark">
-                                    <div class="property-card-number">
-                                        {{ loop.index }}
+					{% if biens is empty %}
+						<div class="no-result">
+							<img src="{{ asset('assetsFront/img/icon/aucun-resultat.png') }}" alt="Aucun résultat" class="no-result-img">
+							<h4 style="color:#1C2D37;">Aucun bien disponible pour le moment.</h4>
+						</div>
+					{% else %}
+						{% for bien in biens %}
+                                {# Vérification si une transaction "Location" existe #}
+								{% set isLocation = bien.transactions|filter(t => t.typeTransaction == 'Location') is not empty %}
+								
+                                <div class="property-card-wrap style-dark">
+                                    <div class="property-thumb position-relative">
+
+                                        {# Badge du type d'offre en haut à gauche #}
+                                        <span class="offer-tag {{ bien.typeOffre == 'A Vendre' ? 'tag-sale' : 'tag-rent' }}">
+                                            {{ bien.typeOffre }}
+                                        </span>
+
+                                        <img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien" style="width:390px; height:350px;">
+
+                                            {# Afficher le badge "Loué" si le bien a une transaction de type "Location" #}
+                                            {% if isLocation %}
+                                                <div class="property-status-badge">Loué</div>
+                                            {% endif %}
+
+                                            {# Badge du prix en haut à droite #}
+                                            {% if not isLocation %}
+                                                {% if bien.afficherPrix %}
+                                                    <div class="property-price-badge">
+                                                        {{ bien.prixBien }} DT
+                                                    </div>
+                                                {% else %}
+                                                    <div class="property-price-badge private-price">
+                                                        Prix Privée
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
                                     </div>
-                                    <div class="property-card-details">
-                                        <span class="property-card-subtitle">{{ bien.type.nomType }}</span>
-                                        <h4 class="property-card-title">
-                                            <a href="property-details.html">{{ bien.nomBien }}</a>
-                                        </h4>
-                                        <p class="property-card-text">
-                                            {{ bien.description|length > 50 ? bien.description|slice(0, 50) ~ '...' : bien.description }}
-                                        </p>
-                                        
-                                        <div class="property-card-meta">
-                                            <span><i class="fas fa-money-bill-wave"></i>Prix:<br> {{ bien.afficherPrix ? bien.prixBien ~ 'DT' : 'Prix Privée' }}</span>
-                                            
-                                            <span><i class="fas fa-key"></i>Référence:<br> {{ bien.id }}</span>
-                                            
-                                            <span><i class="fas fa-map-marker-alt"></i>Adresse:<br> {{ bien.adresseBien }}</span>
+                                    <div class="property-card style-dark">
+                                        <div class="property-card-number">
+                                            {{ loop.index }}
                                         </div>
+                                        <div class="property-card-details">
+                                            <span class="property-card-subtitle">{{ bien.type.nomType }}</span>
+                                            <h4 class="property-card-title">
+                                                <a href="{{ path('app_front_all_biens_details_prop', {'id': bien.id}) }}">{{ bien.nomBien }}</a>
+                                            </h4>
+                                            <p class="property-card-text">
+                                                {{ bien.description|length > 50 ? bien.description|slice(0, 50) ~ '...' : bien.description }}
+                                            </p>
 
-                                        <div class="property-btn-wrap">
-                                            <img src="{{ asset('uploads/photo_profil/' ~ bien.publierPar.photoProfil) }}" alt="Photo de l'utilisateur" class="user-photo">
-                                            <a><i class="fas fa-phone-alt"></i> {{ bien.publierPar.tel }}</a>
-                                            <a href="property-details.html" class="th-btn style-border2 th-btn-icon">
-                                                <i class="fas fa-info-circle"></i> Details
-                                            </a>
+                                            <div class="property-card-meta">
+                                                <span>
+                                                    <i class="fas fa-money-bill-wave"></i>Prix:<br>
+                                                    {{ bien.afficherPrix ? bien.prixBien ~ 'DT' : 'Prix Privée' }}
+                                                </span>
 
+                                                <span>
+                                                    <i class="fas fa-key"></i>Référence:<br>
+                                                    {{ bien.id }}
+                                                </span>
+
+                                                <span>
+                                                    <i class="fas fa-map-marker-alt"></i>Adresse:<br>{{ bien.ville.nomVille }},
+                                                    {{ bien.ville.gouvernorat.nomGouvernorat }}
+                                                </span>
+                                            </div>
+
+                                            <div class="property-btn-wrap">
+                                                <div class="property-card-meta">
+                                                    {% if bien.detailsProprietes|filter(p => p.afficher) is not empty %}
+                                                        <ul class="property-features" style="display: flex; flex-wrap: wrap; gap: 15px; list-style: none; padding-left: 0;">
+                                                            {% for propriete in bien.detailsProprietes|filter(p => p.afficher) %}
+                                                                <li style="display: flex; align-items: center; gap: 5px; white-space: nowrap; color:#2E495A;">
+                                                                    <i class="fas fa-check-circle" style="color:#2E495A;"></i>
+                                                                    <strong>
+                                                                        {{ propriete.propriete.nomPropriete|slice(0, 15) }}{% if propriete.propriete.nomPropriete|length > 20 %}...{% endif %}:
+                                                                    </strong> 
+                                                                    {{ propriete.valeurPropriete }}
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% else %}
+                                                        <p class="text-muted">Aucun détail de propriété affiché.</p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+
+                                            <div class="property-btn-wrap">
+                                                <img src="{{ asset('uploads/photo_profil/' ~ bien.publierPar.photoProfil) }}" alt="Photo de l'utilisateur" class="user-photo">
+                                                <a>
+                                                    <i class="fas fa-phone-alt"></i>
+                                                    {{ bien.publierPar.tel }}
+                                                </a>
+                                                <a href="{{ path('app_front_all_biens_details_prop', {'id': bien.id}) }}" class="th-btn style-border2 th-btn-icon">
+                                                    <i class="fas fa-info-circle"></i>
+                                                    Details
+                                                </a>
+                                            </div>
                                         </div>
-
                                     </div>
                                 </div>
-                            </div>
+                            
                         {% endfor %}
-                    {% endif %}
-                </div>
-
-
+					{% endif %}
+				</div>
             </div>
-            <div class="mt-60 text-center">
-                <div class="th-pagination ">
-                    <ul>
-                        <!-- <li><a class="prev-page" href="blog.html"><i class="far fa-arrow-left me-2"></i>Previous</a></li> -->
-                        <li><a class="active" href="blog.html">1</a></li>
-                        <li><a href="blog.html">2</a></li>
-                        <li><a href="blog.html">3</a></li>
-                        <li><a class="next-page" href="blog.html">Suivant<i class="far fa-arrow-right ms-2"></i></a></li>
-                    </ul>
-                </div>
+
+            
+            {% set biensVisibles = biens|filter(bien => bien.transactions|filter(t => t.typeTransaction == 'Vente') is empty) %}
+			<div class="mt-60 text-center">
+				{# Vérifier s'il y a des biens visibles à afficher #}
+				{% if biensVisibles|length > 0 %}
+                    <div class="th-pagination">
+                        <ul>
+                            {# Lien vers la page précédente si on n'est pas sur la première page #}
+                            {% if biens.currentPageNumber > 1 %}
+                                <li>
+                                    <a class="prev-page" href="{{ path('app_front_all_biens_par_ville', { nomVille: nomVille, page: biens.currentPageNumber - 1 }) }}">
+                                        <i class="far fa-arrow-left me-2"></i> Précédent
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {# Affichage des numéros de page #}
+                            {% for page in 1..biens.pageCount %}
+                                <li>
+                                    <a href="{{ path('app_front_all_biens_par_ville', { nomVille: nomVille, page: page }) }}"
+                                    class="{{ page == biens.currentPageNumber ? 'active' : '' }}">
+                                        {{ page }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+
+                            {# Lien vers la page suivante si on n'est pas sur la dernière page #}
+                            {% if biens.currentPageNumber < biens.pageCount %}
+                                <li>
+                                    <a class="next-page" href="{{ path('app_front_all_biens_par_ville', { nomVille: nomVille, page: biens.currentPageNumber + 1 }) }}">
+                                        Suivant <i class="far fa-arrow-right ms-2"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                {% endif %}
             </div>
+
         </div>
     </section>
-{% endblock %}
 
-{% block script %}
+<script>
+    // Attendre que le DOM soit chargé
+    document.addEventListener("DOMContentLoaded", function() {
+        // Récupérer le formulaire et le champ select
+        const form = document.getElementById('sorting-form');
+        const orderbySelect = document.getElementById('orderby');
 
+        // Écouter les changements dans le champ select
+        orderbySelect.addEventListener('change', function() {
+            // Soumettre automatiquement le formulaire quand une option est sélectionnée
+            form.submit();
+        });
+    });
+</script>  
 {% endblock %}

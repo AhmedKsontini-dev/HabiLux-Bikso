@@ -2,14 +2,14 @@
 <html class="no-js" lang="zxx" dir="ltr">
 
 
-<!-- Mirrored from html.themeholy.com/realar/demo/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 16 Dec 2024 14:28:57 GMT -->
+<!-- Mirrored from html.themeholy.com/Habilux/demo/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 16 Dec 2024 14:28:57 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{% block title %}Bienvenue {% endblock %}</title>
-    <meta name="author" content="Realar">
-    <meta name="description" content="Realar - Real Estate Apartment Complex HTML Template">
-    <meta name="keywords" content="Realar - Real Estate Apartment Complex HTML Template">
+    <title>{% block title %} {% endblock %}</title>
+    <meta name="author" content="Habilux">
+    <meta name="description" content="Habilux - Real Estate Apartment Complex HTML Template">
+    <meta name="keywords" content="Habilux - Real Estate Apartment Complex HTML Template">
     <meta name="robots" content="INDEX,FOLLOW">
 
     <!-- Mobile Specific Metas -->
@@ -28,7 +28,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('assetsFront/img/favicons/android-icon-192x192.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assetsFront/img/favicons/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('assetsFront/img/favicons/favicon-96x96.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assetsFront/img/favicons/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assetsFront/img/favicons/iconH.png') }}">
     <link rel="manifest" href="{{ asset('assetsFront/img/favicons/manifest.js') }}on') }}">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="{{ asset('assetsFront/img/favicons/ms-icon-144x144.png') }}">
@@ -56,6 +56,9 @@
     <!-- Theme Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assetsFront/css/style.css') }}">
 
+   
+
+
 
 
     {% block stylesheet %}
@@ -67,7 +70,7 @@
 .profile-picture {
     width: 60px;
     height: 60px;
-    border-radius: 50%;
+    border-radius: 100%;
     object-fit: cover;
     cursor: pointer;
 }
@@ -146,13 +149,13 @@
             <div class="widget">
                 <div class="th-widget-about">
                     <div class="about-logo">
-                        <a href="index.html"><img src="{{ asset('assetsFront/img/logohomeblack.png') }}" alt="Realar"></a>
+                        <a href="{{ path('app_front_accueil_accueil')}}"><img src="{{ asset('assetsFront/img/logohomeblack.png') }}" alt="Habilux"></a>
                     </div>
-                    <p class="about-text"> Créez rapidement un modèle de capital intellectuel multiplateforme. Développez de manière appropriée des infrastructures interactives.</p>
+                    <p class="about-text"> Avec Habilux, bénéficiez d’une expertise locale, d’un large choix de biens et d’un service sur mesure. Que vous recherchiez une maison familiale, un appartement moderne ou un investissement locatif, nous sommes là pour concrétiser vos rêves immobiliers !</p>
                 </div>
             </div>
             <div class="widget">
-                <h3 class="widget_title">Nous Contacter</h3>
+                <h3 class="widget_title">Nous-Contactez</h3>
                 <div class="th-widget-contact">
                     <div class="info-box_text">
                         <div class="icon"><img src="{{ asset('assetsFront/img/icon/location-dot.svg') }}" alt="img"></div>
@@ -174,28 +177,12 @@
                             <img src="{{ asset('assetsFront/img/icon/envelope.svg') }}" alt="img">
                         </div>
                         <div class="details">
-                            <p><a href="mailto:mailinfo@Habilux.com" class="info-box_link">mailinfo@Habilux.com</a></p>
-                            <p><a href="mailto:support@Habilux.com" class="info-box_link">support@Habilux.com</a></p>
+                            <p><a href="mailto:Contact@Habilux.com" class="info-box_link">Contact@Habilux.com</a></p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="widget newsletter-widget">
-                <h3 class="widget_title">Abonnez-vous Maintenant</h3>
-                <form class="newsletter-form">
-                    <div class="form-group">
-                        <input class="form-control" type="email" placeholder="Adresse Email" required="">
-                        <button type="submit" class="th-btn"><i class="far fa-paper-plane text-theme"></i></button>
-                    </div>
-                </form>
-                <div class="th-social style2">
-                    <a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.twitter.com/"><i class="fab fa-twitter"></i></a>
-                    <a href="https://www.linkedin.com/"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="https://www.behance.com/"><i class="fab fa-behance"></i></a>
-                    <a href="https://www.vimeo.com/"><i class="fab fa-vimeo-v"></i></a>
-                </div>
-            </div>
+            
         </div>
     </div>
     <div class="popup-search-box d-none d-lg-block">
@@ -212,8 +199,8 @@
         <div class="th-menu-area text-center">
             <button class="th-menu-toggle"><i class="fal fa-times"></i></button>
             <div class="mobile-logo">
-                <a href="index.html">
-                    <img src="{{ asset('assetsFront/img/logo-white.svg') }}" alt="Realar">
+                <a href="{{ path('app_front_accueil_accueil')}}">
+                    <img src="{{ asset('assetsFront/img/logohomedore.png') }}" alt="Habilux">
                 </a>
             </div>
             <div class="th-mobile-menu">
@@ -255,7 +242,7 @@
                                     </ul>
                             </li>
                             <li class="menu-item-has-children">
-                                <a href="{{ path('app_details_proprietes') }}">
+                                <a href="#">
                                     Commercial
                                 </a>
                                     <ul class="sub-menu">
@@ -264,12 +251,14 @@
                                                 Bureau
                                             </a>
                                             <a href="{{ path('app_front_commercial_depot_louer')}}">
-                                                Depot
+                                                Dêpot
                                             </a>
 
                                         </li>
                                     </ul>
                             </li>
+                            
+
                         </ul>
                     </li>
 
@@ -281,80 +270,46 @@
                         </a>
                     </li>
 
-                    <li class="menu-item-has-children">
-                        <a href="#">
-                            Boutique
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="menu-item-has-children"><a href="#">
-                                    Meubles
-                                </a>
-                                <ul class="sub-menu">
-                                    <li>
-                                        <a href="{{ path('app_boutique') }}">
-                                            Meubles
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ path('app_boutique_details') }}">
-                                            Détails de meubles
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ path('app_panier') }}">
-                                            Panier
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ path('app_checkout') }}">
-                                            Paiement
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ path('app_wishlist') }}">
-                                            Liste de Souhaits
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li>
-                                <a href="{{ path('app_erreur') }}">
-                                    Page d'Erreur
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="{{ path('app_tarifs') }}">
-                                    Page de Tarification
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                   
                    
                     <li>
-                        <a href="{{ path('app_contact') }}">
+                        <a href="{{ path('app_front_contact_contact') }}">
                             Nous Contacter
                         </a>
                     </li>
 
                     <li>
                         {% if app.user %}
-                            <li>
-                                <a href="{{ path('app_profil_user_user_profil') }}">
-                                    Voir le profil
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i>
-                                    Se déconnecter
-                                </a>
-                            </li>    
-                        {% else %}
-                            <a href="{{ path('app_login') }}" class="th-btn style-border th-btn-icon">
-                                <i class="fas fa-sign-in-alt"></i> Connexion
-                            </a>
-                        {% endif %}
+                                    <div class="dropdown">
+                                        <img src="{{ asset('uploads/photo_profil/' ~ app.user.photoProfil) }}" alt="Profile Picture" class="profile-picture dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                                            <li>
+                                                {% if is_granted('ROLE_ADMIN') %}
+                                                    <a class="dropdown-item" href="{{ path('app_back_dashboard') }}">
+                                                       <i class="fas fa-tachometer-alt"></i> Administration
+                                                    </a>
+                                                {% endif %}
+                                            </li>
+                                            <li>
+                                                {% if is_granted('ROLE_ADMIN') %}
+                                                    <a class="dropdown-item" href="{{ path('app_profil_user_profil')}}"><i class="fas fa-user"></i> Voir le profil</a>
+                                                {% else %}
+                                                    <a class="dropdown-item" href="{{ path('app_profil_user_user_profil')}}"><i class="fas fa-user"></i> Voir le profil</a>
+                                                {% endif %}  
+                                            </li> 
+
+                                            <li>
+                                                <a class="dropdown-item" href="{{ path('app_front_liste_favoris')}}"><i class="fas fa-heart"></i> Liste favoris</a>
+                                            </li> 
+
+                                            <li><a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a></li>
+                                        </ul>
+                                    </div>
+                                {% else %}
+                                    <a href="{{ path('app_login') }}" class="th-btn style-border th-btn-icon">
+                                        <i class="fas fa-sign-in-alt"></i> Connexion
+                                    </a>
+                                {% endif %}
                     </li>
 
                         
@@ -379,8 +334,8 @@
                     <div class="row align-items-center justify-content-between">
                         <div class="col-auto">
                             <div class="header-logo">
-                                <a href="index.html">
-                                    <img src="{{ asset('assetsFront/img/logohome.png') }}" alt="Realar">
+                                <a href="{{ path('app_front_accueil_accueil')}}">
+                                    <img src="{{ asset('assetsFront/img/logohome.png') }}" alt="Habilux">
                                 </a>
                             </div>
                         </div>
@@ -431,11 +386,13 @@
                                                                 Bureau
                                                             </a>
                                                             <a href="{{ path('app_front_commercial_depot_louer')}}">
-                                                                Depot
+                                                                Dêpot
                                                             </a>
                                                         </li>
                                                     </ul>
                                             </li>
+
+                                          
                                         </ul>
                                     </li>
 
@@ -444,60 +401,9 @@
                                             Nos Agents
                                         </a>
                                     </li>
-
-                                    <li class="menu-item-has-children">
-                                        <a href="#">
-                                            Boutique
-                                        </a>
-                                        <ul class="sub-menu">
-                                            <li class="menu-item-has-children"><a href="#">
-                                                    Meubles
-                                                </a>
-                                                <ul class="sub-menu">
-                                                    <li>
-                                                        <a href="{{ path('app_boutique') }}">
-                                                            Meubles
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ path('app_boutique_details') }}">
-                                                            Détails de meubles
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ path('app_panier') }}">
-                                                            Panier
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ path('app_checkout') }}">
-                                                            Paiement
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ path('app_wishlist') }}">
-                                                            Liste de Souhaits
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-
-                                            <li>
-                                                <a href="{{ path('app_erreur') }}">
-                                                    Page d'Erreur
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="{{ path('app_tarifs') }}">
-                                                    Page de Tarification
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                
+                     
                                     <li>
-                                        <a href="{{ path('app_contact') }}">
+                                        <a href="{{ path('app_front_contact_contact') }}">
                                             Nous Contacter
                                         </a>
                                     </li>
@@ -518,7 +424,7 @@
                             <div class="header-button">
                                 {% if app.user %}
                                     <div class="dropdown">
-                                        <img src="{{ asset('uploads/photo_profil/' ~ app.user.photoProfil) }}" alt="Profile Picture" class="profile-picture dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img src="{{ asset('uploads/photo_profil/' ~ app.user.photoProfil) }}" alt="Profile Picture" class="profile-picture dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" >
                                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                                             <li>
                                                 {% if is_granted('ROLE_ADMIN') %}
@@ -534,6 +440,10 @@
                                                     <a class="dropdown-item" href="{{ path('app_profil_user_user_profil')}}"><i class="fas fa-user"></i> Voir le profil</a>
                                                 {% endif %}  
                                             </li>  
+                                            
+                                            <li>
+                                                <a class="dropdown-item" href="{{ path('app_front_liste_favoris')}}"><i class="fas fa-heart"></i> Liste favoris</a>
+                                            </li> 
 
                                             <li><a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a></li>
                                         </ul>
@@ -570,7 +480,7 @@
                         <div class="widget footer-widget">
                             <div class="th-widget-about">
                                 <div class="about-logo">
-                                    <a href="index.html"><img src="{{ asset('assetsFront/img/logo-white2.svg') }}" alt="Realar"></a>
+                                    <a href="index.html"><img src="{{ asset('assetsFront/img/logohome.png') }}" alt="Habilux"></a>
                                 </div>
                                 <p class="about-text">Votre partenaire de confiance pour trouver le bien immobilier idéal. Que vous cherchiez à acheter, louer ou vendre, notre agence met à votre disposition un service personnalisé pour réaliser vos projets en toute sérénité.</p>
                             </div>
@@ -601,8 +511,7 @@
                                         <img src="{{ asset('assetsFront/img/icon/envelope.svg') }}" alt="img">
                                     </div>
                                     <div class="details">
-                                        <p><a href="mailto:mailinfo@Habilux.com" class="info-box_link">mailinfo@Habilux.com</a></p>
-                                        <p><a href="mailto:support@Habilux.com" class="info-box_link">support@Habilux.com</a></p>
+                                        <p><a href="mailto:Contact@Habilux.com" class="info-box_link">Contact@Habilux.com</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -613,11 +522,11 @@
                             <h3 class="widget_title">Navigations</h3>
                             <div class="menu-all-pages-container">
                                 <ul class="menu">
-                                    <li><a href="{{ path('app_propos') }}">À propos de nous</a></li>
-                                    <li><a href="">Propriétés</a></li>
-                                    <li><a href="{{ path('app_agents') }}">Nos agents</a></li>
-                                    <li><a href="{{ path('app_contact') }}">Demander une visite</a></li>
-                                    <li><a href="{{ path('app_boutique') }}">Boutique</a></li>
+                                    <li><a href="{{ path('app_front_all_biens_louer')}}">À propos de nous</a></li>
+                                    <li><a href="{{ path('app_front_all_biens_louer')}}">Propriétés</a></li>
+                                    <li><a href="{{ path('app_front_team_team') }}">Nos agents</a></li>
+                                    <li><a href="{{ path('app_front_contact_contact') }}">Demander une visite / Contacter</a></li>
+                                    
                                 </ul>
                             </div>
                         </div>
@@ -636,8 +545,6 @@
                     <div class="col-lg-6">
                         <div class="th-social justify-content-lg-end justify-content-center">
                             <a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
-                            <a href="https://www.twitter.com/"><i class="fab fa-twitter"></i></a>
-                            <a href="https://www.instagram.com/"><i class="fab fa-youtube"></i></a>
                             <a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
                         </div>
                     </div>
@@ -684,8 +591,13 @@
 
     <!-- Main Js File -->
     <script src="{{ asset('assetsFront/js/main.js') }}"></script>
+
+
+{% block script %}
+{% endblock %}
+
 </body>
 
 
-<!-- Mirrored from html.themeholy.com/realar/demo/home-5.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 16 Dec 2024 14:30:12 GMT -->
+<!-- Mirrored from html.themeholy.com/Habilux/demo/home-5.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 16 Dec 2024 14:30:12 GMT -->
 </html>
