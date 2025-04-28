@@ -1,7 +1,7 @@
 <?php
 namespace App\Repository;
 
-use App\Entity\bien;
+use App\Entity\Bien;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;

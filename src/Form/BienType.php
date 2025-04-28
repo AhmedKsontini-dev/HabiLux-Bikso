@@ -40,6 +40,11 @@ class BienType extends AbstractType
                 'required' => false,
                 'attr' => ['class' => 'form-check-input'],
             ])
+            ->add('BienAfficher', CheckboxType::class, [
+                'label' => 'Afficher le Bien',
+                'required' => false,
+                'attr' => ['class' => 'form-check-input'],
+            ])
             ->add('gouvernorat', EntityType::class, [
                 'class' => Gouvernorat::class,
                 'choice_label' => 'nomGouvernorat',
@@ -58,20 +63,20 @@ class BienType extends AbstractType
                 'label' => 'Position sur la carte',
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Cliquez sur la carte pour obtenir les coordonnées'],
             ])
-            ->add('nomClient', TextType::class, [
-                'label' => 'Nom du client',
+            ->add('nomProprietaire', TextType::class, [
+                'label' => 'Nom de proprietaire',
                 'required' => true,
             ])
-            ->add('telClient', TelType::class, [
-                'label' => 'Téléphone du client',
+            ->add('telProprietaire1', TelType::class, [
+                'label' => 'Téléphone de proprietaire',
                 'required' => true,
             ])
-            ->add('telClient2', TelType::class, [
-                'label' => 'Téléphone secondaire du client',
+            ->add('telProprietaire2', TelType::class, [
+                'label' => 'Téléphone secondaire de proprietaire',
                 'required' => false,
             ])
-            ->add('adresseClient', TextType::class, [
-                'label' => 'Adresse du client',
+            ->add('adresseProprietaire', TextType::class, [
+                'label' => 'Adresse de proprietaire',
                 'required' => true,
             ])
             
@@ -81,6 +86,12 @@ class BienType extends AbstractType
                 'required' => false,
                 'multiple' => true,
                 'attr' => ['class' => 'form-control'],
+            ])
+            
+            ->add('youtubeId', TextType::class, [
+                'label' => 'ID de la vidéo YouTube',
+                'required' => false,
+                'help' => 'Exemple : pour https://www.youtube.com/watch?v=abc12345, saisir uniquement abc12345'
             ]);
     }
 

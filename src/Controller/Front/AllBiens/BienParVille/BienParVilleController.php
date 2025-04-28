@@ -2,7 +2,7 @@
 
 namespace App\Controller\Front\AllBiens\BienParVille;
 
-use App\Entity\bien;
+use App\Entity\Bien;
 use App\Entity\Ville;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;

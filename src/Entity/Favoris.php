@@ -6,7 +6,7 @@ use App\Repository\FavorisRepository;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
 use App\Entity\User;
-use App\Entity\bien;
+use App\Entity\Bien;
 
 #[ORM\Entity(repositoryClass: FavorisRepository::class)]
 class Favoris

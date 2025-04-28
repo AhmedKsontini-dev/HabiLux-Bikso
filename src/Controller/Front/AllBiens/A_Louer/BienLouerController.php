@@ -2,7 +2,7 @@
 
 namespace App\Controller\Front\AllBiens\A_Louer;
 
-use App\Entity\bien;
+use App\Entity\Bien;
 use App\Repository\BienRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -46,6 +46,24 @@ class BienLouerController extends AbstractController
             ->andWhere('g.nomGouvernorat = :nomGouvernorat')
             ->setParameter('nomGouvernorat', $gouvernorat);
         }
+
+        // Récupérer les valeurs de prixMin et prixMax depuis la requête
+        $prixMin = $request->query->get('prixMin');
+        $prixMax = $request->query->get('prixMax');
+
+        // Vérifier et appliquer les filtres
+        if (!empty($prixMin)) {
+            $qb->andWhere('b.prixBien >= :prixMin')
+            ->setParameter('prixMin', (int) $prixMin);
+        }
+
+        if (!empty($prixMax)) {
+            $qb->andWhere('b.prixBien <= :prixMax')
+            ->setParameter('prixMax', (int) $prixMax);
+        }
+
+
+
 
         // Tri par option
         $orderby = $request->query->get('orderby');

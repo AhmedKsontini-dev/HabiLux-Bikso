@@ -15,15 +15,16 @@ class Transaction
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'transaction', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'transactions', cascade: ['persist', 'remove'])]
     private ?bien $bien = null;
 
-    #[ORM\ManyToOne(inversedBy: 'transactions')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $agent = null;
+
 
     #[ORM\Column(length: 255)]
     private ?string $nomAcheteur = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $nomVendeur = null;
 
     #[ORM\Column(length: 255)]
     private ?string $telAcheteur = null;
@@ -35,10 +36,7 @@ class Transaction
     private ?string $typeTransaction = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $prixInitial = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $prixFinal = null;
+    private ?string $prixVente = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $commission = null;
@@ -49,17 +47,68 @@ class Transaction
     #[ORM\Column(length: 255)]
     private ?string $modePaiement = null;
 
-    #[ORM\Column]
-    private ?string $nbrMois = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $prixParMois = null;
-
     #[ORM\Column(length: 255)]
     private ?string $payer = null;
 
     #[ORM\Column(length: 255)]
     private ?string $statutTransaction = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $adresseAcheteur = null;
+
+
+    #[ORM\Column(length: 255)]
+    private ?string $objetContrat = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $descriptionBien = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $debutLocation = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $finLocation = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $obligationVendeur = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $obligationAcheteur = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $conditionsResiliation = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $confidentialite = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $posteVendeur = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $telVendeur = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $mailVendeur = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $declaration1 = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private ?bool $declaration2 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $signatureVendeur = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $signatureAcheteur = null;
+
+
+    #[ORM\ManyToOne(inversedBy: 'transactions')]
+    private ?User $agent = null;
+
+
+  
+
 
     public function getId(): ?int
     {
@@ -78,17 +127,6 @@ class Transaction
         return $this;
     }
 
-    public function getAgent(): ?User
-    {
-        return $this->agent;
-    }
-
-    public function setAgent(?User $agent): static
-    {
-        $this->agent = $agent;
-
-        return $this;
-    }
 
     public function getNomAcheteur(): ?string
     {
@@ -98,6 +136,18 @@ class Transaction
     public function setNomAcheteur(string $nomAcheteur): static
     {
         $this->nomAcheteur = $nomAcheteur;
+
+        return $this;
+    }
+
+    public function getNomVendeur(): ?string
+    {
+        return $this->nomVendeur;
+    }
+
+    public function setNomVendeur(string $nomVendeur): static
+    {
+        $this->nomVendeur = $nomVendeur;
 
         return $this;
     }
@@ -138,29 +188,6 @@ class Transaction
         return $this;
     }
 
-    public function getPrixInitial(): ?string
-    {
-        return $this->prixInitial;
-    }
-
-    public function setPrixInitial(string $prixInitial): static
-    {
-        $this->prixInitial = $prixInitial;
-
-        return $this;
-    }
-
-    public function getPrixFinal(): ?string
-    {
-        return $this->prixFinal;
-    }
-
-    public function setPrixFinal(string $prixFinal): static
-    {
-        $this->prixFinal = $prixFinal;
-
-        return $this;
-    }
 
     public function getCommission(): ?string
     {
@@ -198,30 +225,6 @@ class Transaction
         return $this;
     }
 
-    public function getNbrMois(): ?string
-    {
-        return $this->nbrMois;
-    }
-
-    public function setNbrMois(string $nbrMois): static
-    {
-        $this->nbrMois = $nbrMois;
-
-        return $this;
-    }
-
-    public function getPrixParMois(): ?string
-    {
-        return $this->prixParMois;
-    }
-
-    public function setPrixParMois(?string $prixParMois): static
-    {
-        $this->prixParMois = $prixParMois;
-
-        return $this;
-    }
-
     public function getPayer(): ?string
     {
         return $this->payer;
@@ -245,4 +248,209 @@ class Transaction
 
         return $this;
     }
+
+    public function getAdresseAcheteur(): ?string
+    {
+        return $this->adresseAcheteur;
+    }
+
+    public function setAdresseAcheteur(string $adresseAcheteur): static
+    {
+        $this->adresseAcheteur = $adresseAcheteur;
+
+        return $this;
+    }
+
+
+    public function getObjetContrat(): ?string
+    {
+        return $this->objetContrat;
+    }
+
+    public function setObjetContrat(string $objetContrat): static
+    {
+        $this->objetContrat = $objetContrat;
+
+        return $this;
+    }
+
+    public function getDescriptionBien(): ?string
+    {
+        return $this->descriptionBien;
+    }
+
+    public function setDescriptionBien(string $descriptionBien): static
+    {
+        $this->descriptionBien = $descriptionBien;
+
+        return $this;
+    }
+
+    public function getDebutLocation(): ?\DateTimeInterface
+    {
+        return $this->debutLocation;
+    }
+
+    public function setDebutLocation(?\DateTimeInterface $debutLocation): static
+    {
+        $this->debutLocation = $debutLocation;
+
+        return $this;
+    }
+
+    public function getFinLocation(): ?\DateTimeInterface
+    {
+        return $this->finLocation;
+    }
+
+    public function setFinLocation(?\DateTimeInterface $finLocation): static
+    {
+        $this->finLocation = $finLocation;
+
+        return $this;
+    }
+
+    public function getObligationVendeur(): ?string
+    {
+        return $this->obligationVendeur;
+    }
+
+    public function setObligationVendeur(string $obligationVendeur): static
+    {
+        $this->obligationVendeur = $obligationVendeur;
+
+        return $this;
+    }
+
+    public function getObligationAcheteur(): ?string
+    {
+        return $this->obligationAcheteur;
+    }
+
+    public function setObligationAcheteur(string $obligationAcheteur): static
+    {
+        $this->obligationAcheteur = $obligationAcheteur;
+
+        return $this;
+    }
+
+    public function getConditionsResiliation(): ?string
+    {
+        return $this->conditionsResiliation;
+    }
+
+    public function setConditionsResiliation(string $conditionsResiliation): static
+    {
+        $this->conditionsResiliation = $conditionsResiliation;
+
+        return $this;
+    }
+
+    public function getConfidentialite(): ?string
+    {
+        return $this->confidentialite;
+    }
+
+    public function setConfidentialite(string $confidentialite): static
+    {
+        $this->confidentialite = $confidentialite;
+
+        return $this;
+    }
+
+    public function getPosteVendeur(): ?string
+    {
+        return $this->posteVendeur;
+    }
+
+    public function setPosteVendeur(string $posteVendeur): static
+    {
+        $this->posteVendeur = $posteVendeur;
+
+        return $this;
+    }
+
+    public function getTelVendeur(): ?string
+    {
+        return $this->telVendeur;
+    }
+
+    public function setTelVendeur(string $telVendeur): static
+    {
+        $this->telVendeur = $telVendeur;
+
+        return $this;
+    }
+
+    public function getMailVendeur(): ?string
+    {
+        return $this->mailVendeur;
+    }
+
+    public function setMailVendeur(string $mailVendeur): static
+    {
+        $this->mailVendeur = $mailVendeur;
+
+        return $this;
+    }
+
+    public function getDeclaration1(): bool
+    {
+        return $this->declaration1;
+    }
+
+    public function setDeclaration1(bool $declaration1): self
+    {
+        $this->declaration1 = $declaration1;
+        return $this;
+    }
+
+    public function getDeclaration2(): bool
+    {
+        return $this->declaration2;
+    }
+
+    public function setDeclaration2(bool $declaration2): self
+    {
+        $this->declaration2 = $declaration2;
+        return $this;
+    }
+
+    public function getSignatureVendeur(): ?string
+    {
+        return $this->signatureVendeur;
+    }
+
+    public function setSignatureVendeur(string $signatureVendeur): static
+    {
+        $this->signatureVendeur = $signatureVendeur;
+
+        return $this;
+    }
+
+    public function getSignatureAcheteur(): ?string
+    {
+        return $this->signatureAcheteur;
+    }
+
+    public function setSignatureAcheteur(string $signatureAcheteur): static
+    {
+        $this->signatureAcheteur = $signatureAcheteur;
+
+        return $this;
+    }
+
+    public function getPrixVente(): ?string
+    {
+        return $this->prixVente;
+    }
+    
+    public function setPrixVente(?string $prixVente): self
+    {
+        $this->prixVente = $prixVente;
+    
+        return $this;
+    }
+
+
 }

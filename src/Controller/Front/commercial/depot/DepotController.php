@@ -3,7 +3,7 @@
 namespace App\Controller\Front\commercial\depot;
 
 
-use App\Entity\bien;
+use App\Entity\Bien;
 use App\Repository\BienRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;

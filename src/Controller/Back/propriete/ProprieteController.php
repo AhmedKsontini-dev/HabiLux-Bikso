@@ -2,7 +2,7 @@
 
 namespace App\Controller\Back\propriete;
 
-use App\Entity\propriete;
+use App\Entity\Propriete;
 use App\Form\ProprieteType;
 use App\Repository\ProprieteRepository;
 use App\Controller\DetailsProprieteRepository;

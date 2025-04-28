@@ -2,7 +2,7 @@
 
 namespace App\Controller\Front\AllBiens\A_Vendre;
 
-use App\Entity\bien;
+use App\Entity\Bien;
 use App\Repository\BienRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;

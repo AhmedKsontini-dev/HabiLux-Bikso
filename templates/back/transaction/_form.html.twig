@@ -1,116 +1,330 @@
-<div class="container py-4">
-
+<div class="container py-4" id="form-container">
     <div class="card shadow p-4">
+
+        <!-- Form Title -->
+        <h4 class="text-center mb-4">Contrat Location Vente</h4>
+
+        <!-- Form Start -->
         {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
 
-        <div class="row mb-3">
-            <div class="col-md-6">
+        <!-- 1. Informations des Parties -->
+        <div class="row mb-4">
+            <h5>1. Informations des Parties</h5>
+            <div class="col-md-3">
                 {{ form_label(form.nomAcheteur, 'Nom de l\'Acheteur', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.nomAcheteur, {'attr': {'class': 'form-control'}}) }}
                 {{ form_errors(form.nomAcheteur) }}
             </div>
-            <div class="col-md-6">
-                {{ form_label(form.telAcheteur, 'Téléphone de l\'Acheteur', {'label_attr': {'class': 'form-label'}}) }}
+            <div class="col-md-3">
+                {{ form_label(form.adresseAcheteur, 'Adresse de l\'Acheteur', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.adresseAcheteur, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.adresseAcheteur) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_label(form.cinAcheteur, 'cin de l\'Acheteur', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.cinAcheteur, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.cinAcheteur) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_label(form.telAcheteur, 'tel de l\'Acheteur', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.telAcheteur, {'attr': {'class': 'form-control'}}) }}
                 {{ form_errors(form.telAcheteur) }}
             </div>
         </div>
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                {{ form_label(form.cinAcheteur, 'CIN de l\'Acheteur', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.cinAcheteur, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.cinAcheteur) }}
+        <div class="row mb-4">
+            <div class="col-md-3">
+                {{ form_label(form.nomVendeur, 'Nom du Vendeur', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.nomVendeur, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.nomVendeur) }}
             </div>
-            <div class="col-md-6">
+
+            <div class="col-md-3">
+                {{ form_label(form.posteVendeur, 'Poste de vendeur', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.posteVendeur, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.posteVendeur) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_label(form.mailVendeur, 'E-mail du Vendeur', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.mailVendeur, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.mailVendeur) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_label(form.telVendeur, 'Telephone de vendeur', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.telVendeur, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.telVendeur) }}
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <h5>2. Informations de transaction</h5>
+            <div class="col-md-3">
                 {{ form_label(form.typeTransaction, 'Type de Transaction', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.typeTransaction, {'attr': {'class': 'form-select'}}) }}
+                {{ form_widget(form.typeTransaction, {'attr': {'class': 'form-control', 'id': 'typeTransaction'}}) }}
                 {{ form_errors(form.typeTransaction) }}
             </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                {{ form_label(form.prixInitial, 'Prix Initial', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.prixInitial, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.prixInitial) }}
+            <div class="col-md-3">
+                {{ form_label(form.bien, 'Reference de bien', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.bien, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.bien) }}
             </div>
-            <div class="col-md-6">
-                {{ form_label(form.prixFinal, 'Prix Final', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.prixFinal, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.prixFinal) }}
+            <div class="col-md-3">
+                {{ form_label(form.statutTransaction, 'Statut de Transaction', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.statutTransaction, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.statutTransaction) }}
             </div>
         </div>
 
-        <div class="row mb-3">
-            <div class="col-md-6">
+        <div class="row mb-4">
+            <i class="bi bi-dash-circle" onclick="toggleVisibility('commissionSection')"></i>
+            <div class="col-md-6" id="commissionSection">
                 {{ form_label(form.commission, 'Commission', {'label_attr': {'class': 'form-label'}}) }}
                 {{ form_widget(form.commission, {'attr': {'class': 'form-control'}}) }}
                 {{ form_errors(form.commission) }}
             </div>
             <div class="col-md-6">
+                {{ form_label(form.payer, 'Payer', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.payer, {'attr': {'class': 'form-select'}}) }}
+                {{ form_errors(form.payer) }}
+            </div>
+        </div>
+
+        <!-- 2. Objet du Contrat -->
+        <div class="row mb-4">
+            <h5>3. Objet du Contrat</h5>
+            <div class="col-md-12">
+                {{ form_widget(form.objetContrat, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.objetContrat) }}
+            </div>
+        </div>
+
+        <!-- 3. Description du Bien -->
+        <div class="row mb-4">
+            <h5>4. Description du Bien</h5>
+            <div class="col-md-12">
+                {{ form_widget(form.descriptionBien, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.descriptionBien) }}
+            </div>
+        </div>
+
+        <!-- 4. Prix de Vente et Modalités de Paiement -->
+        <div class="row mb-4">
+            <h5>5. Prix de Vente et Modalités de Paiement</h5>
+            <div class="col-md-12">
+                {{ form_label(form.prixVente, 'Prix de Vente', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.prixVente, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.prixVente) }}
+            </div>
+        </div>
+        <div class="row mb-12">
+            <div class="col-md-12">
                 {{ form_label(form.modePaiement, 'Mode de Paiement', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.modePaiement, {'attr': {'class': 'form-select'}}) }}
+                {{ form_widget(form.modePaiement, {'attr': {'class': 'form-control'}}) }}
                 {{ form_errors(form.modePaiement) }}
             </div>
         </div>
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                {{ form_label(form.nbrMois, 'Nombre de Mois', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.nbrMois, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.nbrMois) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_label(form.prixParMois, 'Prix par Mois', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.prixParMois, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.prixParMois) }}
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                {{ form_label(form.payer, 'Statut de Paiement', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.payer, {'attr': {'class': 'form-select'}}) }}
-                {{ form_errors(form.payer) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_label(form.statutTransaction, 'Statut de la Transaction', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.statutTransaction, {'attr': {'class': 'form-select'}}) }}
-                {{ form_errors(form.statutTransaction) }}
+        <!-- 5. Durée de la Location -->
+        <div class="row mb-4">
+            <div id="locationDurationToggle">
+                <h5>6. Durée de la Location <i class="bi bi-dash-circle" onclick="toggleVisibility('locationDurationToggle')"></i></h5>
+                <div class="col-md-12" id="locationDurationSection">
+                    <div class="col-md-6">
+                        {{ form_label(form.debutLocation, 'Début de Location', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.debutLocation, {'attr': {'class': 'form-control', 'id': 'debutLocation'}}) }}
+                        {{ form_errors(form.debutLocation) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.finLocation, 'Fin de Location', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.finLocation, {'attr': {'class': 'form-control', 'id': 'finLocation'}}) }}
+                        {{ form_errors(form.finLocation) }}
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="row mb-3">
+        <!-- 6. Obligations des Parties -->
+        <div class="row mb-4">
+            <h5>7. Obligations des Parties</h5>
             <div class="col-md-6">
-                {{ form_label(form.bien, 'Réference de bien', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.bien, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.bien) }}
+                {{ form_label(form.obligationVendeur, 'Obligations du Vendeur', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.obligationVendeur, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.obligationVendeur) }}
             </div>
             <div class="col-md-6">
-                {{ form_label(form.agent, 'Agent Responsable', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.agent, {'attr': {'class': 'form-control'}}) }}
-                {{ form_errors(form.agent) }}
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                    {{ form_label(form.dateTransaction, 'Date de la Transaction', {'label_attr': {'class': 'form-label'}}) }}
-                    {{ form_widget(form.dateTransaction, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(form.dateTransaction) }}
+                {{ form_label(form.obligationAcheteur, 'Obligations de l\'Acheteur', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.obligationAcheteur, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.obligationAcheteur) }}
             </div>
         </div>
 
+        <!-- 7. Conditions de Résiliation -->
+        <div class="row mb-4">
+            <h5>8. Conditions de Résiliation</h5>
+            <div class="col-md-12">
+                {{ form_label(form.conditionsResiliation, 'Conditions de Résiliation', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.conditionsResiliation, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.conditionsResiliation) }}
+            </div>
+        </div>
+
+        <!-- 8. Confidentialité -->
+        <div class="row mb-4">
+            <h5>9. Confidentialité</h5>
+            <div class="col-md-12">
+                {{ form_label(form.confidentialite, 'Clause de Confidentialité', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.confidentialite, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.confidentialite) }}
+            </div>
+        </div>
+
+        <!-- 11. Déclarations et Signatures -->
+        <div class="row mb-4">
+            <h5>10. Déclarations et Signatures</h5>
+            <div class="col-md-12">
+                {{ form_label(form.declaration1, 'Je certifie que les informations fournies sont exactes.', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.declaration1, {'attr': {'class': 'form-check-input'}}) }}
+                {{ form_errors(form.declaration1) }}
+            </div>
+
+            <div class="col-md-12">
+                {{ form_label(form.declaration2, 'J’accepte de respecter toutes les conditions du contrat et de fournir des informations supplémentaires si nécessaire.', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.declaration2, {'attr': {'class': 'form-check-input'}}) }}
+                {{ form_errors(form.declaration2) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form_label(form.signatureVendeur, 'Signature du Vendeur', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.signatureVendeur, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.signatureVendeur) }}
+            </div>
+
+            <div class="col-md-6">
+                {{ form_label(form.signatureAcheteur, 'Signature l\'Acheteur', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.signatureAcheteur, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.signatureAcheteur) }}
+            </div>
+        </div>
+
+        <!-- 12. Date -->
+        <div class="row mb-4">
+            <h5>11. Date</h5>
+            <div class="col-md-12">
+                {{ form_label(form.dateTransaction, 'Date de la Transaction', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.dateTransaction, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.dateTransaction) }}
+            </div>
+        </div>
+
+        <!-- Submit Button -->
         <div class="d-flex justify-content-between mt-3">
             <a href="javascript:history.back()" class="btn btn-secondary">
-                <i class="bi bi-arrow-left-circle pe-2"></i> Retour
+                <i class="bi bi-arrow-left-circle pe-2"></i>
+                Retour
             </a>
-            <button type="submit" class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+            <button type="submit" class="btn btn-primary">
+                {{ button_label|default('Enregistrer') }}
+            </button>
+            <button type="button" class="btn btn-info" onclick="printSection()">
+                <i class="bi bi-printer pe-2"></i>
+                Imprimer
+            </button>
         </div>
-        
 
-
+        <!-- Form End -->
         {{ form_end(form) }}
     </div>
 </div>
+
+<script>
+    function toggleVisibility(sectionId) {
+        var section = document.getElementById(sectionId);
+        var header = section.previousElementSibling;
+        
+        if (section.style.display === 'none') {
+            section.style.display = 'block';
+            header.style.display = 'block';
+        } else {
+            section.style.display = 'none';
+            header.style.display = 'none';
+        }
+    }
+
+    function printSection() {
+        // Cacher les éléments que vous ne voulez pas imprimer
+        var bodyElements = document.body.children;
+        for (var i = 0; i < bodyElements.length; i++) {
+            if (bodyElements[i].id !== 'form-container') {
+                bodyElements[i].style.display = 'none';
+            }
+        }
+
+        // Imprimer la section
+        window.print();
+
+        // Réafficher les éléments cachés après l'impression
+        for (var i = 0; i < bodyElements.length; i++) {
+            bodyElements[i].style.display = '';
+        }
+    }
+</script>
+<script>
+function printSection() {
+    const content = document.getElementById("form-container").innerHTML;
+    
+    const printWindow = window.open('', '', 'height=800,width=1000');
+
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Impression Contrat</title>
+            <!-- Bootstrap CSS (important pour le même style) -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+            <!-- Bootstrap Icons (si tu utilises les icônes comme bi-printer) -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+            <style>
+                body {
+                    padding: 20px;
+                }
+                .form-label {
+                    font-weight: bold;
+                }
+                h4, h5 {
+                    margin-top: 20px;
+                    margin-bottom: 15px;
+                }
+                .btn, .bi {
+                    display: none !important; /* Masquer les boutons et icônes à l'impression */
+                }
+            </style>
+        </head>
+        <body>
+            ${content}
+        </body>
+        </html>
+    `);
+
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+}
+</script>
+
+
+
+
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        #form-container, #form-container * {
+            visibility: visible;
+        }
+        #form-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    }
+</style>

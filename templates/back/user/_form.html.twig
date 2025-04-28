@@ -53,15 +53,15 @@
 
             <div class="col-md-6 mb-3">
                 {{ form_label(form.poste, 'Poste', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.poste, {'attr': {'class': 'form-control'}}) }}
+                {{ form_widget(form.poste, {'attr': {'class': 'form-select'}}) }}
                 {{ form_errors(form.poste) }}
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-6 mb-3">
-                {{ form_label(form.roles, 'Roles', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.roles, {'attr': {'class': 'form-control'}}) }} 
+                {{ form_label(form.roles, 'Rôles', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.roles, {'attr': {'class': 'form-select'}}) }} 
                 {{ form_errors(form.roles) }}
             </div>
 
@@ -71,8 +71,6 @@
                 {{ form_errors(form.photoProfil) }}
             </div>
         </div>
-
-       
 
         <div class="d-flex justify-content-between mt-3">
             <a href="javascript:history.back()" class="btn btn-secondary">

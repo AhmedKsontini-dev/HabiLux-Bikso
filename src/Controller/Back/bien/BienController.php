@@ -2,7 +2,7 @@
 
 namespace App\Controller\Back\bien;
 
-use App\Entity\bien;
+use App\Entity\Bien;
 use App\Form\BienType;
 use App\Entity\TypeBien;
 use App\Entity\Gouvernorat;

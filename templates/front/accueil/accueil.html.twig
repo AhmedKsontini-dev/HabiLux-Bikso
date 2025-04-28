@@ -2,7 +2,8 @@
 
 {% block title %}HabiLux{% endblock %}
 
-{% block stylesheet %}
+{% block body %}
+
 <style>
     .about-profile-wrap {
         display: flex;
@@ -214,12 +215,22 @@
         background-color: #f2dede;
         border-color: #ebccd1;
     }
+
+    .property-status-badge {
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			background-color: red;
+			color: white;
+			padding: 5px 10px;
+			font-size: 14px;
+			font-weight: bold;
+			border-radius: 20px;
+			z-index: 10;  /* Assure-toi qu'il soit au-dessus de l'image */
+		}
+
     
-
 </style>
-{% endblock %}
-
-{% block body %}
 
    <div class="hero-5" id="hero">
         <div class="swiper th-slider hero-slider5" id="heroSlide5" data-slider-options='{"effect":"fade", "autoHeight": "true"}'>
@@ -357,81 +368,95 @@ Property Area 2
             <div class="slider-area property-slider2 slider-drag-wrap z-index-common">
                 <div class="swiper th-slider" data-slider-options='{"breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":"1"},"768":{"slidesPerView":"2"},"992":{"slidesPerView":"2"},"1200":{"slidesPerView":"3"},"1500":{"slidesPerView":"3"}},"spaceBetween":"24","grabCursor":"true","slideToClickedSlide":"true"}'>
                     <div class="swiper-wrapper">
-                        {% for bien in biens %}
-                            <div class="swiper-slide">
-                                <div class="property-card3 style-border">
-                                    <div class="property-card-thumb img-shine">
-                                        <!-- Ajout du tag de type d'offre -->
-                                        <span class="offer-tag {{ bien.typeOffre == 'A Vendre' ? 'tag-sale' : 'tag-rent' }}">
-                                            {{ bien.typeOffre }}
-                                        </span>
+                        {% if biens is empty %}
+							<div class="no-result">
+								<img src="{{ asset('assetsFront/img/icon/aucun-resultat.png') }}" alt="Aucun résultat" class="no-result-img">
+								<h4 style="color:#1C2D37;">Aucun bien disponible pour le moment.</h4>
+							</div>
+						{% else %}
+                            {% for bien in biens %}
+                                {# Vérification si une transaction "Location" existe #}
+								{% set isLocation = bien.transactions|filter(t => t.typeTransaction == 'Location') is not empty %}
+                                <div class="swiper-slide">
+                                    <div class="property-card3 style-border">
+                                        <div class="property-card-thumb img-shine">
+                                            {% if isLocation %}
+                                                <div class="property-status-badge">Louée</div>
+                                            {% else %}
+                                                <!-- Affichage du tag "A Vendre" ou "A Louer" -->
+                                                <span class="offer-tag {{ bien.typeOffre == 'A Vendre' ? 'tag-sale' : 'tag-rent' }}">
+                                                    {{ bien.typeOffre }}
+                                                </span>
+                                            {% endif %}
 
-                                        <!-- Nouveau badge pour le nomType -->
-                                        <span class="property-type-badge">
-                                            {{ bien.type.nomType }}
-                                        </span>
 
-                                        <img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien" style="height:250px; width:100%;">
-                                    </div>
+                                            <!-- Nouveau badge pour le nomType -->
+                                            <span class="property-type-badge">
+                                                {{ bien.type.nomType }}
+                                            </span>
 
-                                    <div class="property-card-details">
-                                        <h4 class="property-card-title">
-                                            <a href="{{ path('app_front_all_biens_details_prop', {'id': bien.id}) }}">{{ bien.nomBien }}</a>
-                                        </h4>
-                                        <p class="property-card-location">
-                                            <i class="far fa-map-marker-alt me-2"></i>
-                                            {{ bien.ville.nomVille }}, {{ bien.ville.gouvernorat.nomGouvernorat }}
-                                        </p>
+                                            <img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien" style="height:250px; width:100%;">
+                                        </div>
 
-                                        
-                                        <div class="property-card-meta">
+                                        <div class="property-card-details">
+                                            <h4 class="property-card-title">
+                                                <a href="{{ path('app_front_all_biens_details_prop', {'id': bien.id}) }}">{{ bien.nomBien }}</a>
+                                            </h4>
+                                            <p class="property-card-location">
+                                                <i class="far fa-map-marker-alt me-2"></i>
+                                                {{ bien.ville.nomVille }}, {{ bien.ville.gouvernorat.nomGouvernorat }}
+                                            </p>
+
                                             
-
-                                            <span class="price-badge {{ bien.afficherPrix ? 'price-visible' : 'price-hidden' }}">
-                                                {{ bien.afficherPrix ? bien.prixBien ~ ' DT' : 'Prix Privée' }}
-                                            </span>
-
-                                            <span>
-                                                <p class="property-card-type">
-                                                    <i class="fas fa-calendar me-2"></i>Publié en : {{ bien.dateCreation|date('y-m-d') }}
-                                                </p>
-                                            </span>
-                                             
-
-                                        </div>
-                                        <div class="property-btn-wrap" style="margin-top:-15px;">
-                                            <div class="property-card-meta" >
-                                                {% if bien.detailsProprietes|filter(p => p.afficher) is not empty %}
-                                                    <ul class="property-features">
-                                                        {% for propriete in bien.detailsProprietes|filter(p => p.afficher) %}
-                                                            <li>
-                                                                <i class="fas fa-check-circle text-primary"></i>
-                                                                <strong>
-                                                                    {{ propriete.propriete.nomPropriete|slice(0, 15) }}{% if propriete.propriete.nomPropriete|length > 20 %}...{% endif %}:
-                                                                </strong> 
-                                                                {{ propriete.valeurPropriete }}
-                                                            </li>
-                                                        {% endfor %}
-                                                    </ul>
-                                                {% else %}
-                                                    <p class="text-muted">Aucun détails de propriété sélectionnée.</p>
+                                            <div class="property-card-meta">
+                                                
+                                                {% if not isLocation %}
+                                                    <span class="price-badge {{ bien.afficherPrix ? 'price-visible' : 'price-hidden' }}">
+                                                        {{ bien.afficherPrix ? bien.prixBien ~ ' DT' : 'Prix Privée' }}
+                                                    </span>
                                                 {% endif %}
+
+                                                <span>
+                                                    <p class="property-card-type">
+                                                        <i class="fas fa-calendar me-2"></i>Publié en : {{ bien.dateCreation|date('y-m-d') }}
+                                                    </p>
+                                                </span>
+                                                
+
+                                            </div>
+                                            <div class="property-btn-wrap" style="margin-top:-15px;">
+                                                <div class="property-card-meta" >
+                                                    {% if bien.detailsProprietes|filter(p => p.afficher) is not empty %}
+                                                        <ul class="property-features">
+                                                            {% for propriete in bien.detailsProprietes|filter(p => p.afficher) %}
+                                                                <li>
+                                                                    <i class="fas fa-check-circle text-primary"></i>
+                                                                    <strong>
+                                                                        {{ propriete.propriete.nomPropriete|slice(0, 15) }}{% if propriete.propriete.nomPropriete|length > 20 %}...{% endif %}:
+                                                                    </strong> 
+                                                                    {{ propriete.valeurPropriete }}
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% else %}
+                                                        <p class="text-muted">Aucun détails de propriété sélectionnée.</p>
+                                                    {% endif %}
+                                                </div>
+
+                                            </div>
+                                            <div class="property-btn-wrap d-flex justify-content-center align-items-center">
+                                                <div class="btn-wrap">
+                                                    <a href="{{ path('app_front_all_biens_details_prop', {'id': bien.id}) }}" class="th-btn style-border2 th-btn-icon">
+                                                        <i class="fas fa-info-circle"></i> Details
+                                                    </a>
+                                                </div>
                                             </div>
 
                                         </div>
-                                        <div class="property-btn-wrap d-flex justify-content-center align-items-center">
-                                            <div class="btn-wrap">
-                                                <a href="{{ path('app_front_all_biens_details_prop', {'id': bien.id}) }}" class="th-btn style-border2 th-btn-icon">
-                                                    <i class="fas fa-info-circle"></i> Details
-                                                </a>
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
-                            </div>
-                        {% endfor %}
-
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -996,4 +1021,3 @@ Team Area
     });
 </script>
 {% endblock %}
-

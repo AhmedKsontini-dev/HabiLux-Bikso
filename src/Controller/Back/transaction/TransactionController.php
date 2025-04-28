@@ -107,6 +107,8 @@ final class TransactionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->historiqueService->enregistrerAction('Ajout', "Ajout d'une nouvelle transaction ");
+            $this->addFlash('success', 'Ajout de transaction avec succès');
             $entityManager->persist($transaction);
             $entityManager->flush();
 
@@ -119,12 +121,11 @@ final class TransactionController extends AbstractController
                     $entityManager->flush();
                 }
             }
-
+            
 
             return $this->redirectToRoute('app_transactions', [], Response::HTTP_SEE_OTHER);
         }
-            $this->historiqueService->enregistrerAction('Ajout', "Ajout d'une nouvelle transaction ");
-            $this->addFlash('success', 'Ajout de transaction avec succès');
+            
 
         return $this->render('back/transaction/new.html.twig', [
             'transaction' => $transaction,
@@ -160,10 +161,11 @@ final class TransactionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_transactions', [], Response::HTTP_SEE_OTHER);
-        }
             $this->historiqueService->enregistrerAction('Modification', "Modification de transaction ID: {$transaction->getId()} ");
             $this->addFlash('success', 'Modification de transaction avec succès');
+            return $this->redirectToRoute('app_transactions', [], Response::HTTP_SEE_OTHER);
+        }
+            
 
         return $this->render('back/transaction/edit.html.twig', [
             'transaction' => $transaction,

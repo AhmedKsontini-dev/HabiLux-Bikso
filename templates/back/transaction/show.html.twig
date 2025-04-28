@@ -4,132 +4,272 @@
 
 {% block style %}
 <style>
-.card {
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.card-header {
-     font-size: 2rem;
+    .section-title {
+        font-size: 1.2rem;
         font-weight: bold;
-        background: linear-gradient(45deg, #1C2D37, #2E495A);
-        padding: 15px;
-        text-align: center;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+        color: #1C2D37;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #ccc;
+        padding-bottom: 5px;
+    }
 
-.table th {
-    width: 30%;
-    font-weight: bold;
-    color: #555;
-}
+    .info-label {
+        font-weight: bold;
+        color: #333;
+    }
 
-.table td {
-    color: #333;
-}
+    .info-value {
+        color: #555;
+    }
 
-.btn i {
-    margin-right: 5px;
-}
+    .badge-custom {
+        padding: 6px 12px;
+        border-radius: 5px;
+        color: #fff;
+        font-size: 0.9rem;
+    }
+
+    .badge-vente { background-color: #dc69f1; }
+    .badge-location { background-color: #f1c643; }
+    .badge-payee { background-color: #28a745; }
+    .badge-encours { background-color: #dc3545; }
+    .badge-validee { background-color: #28a745; }
+    .badge-pending { background-color: #fd7e14; }
 
 </style>
 {% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <div class="card shadow-lg">
-        <div class="card-header bg-primary text-white">
-            <h1 class="text-center" style="color:white;">Détails de la Propriété</h1>
+<div class="container py-4">
+    <div class="card shadow p-4">
+
+        <h4 class="text-center mb-4">Contrat - Détails de la Transaction</h4>
+
+        <!-- 1. Informations des Parties -->
+        <div class="row mb-4">
+            <div class="section-title">1. Informations des Parties</div>
+
+            <div class="col-md-3">
+                <div class="info-label">Nom de l'Acheteur :</div>
+                <div class="info-value">{{ transaction.nomAcheteur }}</div>
+            </div>
+            <div class="col-md-3">
+                <div class="info-label">Adresse de l'Acheteur :</div>
+                <div class="info-value">{{ transaction.adresseAcheteur }}</div>
+            </div>
+            <div class="col-md-3">
+                <div class="info-label">CIN :</div>
+                <div class="info-value">{{ transaction.cinAcheteur }}</div>
+            </div>
+            <div class="col-md-3">
+                <div class="info-label">Téléphone :</div>
+                <div class="info-value">{{ transaction.telAcheteur }}</div>
+            </div>
+
+            <div class="col-md-3 mt-3">
+                <div class="info-label">Nom du Vendeur :</div>
+                <div class="info-value">{{ transaction.nomVendeur }}</div>
+            </div>
+            <div class="col-md-3 mt-3">
+                <div class="info-label">Poste du Vendeur :</div>
+                <div class="info-value">{{ transaction.posteVendeur }}</div>
+            </div>
+            <div class="col-md-3 mt-3">
+                <div class="info-label">E-mail :</div>
+                <div class="info-value">{{ transaction.mailVendeur }}</div>
+            </div>
+            <div class="col-md-3 mt-3">
+                <div class="info-label">Téléphone :</div>
+                <div class="info-value">{{ transaction.telVendeur }}</div>
+            </div>
         </div>
-        <div class="card-body">
-            <table class="table table-striped">
-                <tbody>
-                    <tr><th>ID :</th><td>{{ transaction.id }}</td></tr>
-                    <tr><th>Référence du bien :</th><td>{{ transaction.bien.id }}</td></tr>
-                    <tr><th>Nom de l'Acheteur :</th><td>{{ transaction.nomAcheteur }}</td></tr>
-                    <tr><th>Téléphone de l'Acheteur :</th><td>{{ transaction.telAcheteur }}</td></tr>
-                    <tr><th>CIN de l'Acheteur :</th><td>{{ transaction.cinAcheteur }}</td></tr>
-                    <tr>
-                        <th>Type de Transaction :</th>
-                        <td class="col-TypesOffre">
-                            {% if transaction.typeTransaction == 'Vente' %}
-                                <span class="badge" style="background-color: #dc69f1; color: white; padding: 5px 10px; border-radius: 5px;">
-                                    Vente
-                                </span>
-                            {% else %}
-                                <span class="badge" style="background-color: #f1c643; color: white; padding: 5px 10px; border-radius: 5px;">
-                                    {{ transaction.typeTransaction }}
-                                </span>
-                            {% endif %}
-                        </td>
-                    </tr>
 
-                    <tr>
-                        <th>Prix Initial :</th>
-                        <td>
-                            <span class="badge" style="background-color: #23B4EDC1; color: white; padding: 5px 10px; border-radius: 5px;">
-                                {{ transaction.prixInitial }} DT
-                            </span>
-                        </td>
-                    </tr>
+        <!-- 2. Informations sur la Transaction -->
+        <div class="row mb-4">
+            <div class="section-title">2. Informations sur la Transaction</div>
 
-                    <tr>
-                        <th>Prix Final :</th>
-                        <td>
-                            <span class="badge" style="background-color: #22586EC1; color: white; padding: 5px 10px; border-radius: 5px;">
-                                {{ transaction.prixFinal }} DT
-                            </span>
-                        </td>
-                    </tr>
+            <div class="col-md-3">
+                <div class="info-label">Référence du Bien :</div>
+                <div class="info-value">#{{ transaction.bien.id }}</div>
+            </div>
 
-                    <tr><th>Commission :</th><td>{{ transaction.commission }} DT</td></tr>
-                    <tr><th>Date de la Transaction :</th><td>{{ transaction.dateTransaction ? transaction.dateTransaction|date('Y-m-d') : 'Non spécifiée' }}</td></tr>
-                    <tr><th>Mode de Paiement :</th><td>{{ transaction.modePaiement }}</td></tr>
-                    <tr><th>Nombre de Mois :</th><td>{{ transaction.nbrMois }}</td></tr>
-                    <tr><th>Prix par Mois :</th><td>{{ transaction.prixParMois }} DT</td></tr>
-                    <tr>
-                        <th>Payé :</th>
-                        <td class="col-Payer">
-                            {% if transaction.payer == 'Payé' %}
-                                <span class="badge" style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 5px;">
-                                    Payé
-                                </span>
-                            {% else %}
-                                <span class="badge" style="background-color: #dc3545; color: white; padding: 5px 10px; border-radius: 5px;">
-                                    En cours
-                                </span>
-                            {% endif %}
-                        </td>
-                    </tr>
+            <div class="col-md-3">
+                <div class="info-label">Type :</div>
+                <div class="info-value">
+                    {% if transaction.typeTransaction == 'Vente' %}
+                        <span class="badge badge-custom badge-vente">Vente</span>
+                    {% else %}
+                        <span class="badge badge-custom badge-location">{{ transaction.typeTransaction }}</span>
+                    {% endif %}
+                </div>
+            </div>
 
-                    <tr>
-                        <th>Statut de la Transaction :</th>
-                        <td class="col-StatutTransaction">
-                            {% if transaction.statutTransaction == 'Validée' %}
-                                <span class="badge" style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 5px;">
-                                    Validée
-                                </span>
-                            {% else %}
-                                <span class="badge" style="background-color: #fd7e14; color: white; padding: 5px 10px; border-radius: 5px;">
-                                    {{ transaction.statutTransaction }}
-                                </span>
-                            {% endif %}
-                        </td>
-                    </tr>
+            <div class="col-md-3">
+                <div class="info-label">Statut :</div>
+                <div class="info-value">
+                    {% if transaction.statutTransaction == 'Validée' %}
+                        <span class="badge badge-custom badge-validee">Validée</span>
+                    {% else %}
+                        <span class="badge badge-custom badge-pending">{{ transaction.statutTransaction }}</span>
+                    {% endif %}
+                </div>
+            </div>
 
-                </tbody>
-            </table>
+            <div class="col-md-3">
+                <div class="info-label">Payé :</div>
+                <div class="info-value">
+                    {% if transaction.payer == 'Payé' %}
+                        <span class="badge badge-custom badge-payee">Payé</span>
+                    {% else %}
+                        <span class="badge badge-custom badge-encours">En cours</span>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-        <div class="card-footer d-flex justify-content-between">
+
+        <!-- 3. Détails Financiers -->
+        <div class="row mb-4">
+            <div class="section-title">3. Détails Financiers</div>
+
+            <div class="col-md-3">
+                <div class="info-label">Prix de vente :</div>
+                <div class="info-value">{{ transaction.prixVente }} DT</div>
+            </div>
+            <div class="col-md-3">
+                <div class="info-label">Commission de vente :</div>
+                <div class="info-value">{{ transaction.commission }} DT</div>
+            </div>
+            <div class="col-md-3">
+                <div class="info-label">Mode de Paiement :</div>
+                <div class="info-value">{{ transaction.modePaiement }}</div>
+            </div>
+        </div>
+
+        <!-- 4. Informations Supplémentaires -->
+        <div class="row mb-4">
+            <div class="section-title">4. Autres Détails</div>
+
+            <div class="col-md-4">
+                <div class="info-label">Date de la Transaction :</div>
+                <div class="info-value">{{ transaction.dateTransaction ? transaction.dateTransaction|date('Y-m-d') : 'Non spécifiée' }}</div>
+            </div>
+        </div>
+
+        <!-- 5. Période de Location -->
+        {% if transaction.debutlocation or transaction.finlocation %}
+        <div class="row mb-4">
+            <div class="section-title">5. Période de Location</div>
+
+            {% if transaction.debutlocation %}
+                <div class="col-md-4">
+                    <div class="info-label">Date début de location :</div>
+                    <div class="info-value">{{ transaction.debutlocation|date('Y-m-d') }}</div>
+                </div>
+            {% endif %}
+
+            {% if transaction.finlocation %}
+                <div class="col-md-4">
+                    <div class="info-label">Date fin de location :</div>
+                    <div class="info-value">{{ transaction.finlocation|date('Y-m-d') }}</div>
+                </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- 6. Détails du Contrat -->
+        <div class="row mb-4">
+            <div class="section-title">6. Détails du Contrat</div>
+
+            <div class="col-md-6">
+                <div class="info-label">Objet du Contrat :</div>
+                <div class="info-value">{{ transaction.objetContrat }}</div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-label">Description du Bien :</div>
+                <div class="info-value">{{ transaction.descriptionBien }}</div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="info-label">Obligations de l'Acheteur :</div>
+                <div class="info-value">{{ transaction.obligationAcheteur }}</div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-label">Obligations du Vendeur :</div>
+                <div class="info-value">{{ transaction.obligationVendeur }}</div>
+            </div>
+        </div>
+        <div class="row mb-4">    
+
+            <div class="col-md-6">
+                <div class="info-label">Conditions de Résiliation :</div>
+                <div class="info-value">{{ transaction.conditionsResiliation }}</div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-label">Confidentialité :</div>
+                <div class="info-value">{{ transaction.confidentialite }}</div>
+            </div>
+        </div>
+
+        <!-- 7. Déclarations et Signatures -->
+        <div class="row mb-4">
+            <div class="section-title">7. Déclarations et Signatures</div>
+
+            <div class="col-md-6">
+                <div class="info-label">Je certifie que les informations fournies sont exactes :</div>
+                <div class="info-value">
+                    {% if transaction.declaration1 %}
+                        <span class="text-success ms-2">✅</span>
+                    {% else %}
+                        <span class="text-danger ms-2">❌</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-label">J’accepte de respecter toutes les conditions du contrat :</div>
+                <div class="info-value">
+                    {% if transaction.declaration2 %}
+                        <span class="text-success ms-2">✅</span>
+                    {% else %}
+                        <span class="text-danger ms-2">❌</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-label">Signature du Vendeur :</div>
+                <div class="info-value">
+                    {% if transaction.signatureVendeur %}
+                        <span class="text-success ms-2">✅</span>
+                    {% else %}
+                        <span class="text-danger ms-2">❌</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-label">Signature de l'Acheteur :</div>
+                <div class="info-value">
+                    {% if transaction.signatureAcheteur %}
+                        <span class="text-success ms-2">✅</span>
+                    {% else %}
+                        <span class="text-danger ms-2">❌</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="d-flex justify-content-between mt-4">
             <a href="{{ path('app_transactions') }}" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> Retour à la liste
             </a>
-            <a href="{{ path('app_back_transaction_edit', {'id': transaction.id}) }}" class="btn btn-warning">
-                <i class="fas fa-edit"></i> Modifier
-            </a>
-           
         </div>
+
     </div>
 </div>
 {% endblock %}

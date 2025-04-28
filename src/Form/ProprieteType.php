@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\propriete;
+use App\Entity\Propriete;
 use App\Entity\TypeBien;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

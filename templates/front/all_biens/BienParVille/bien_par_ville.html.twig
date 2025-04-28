@@ -158,7 +158,7 @@
         .property-status-badge {
 			position: absolute;
 			top: 10px;
-			left: 10px;
+			right: 10px;
 			background-color: red;
 			color: white;
 			padding: 5px 10px;
@@ -324,7 +324,7 @@ Property Page Area
 
                                                 {# Afficher le badge "Loué" si le bien a une transaction de type "Location" #}
 												{% if isLocation %}
-													<div class="property-status-badge">Loué</div>
+													<div class="property-status-badge">Louée</div>
 												{% endif %}
 
 												{# Badge du prix en haut à droite #}
@@ -404,7 +404,7 @@ Property Page Area
 
                                             {# Afficher le badge "Loué" si le bien a une transaction de type "Location" #}
                                             {% if isLocation %}
-                                                <div class="property-status-badge">Loué</div>
+                                                <div class="property-status-badge">Louée</div>
                                             {% endif %}
 
                                             {# Badge du prix en haut à droite #}

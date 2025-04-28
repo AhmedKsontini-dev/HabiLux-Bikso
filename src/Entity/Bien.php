@@ -23,17 +23,14 @@ class Bien
     #[ORM\Column(length: 255)]
     private ?string $adresseBien = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $prixBien = null;
+    #[ORM\Column(type: 'integer')]
+    private ?int $prixBien = null;
 
     #[ORM\Column(length: 255)]
     private ?string $typeOffre = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $localisationBien = null;
 
     #[ORM\Column]
     private ?bool $AfficherPrix = null;
@@ -74,22 +71,33 @@ class Bien
     private ?string $positionMap = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nomClient = null;
+    private ?string $nomProprietaire = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $telClient = null;
+    private ?string $telProprietaire1 = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $telClient2 = null;
+    private ?string $telProprietaire2 = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $adresseClient = null;
+    private ?string $adresseProprietaire = null;
 
-    #[ORM\OneToMany(mappedBy: 'bien', targetEntity: Transaction::class)]
-    private Collection $transactions;
+    #[ORM\Column(type: "boolean", options: ["default" => true])]
+    private bool $bienAfficher = true;
 
-    #[ORM\Column]
-    private ?bool $bienAfficher = null;
+
+    #[ORM\OneToMany(mappedBy: 'bien', targetEntity: Transaction::class, orphanRemoval: true)]
+    private ?Collection $transactions = null;
+
+   
+    
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $youtubeId = null;
+
+
+
+
+
 
  
 
@@ -141,15 +149,14 @@ class Bien
         return $this;
     }
 
-    public function getPrixBien(): ?string
+    public function getPrixBien(): ?int
     {
         return $this->prixBien;
     }
 
-    public function setPrixBien(string $prixBien): static
+    public function setPrixBien(int $prixBien): static
     {
         $this->prixBien = $prixBien;
-
         return $this;
     }
 
@@ -177,19 +184,6 @@ class Bien
         return $this;
     }
 
-   
-
-    public function getLocalisationBien(): ?string
-    {
-        return $this->localisationBien;
-    }
-
-    public function setLocalisationBien(string $localisationBien): static
-    {
-        $this->localisationBien = $localisationBien;
-
-        return $this;
-    }
 
     public function isAfficherPrix(): ?bool
     {
@@ -335,63 +329,55 @@ class Bien
     }
 
 
-    public function getNomClient(): ?string
+    public function getNomProprietaire(): ?string
     {
-        return $this->nomClient;
+        return $this->nomProprietaire;
     }
 
-    public function setNomClient(string $nomClient): static
+    public function setNomProprietaire(string $nomProprietaire): static
     {
-        $this->nomClient = $nomClient;
+        $this->nomProprietaire = $nomProprietaire;
 
         return $this;
     }
 
-    public function getTelClient(): ?string
+    public function getTelProprietaire1(): ?string
     {
-        return $this->telClient;
+        return $this->telProprietaire1;
     }
 
-    public function setTelClient(string $telClient): static
+    public function setTelProprietaire1(string $telProprietaire1): static
     {
-        $this->telClient = $telClient;
+        $this->telProprietaire1 = $telProprietaire1;
 
         return $this;
     }
 
-    public function getTelClient2(): ?string
+    public function getTelProprietaire2(): ?string
     {
-        return $this->telClient2;
+        return $this->telProprietaire2;
     }
 
-    public function setTelClient2(?string $telClient2): static
+    public function setTelProprietaire2(?string $telProprietaire2): static
     {
-        $this->telClient2 = $telClient2;
+        $this->telProprietaire2 = $telProprietaire2;
 
         return $this;
     }
 
-    public function getAdresseClient(): ?string
+    public function getAdresseProprietaire(): ?string
     {
-        return $this->adresseClient;
+        return $this->adresseProprietaire;
     }
 
-    public function setAdresseClient(string $adresseClient): static
+    public function setAdresseProprietaire(string $adresseProprietaire): static
     {
-        $this->adresseClient = $adresseClient;
+        $this->adresseProprietaire = $adresseProprietaire;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Transaction[]
-     */
-    public function getTransactions(): Collection
-    {
-        return $this->transactions;
-    }
-
-    public function isBienAfficher(): ?bool
+    public function isBienAfficher(): bool
     {
         return $this->bienAfficher;
     }
@@ -399,9 +385,36 @@ class Bien
     public function setBienAfficher(bool $bienAfficher): static
     {
         $this->bienAfficher = $bienAfficher;
+        return $this;
+    }
+
+    public function getTransactions(): ?Collection
+    {
+        return $this->transactions;
+    }
+
+    public function setTransactions(?Collection $transactions): self
+    {
+        $this->transactions = $transactions;
 
         return $this;
     }
+
+    public function getYoutubeId(): ?string
+    {
+        return $this->youtubeId;
+    }
+
+    public function setYoutubeId(?string $youtubeId): self
+    {
+        $this->youtubeId = $youtubeId;
+        return $this;
+    }
+
+
+
+
+
 
 
 

@@ -62,6 +62,8 @@
 
 
     {% block stylesheet %}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.6.1/dist/nouislider.min.css">
+        <link rel="stylesheet" href="{{ asset('assets/css/chatbot.css') }}">
     {% endblock %}
 
 </head>
@@ -594,6 +596,8 @@
 
 
 {% block script %}
+
+    <script src="{{ asset('assets/js/chatbot.js') }}"></script>
 {% endblock %}
 
 </body>

@@ -100,32 +100,34 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        let ajouterBtn = document.getElementById("ajouterProprietes");
-        let nombreInput = document.getElementById("nombreProprietes");
-        let container = document.getElementById("proprietesContainer");
-        
-        ajouterBtn.addEventListener("click", function() {
-            let nombre = parseInt(nombreInput.value);
-            if (isNaN(nombre) || nombre <= 0) {
-                alert("Veuillez entrer un nombre valide !");
-                return;
-            }
+   document.addEventListener("DOMContentLoaded", function () {
+    let ajouterBtn = document.getElementById("ajouterProprietes");
+    let nombreInput = document.getElementById("nombreProprietes");
+    let container = document.getElementById("proprietesContainer");
 
-            for (let i = 0; i < nombre; i++) {
-                let row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>
-                        <input type="text" name="newProprietes[nouveau_${Date.now()}][nomPropriete]" class="form-control" placeholder="Nom de la propriété">
-                    </td>
-                    <td>
-                        <input type="text" name="newProprietes[nouveau_${Date.now()}][valeurPropriete]" class="form-control" placeholder="Valeur">
-                    </td>
-                `;
-                container.appendChild(row);
-            }
-        });
+    ajouterBtn.addEventListener("click", function () {
+        let nombre = parseInt(nombreInput.value);
+        if (isNaN(nombre) || nombre <= 0) {
+            alert("Veuillez entrer un nombre valide !");
+            return;
+        }
+
+        for (let i = 0; i < nombre; i++) {
+            let uniqueId = Date.now() + '_' + Math.floor(Math.random() * 1000); // identifiant unique
+            let row = document.createElement("tr");
+            row.innerHTML = `
+                <td>
+                    <input type="text" name="newProprietes[nouveau_${uniqueId}][nomPropriete]" class="form-control" placeholder="Nom de la propriété">
+                </td>
+                <td>
+                    <input type="text" name="newProprietes[nouveau_${uniqueId}][valeurPropriete]" class="form-control" placeholder="Valeur">
+                </td>
+            `;
+            container.appendChild(row);
+        }
     });
+});
+
 </script>
 
 {% endblock %}

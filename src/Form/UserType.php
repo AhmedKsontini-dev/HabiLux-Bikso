@@ -7,7 +7,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class UserType extends AbstractType
@@ -15,7 +14,6 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-
             ->add('nom')
             ->add('prenom')
             ->add('email')
@@ -31,35 +29,37 @@ class UserType extends AbstractType
                     'Mandataire immobilier' => 'Mandataire immobilier',
                     'Chasseur immobilier' => 'Chasseur immobilier',
                     'Responsable d’agence' => 'Responsable d’agence',
+                    'Responsable de vente' => 'Responsable de vente',
                     'Expert immobilier' => 'Expert immobilier',
                 ],
-                'multiple' => true,  // Permet plusieurs choix
-                'expanded' => false,  // Liste déroulante
+                'expanded' => false, // liste déroulante
+                'multiple' => false, // ⛔ un seul choix possible
+                'required' => true,
                 'label' => 'Poste',
-                'required' => false, // Rend le champ non obligatoire
-                'attr' => ['class' => 'form-control']
+                'placeholder' => 'Sélectionner un poste',
+                'attr' => ['class' => 'form-select'],
             ])
-      
+            
+            
             ->add('roles', ChoiceType::class, [
                 'choices' => [
                     'Admin' => 'ROLE_ADMIN',
-                    'Client' => 'ROLE_USER',    
+                    'Client' => 'ROLE_USER',
                 ],
-                'expanded' => false,  // Permet d'afficher une liste "select" classique
-                'multiple' => true,  // Un seul choix possible
+                'expanded' => false,
+                'multiple' => true,
                 'label' => 'Rôle',
-                'attr' => ['class' => 'form-control'],  // Ajout de la classe Bootstrap
+                'required' => true,
+                'placeholder' => 'Sélectionner un ou plusieurs rôles',
+                'attr' => ['class' => 'form-select'],
             ])
             ->add('photoProfil', FileType::class, [
-                'label' => 'Ajouter des images',
+                'label' => 'Ajouter une image',
                 'mapped' => false,
                 'required' => false,
                 'multiple' => false,
                 'attr' => ['class' => 'form-control'],
-            ])
-         
-            
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

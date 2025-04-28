@@ -5,138 +5,185 @@
 {% block body %}
 
 <style>
-    .password-input.is-invalid {
-        border: 2px solid red;
+    .custom-container {
+        max-width: 1200px;
+        margin-top: 50px;
+        border-radius: 30px;
+        overflow: hidden;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
-    
-    .password-input.is-valid {
-        border: 2px solid green;
+
+    .form-section {
+        background: #fff;
+        padding: 30px;
+    }
+
+    .image-section {
+        position: relative;
+        padding: 10px 0 10px 10px;
+    }
+
+    .image-section img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 20px;
+    }
+
+    .overlay {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 0;
+        bottom: 10px;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 20px;
+    }
+
+    .progress-slider {
+        height: 8px;
+        background-color: #e0e0e0;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background-color: #1C2D37;
+        width: 50%;
+        transition: width 0.3s ease;
+    }
+
+    .progress-text {
+        text-align: right;
+        font-size: 14px;
+        margin-bottom: 10px;
+        color: #555;
     }
 </style>
 
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-5 col-lg-6 mx-auto">
-                        <div class="bg-white xs-p-20 p-30 border rounded">
-                            <div class="form-icon-left rounded form-boder">
-                                <h4 class="mb-4">M'inscrire</h4>
-                                {{ form_errors(registrationForm) }}
-                                {{ form_start(registrationForm) }}
+<div class="container custom-container bg-white d-flex">
+    <div class="col-md-6 form-section">
+        <div class="progress-text"><span id="step-text">1/2</span></div>
+        <div class="progress-slider mb-4">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
 
-                                <!-- Étape 1 -->
-                                <div id="step1">
-                                    <div class="row row-cols-1 g-3">
-                                        <div class="col">
-                                            <label class="mb-2" for="nom">Nom</label>
-                                            {{ form_widget(registrationForm.nom, { 'attr': {'class': 'form-control bg-light', 'required': true, 'placeholder': 'Nom'} }) }}
-                                        </div>
-                                        <div class="col">
-                                            <label class="mb-2" for="prenom">Prénom</label>
-                                            {{ form_widget(registrationForm.prenom, { 'attr': {'class': 'form-control bg-light', 'required': true, 'placeholder': 'Prénom'} }) }}
-                                        </div>
-                                        <div class="col">
-                                            <label class="mb-2" for="email">Email</label>
-                                            {{ form_widget(registrationForm.email, { 'attr': {'class': 'form-control bg-light', 'required': true, 'placeholder': 'Email'} }) }}
-                                        </div>
-                                        <div class="col">
-                                            <label class="mb-2" for="tel">Téléphone</label>
-                                            {{ form_widget(registrationForm.tel, { 'attr': {'class': 'form-control bg-light', 'required': true, 'placeholder': 'Téléphone'} }) }}
-                                        </div>
-                                        <div class="col">
-                                            <button type="button" class="btn btn-primary w-100" onclick="nextStep()">Suivant</button>
-                                        </div>
+        <h4 class="mb-4">M'inscrire</h4>
+        {{ form_errors(registrationForm) }}
+        {{ form_start(registrationForm) }}
 
-                                        <div class="col text-center">
-                                            <a href="{{ path('app_login') }}" class="text-dark d-table py-1"><u>Déjà inscrit(e) ? Se connecter</u></a>
-                                        </div>
-                                    </div>
-                                </div>
+        <!-- Étape 1 -->
+        <div id="step1">
+            <div class="row row-cols-1 g-3">
+                {{ form_row(registrationForm.nom, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Nom'}}) }}
+                {{ form_row(registrationForm.prenom, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Prénom'}}) }}
+                {{ form_row(registrationForm.email, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Email'}}) }}
+                {{ form_row(registrationForm.tel, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Téléphone'}}) }}
+                <div class="col">
+                    <button type="button" class="btn btn-primary w-100" onclick="validateStep1()">Suivant</button>
 
-                                <!-- Étape 2 (cachée au début) -->
-                                <div id="step2" style="display: none;">
-                                    <div class="row row-cols-1 g-3">
-                                        <div class="col">
-                                            <label class="mb-2" for="adresse">Adresse</label>
-                                            {{ form_widget(registrationForm.adresse, { 'attr': {'class': 'form-control bg-light', 'required': true, 'placeholder': 'Adresse'} }) }}
-                                        </div>
-                                        <div class="col">
-                                            <label class="mb-2" for="localisation">Localisation</label>
-                                            {{ form_widget(registrationForm.localisation, { 'attr': {'class': 'form-control bg-light', 'required': true, 'placeholder': 'Localisation'} }) }}
-                                        </div>
-                                        <div class="col">
-                                            <label class="mb-2" for="cin">CIN</label>
-                                            {{ form_widget(registrationForm.cin, { 'attr': {'class': 'form-control bg-light', 'required': true, 'placeholder': 'CIN'} }) }}
-                                        </div>
-                                        <div class="col">
-                                            <label class="mb-2" for="photoProfil">Photo de Profil (PNG/JPEG)</label>
-                                            {{ form_widget(registrationForm.photoProfil, { 'attr': {'class': 'form-control bg-light'} }) }}
-                                            {{ form_errors(registrationForm.photoProfil) }}
-                                        </div>
-                                        <div class="col position-relative">
-    <label class="mb-2" for="plainPassword">Mot de passe</label>
-    <div class="input-group">
-        {{ form_widget(registrationForm.plainPassword, { 
-            'attr': {
-                'class': 'form-control bg-light password-input', 
-                'required': true, 
-                'placeholder': 'Mot de passe', 
-                'oninput': 'validatePassword()'
-            } 
-        }) }}
-        <span class="input-group-text" onclick="togglePasswordVisibility()" style="cursor: pointer;">
-            <i id="togglePasswordIcon" class="fas fa-eye"></i>
-        </span>
-    </div>
-    <small id="passwordHelp" class="text-danger d-none">
-        Le mot de passe doit contenir au moins une majuscule, un chiffre et 8 caractères.
-    </small>
-</div>
-                                        <div class="col">
-                                            <div class="form-check">
-                                                {{ form_widget(registrationForm.agreeTerms, { 'attr': {'class': 'form-check-input'} }) }}
-                                                <label class="form-check-label" for="agreeTerms">J'accepte les conditions</label>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <button type="button" class="btn btn-secondary w-100" onclick="prevStep()">Précédent</button>
-                                        </div>
-                                        <div class="col">
-                                            <button type="submit" class="btn btn-primary w-100">M'inscrire</button>
-                                        </div>
-
-                                        <div class="col text-center">
-                                            <a href="{{ path('app_login') }}" class="text-dark d-table py-1"><u>Déjà inscrit(e) ? Se connecter</u></a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{ form_end(registrationForm) }}
-                            </div>
-                        </div>
-                    </div>
+                </div>
+                <div class="col text-center">
+                    <a href="{{ path('app_login') }}" class="text-dark d-table py-1"><u>Déjà inscrit(e) ? Se connecter</u></a>
                 </div>
             </div>
-        
+        </div>
 
-            <script>
-                function nextStep() {
-                    document.getElementById("step1").style.display = 'none';
-                    document.getElementById("step2").style.display = 'block';
-                }
+        <!-- Étape 2 -->
+        <div id="step2" style="display: none;">
+            <div class="row row-cols-1 g-3">
+                {{ form_row(registrationForm.adresse, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Adresse', 'required': true}}) }}
+                {{ form_row(registrationForm.localisation, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Localisation', 'required': true}}) }}
+                {{ form_row(registrationForm.photoProfil, {'attr': {'class': 'form-control bg-light', 'required': true}}) }}
+                
+                <div class="col position-relative">
+                    <label class="mb-2" for="plainPassword">Mot de passe</label>
+                    <div class="input-group">
+                        {{ form_widget(registrationForm.plainPassword, { 
+                            'attr': {
+                                'class': 'form-control bg-light password-input', 
+                                'placeholder': 'Mot de passe', 
+                                'oninput': 'validatePassword()'
+                            } 
+                        }) }}
+                        <span class="input-group-text" onclick="togglePasswordVisibility()" style="cursor: pointer;">
+                            <i id="togglePasswordIcon" class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                    <small id="passwordHelp" class="text-danger d-none">
+                        Le mot de passe doit contenir au moins une majuscule, un chiffre et 8 caractères.
+                    </small>
+                </div>
 
-                function prevStep() {
-                    document.getElementById("step2").style.display = 'none';
-                    document.getElementById("step1").style.display = 'block';
-                }
-            </script>
+                {{ form_row(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
 
-            <script>
+                <div class="col">
+                    <button type="button" class="btn btn-secondary w-100" onclick="prevStep()">Précédent</button>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary w-100">M'inscrire</button>
+                </div>
+                <div class="col text-center">
+                    <a href="{{ path('app_login') }}" class="text-dark d-table py-1"><u>Déjà inscrit(e) ? Se connecter</u></a>
+                </div>
+            </div>
+        </div>
+
+        {{ form_end(registrationForm) }}
+    </div>
+
+    <!-- Partie image -->
+    <div class="col-md-6 image-section d-none d-md-block">
+        <img src="{{ asset('assetsFront/img/img_inscription.jpg') }}" alt="Image inscription">
+        <div class="overlay"></div>
+    </div>
+</div>
+
+
+<script>
+    function validateStep1() {
+        const step1Fields = document.querySelectorAll('#step1 input');
+        let valid = true;
+
+        step1Fields.forEach(input => {
+            if (input.hasAttribute('required') && input.value.trim() === '') {
+                input.classList.add('is-invalid');
+                valid = false;
+            } else {
+                input.classList.remove('is-invalid');
+            }
+        });
+
+        if (valid) {
+            nextStep();
+        }
+    }
+</script>
+
+<script>
+
+    function nextStep() {
+        document.getElementById("step1").style.display = 'none';
+        document.getElementById("step2").style.display = 'block';
+        document.getElementById("progressBar").style.width = "100%";
+        document.getElementById("step-text").innerText = "2/2";
+    }
+
+    function prevStep() {
+        document.getElementById("step2").style.display = 'none';
+        document.getElementById("step1").style.display = 'block';
+        document.getElementById("progressBar").style.width = "50%";
+        document.getElementById("step-text").innerText = "1/2";
+    }
+
     function validatePassword() {
         let passwordField = document.querySelector('.password-input');
         let passwordHelp = document.getElementById('passwordHelp');
         let password = passwordField.value;
-        let regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/; // Au moins 1 majuscule, 1 chiffre, 8 caractères
-        
+        let regex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+
         if (regex.test(password)) {
             passwordField.classList.remove('is-invalid');
             passwordField.classList.add('is-valid');
@@ -165,4 +212,3 @@
 </script>
 
 {% endblock %}
-

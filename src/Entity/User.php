@@ -81,8 +81,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $Adresse = null;
 
-    #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    private ?array $poste = null;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $poste = null;
+
+
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
@@ -98,6 +100,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Transaction::class, mappedBy: 'agent')]
     private Collection $transactions;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Favoris::class)]
+    private Collection $favoris;
+
 
 
     public function __construct()
@@ -343,17 +349,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPoste(): ?array
+    public function getPoste(): ?string
     {
         return $this->poste;
     }
 
-    public function setPoste(?array $poste): static
+
+    public function setPoste(?string $poste): self
     {
         $this->poste = $poste;
 
         return $this;
     }
+
 
     public function getDescription(): ?string
     {

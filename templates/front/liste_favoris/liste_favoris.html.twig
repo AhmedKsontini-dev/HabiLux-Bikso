@@ -174,6 +174,12 @@
         background-color: #f1c643; /* Bleu pour "A Louer" */
     }
 
+    @media (min-width: 1200px) {
+        .col-xl-4 {
+            width: 26.333333%;
+        }
+    }
+
 </style>
     <div class="breadcumb-wrapper " data-bg-src="{{ asset('assetsFront/img/bg/breadcumb-bg.jpg') }}">
         <div class="container">
@@ -229,18 +235,23 @@ Property Page Area
                                             <h4 class="property-card-title">
                                                 <a href="{{ path('app_front_all_biens_details_prop', {'id': bien.id}) }}">{{ bien.nomBien }}</a>
                                             </h4>
+
                                             <h5 class="property-card-price" style="color: white;">
                                                 {{ bien.afficherPrix ? bien.prixBien ~ ' DT' : 'Prix Privée' }}
                                             </h5>
-                                            <p class="property-card-location" style="color: white;">{{ bien.localisationBien }}</p>
 
+                                            {# Nouvelle ligne pour afficher l'adresse du bien #}
+                                            <p class="property-card-address" style="color: white;">
+                                                <i class="fas fa-map-marker-alt"></i> {{ bien.adresseBien }}
+                                            </p>
 
                                             <div class="btn-wrap">
                                                 <a href="{{ path('app_front_all_biens_details_prop', {'id': bien.id}) }}" class="th-btn">
-                                                    <i class="fas fa-info-circle"></i> Détails
+                                                    <i class="fas fa-info-circle" style="color:black;"></i> Détails
                                                 </a>
                                             </div>
                                         </div>
+
                                         <span class="delete-favori" data-id="{{ favori.id }}" style="cursor: pointer; color: red; font-size: 20px; position: absolute; top: 10px; right: 10px;">
                                             <i class="fa-solid fa-heart favorite-icon"></i>
                                         </span>
@@ -261,16 +272,38 @@ Property Page Area
 
             </div>
             <div class="mt-60 text-center">
-                <div class="th-pagination ">
-                    <ul>
-                        <!-- <li><a class="prev-page" href="blog.html"><i class="far fa-arrow-left me-2"></i>Previous</a></li> -->
-                        <li><a class="active" href="blog.html">1</a></li>
-                        <li><a href="blog.html">2</a></li>
-                        <li><a href="blog.html">3</a></li>
-                        <li><a class="next-page" href="blog.html">Suivant<i class="far fa-arrow-right ms-2"></i></a></li>
-                    </ul>
-                </div>
-            </div>
+    {% if biens.items|length > 0 %}
+        <div class="th-pagination">
+            <ul>
+                {% if biens.currentPageNumber > 1 %}
+                    <li>
+                        <a class="prev-page" href="{{ path('app_front_liste_favoris', { page: biens.currentPageNumber - 1 }) }}">
+                            <i class="far fa-arrow-left me-2"></i>Précédent
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% for page in 1..biens.pageCount %}
+                    <li>
+                        <a href="{{ path('app_front_liste_favoris', { page: page }) }}" class="{{ page == biens.currentPageNumber ? 'active' : '' }}">
+                            {{ page }}
+                        </a>
+                    </li>
+                {% endfor %}
+
+                {% if biens.currentPageNumber < biens.pageCount %}
+                    <li>
+                        <a class="next-page" href="{{ path('app_front_liste_favoris', { page: biens.currentPageNumber + 1 }) }}">
+                            Suivant<i class="far fa-arrow-right ms-2"></i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
+
+
         </div>
     
         </section>

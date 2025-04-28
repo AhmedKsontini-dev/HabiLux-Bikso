@@ -14,6 +14,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+
+
 
 
 class RegistrationFormType extends AbstractType
@@ -21,17 +25,46 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
-            ->add('prenom')
-            ->add('email')
-            ->add('tel')
-            ->add('adresse')
-            ->add('localisation')
-            ->add('cin')
+            ->add('nom', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer votre nom.']),
+                ],
+            ])
+            ->add('prenom', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer votre prénom.']),
+                ],
+            ])
+            ->add('email', EmailType::class, [
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer votre adresse email.']),
+                ],
+            ])
+            ->add('tel', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer votre numéro de téléphone.']),
+                ],
+            ])
+            ->add('adresse', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer votre adresse.']),
+                ],
+            ])
+            ->add('localisation', TextType::class, [
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez entrer votre localisation.']),
+                ],
+            ])
             ->add('photoProfil', FileType::class, [
                 'label' => 'Profile Photo (PNG/JPEG/jpg file)',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new File([
                         'maxSize' => '15M',
