@@ -185,40 +185,7 @@
 
 
 
-    <div class="container-fluid bg-light p-4">
-        <label for="toggleColumns"><strong>Afficher/Masquer Colonnes :</strong></label>
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="toggleColumns" data-bs-toggle="dropdown" aria-expanded="false">
-                Sélectionner les colonnes
-            </button>
-            <ul class="dropdown-menu p-3" aria-labelledby="toggleColumns" id="columnsDropdown">
-                {% set columns = [
-                    {'id': 'col-id', 'label': 'ID'},
-                    {'id': 'col-photo', 'label': 'Images'},
-                    {'id': 'col-NomBien', 'label': 'Nom du Bien'},
-                    {'id': 'col-TypeBien', 'label': 'Type de Bien'},
-                    {'id': 'col-Ville', 'label': 'Ville'},
-                    {'id': 'col-Gouvernorat', 'label': 'Gouvernorat'},
-                    {'id': 'col-Prix', 'label': 'Prix'},
-                    {'id': 'col-TypesOffre', 'label': "Types d'offres"},
-                    {'id': 'col-AfficherPrix', 'label': 'Afficher Prix'},
-                    {'id': 'col-PublierPar', 'label': 'Publier par'},
-                    {'id': 'col-Actions', 'label': 'Actions'}
-                ] %}
-
-                {% for column in columns %}
-                    <li>
-                        <a href="#" class="toggle-column text-decoration-none text-dark d-flex justify-content-between align-items-center"
-                        data-column="{{ column.id }}">
-                            <span>{{ column.label }}</span>
-                            <i class="status-icon fas fa-eye" data-column="{{ column.id }}"></i>
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-
+    
     <!-- Votre tableau des biens -->
     <div class="container-fluid bg-light p-4 mt-4">
             {% if app.session.flashBag.has('success') %}

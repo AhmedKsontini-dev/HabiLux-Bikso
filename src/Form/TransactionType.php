@@ -14,10 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType; 
 use App\Entity\Bien;
-
-
-
-
+use Doctrine\ORM\EntityRepository;
 
 
 
@@ -194,9 +191,16 @@ class TransactionType extends AbstractType
                 'label' => 'Signature du vendeur',
                 'required' => false,
             ])
-            ->add('bien', TextType::class, [
-                'label' => 'Référence de bien',
-                'attr' => ['class' => 'form-control', 'id' => 'bien_id_input']
+            ->add('bien', EntityType::class, [
+                'class' => Bien::class,
+                'choice_label' => function (Bien $bien) {
+                    return $bien->getId();
+                },
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('b')
+                        ->where('b.disponibilite = :disponibilite')
+                        ->setParameter('disponibilite', 'Disponible');
+                }
             ])
         
             ->add('signatureAcheteur', TextType::class, [

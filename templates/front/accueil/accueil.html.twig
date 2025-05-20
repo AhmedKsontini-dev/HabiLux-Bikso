@@ -229,7 +229,10 @@
 			z-index: 10;  /* Assure-toi qu'il soit au-dessus de l'image */
 		}
 
-    
+    .appointment-wrap2 {
+
+    padding: 50px;
+}
 </style>
 
    <div class="hero-5" id="hero">
@@ -375,28 +378,27 @@ Property Area 2
 							</div>
 						{% else %}
                             {% for bien in biens %}
-                                {# Vérification si une transaction "Location" existe #}
-								{% set isLocation = bien.transactions|filter(t => t.typeTransaction == 'Location') is not empty %}
+                                
                                 <div class="swiper-slide">
                                     <div class="property-card3 style-border">
                                         <div class="property-card-thumb img-shine">
-                                            {% if isLocation %}
-                                                <div class="property-status-badge">Louée</div>
-                                            {% else %}
-                                                <!-- Affichage du tag "A Vendre" ou "A Louer" -->
-                                                <span class="offer-tag {{ bien.typeOffre == 'A Vendre' ? 'tag-sale' : 'tag-rent' }}">
-                                                    {{ bien.typeOffre }}
-                                                </span>
-                                            {% endif %}
+    {% if bien.disponibilite == 'Louee' %}
+        <div class="property-status-badge bg-danger text-white">Louée</div>
+    {% else %}
+        <!-- Affichage du tag "A Vendre" ou "A Louer" -->
+        <span class="offer-tag {{ bien.typeOffre == 'A Vendre' ? 'tag-sale' : 'tag-rent' }}">
+            {{ bien.typeOffre }}
+        </span>
+    {% endif %}
 
+    <!-- Nouveau badge pour le nomType -->
+    <span class="property-type-badge">
+        {{ bien.type.nomType }}
+    </span>
 
-                                            <!-- Nouveau badge pour le nomType -->
-                                            <span class="property-type-badge">
-                                                {{ bien.type.nomType }}
-                                            </span>
+    <img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien" style="height:250px; width:100%;">
+</div>
 
-                                            <img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien" style="height:250px; width:100%;">
-                                        </div>
 
                                         <div class="property-card-details">
                                             <h4 class="property-card-title">
@@ -410,11 +412,17 @@ Property Area 2
                                             
                                             <div class="property-card-meta">
                                                 
-                                                {% if not isLocation %}
+                                                {% if bien.disponibilite == 'Disponible' %}
                                                     <span class="price-badge {{ bien.afficherPrix ? 'price-visible' : 'price-hidden' }}">
-                                                        {{ bien.afficherPrix ? bien.prixBien ~ ' DT' : 'Prix Privée' }}
+                                                        {% if bien.afficherPrix %}
+                                                            {{ bien.prixBien|number_format(0, '', '.') }} {{ bien.typeOffre == 'A Louer' ? 'DT/Mois' : 'DT' }}
+                                                        {% else %}
+                                                            Prix Privée
+                                                        {% endif %}
                                                     </span>
                                                 {% endif %}
+
+
 
                                                 <span>
                                                     <p class="property-card-type">
@@ -684,74 +692,10 @@ Award Area
     <section class="space overflow-hidden bg-theme position-relative award-area-1" data-bg-src="{{ asset('assetsFront/img/bg/award-bg-1-1.png') }}">
         <div class="container">
             <div class="title-area text-center">
-                <span class="sub-title text-white">Récompenses</span>
-                <h2 class="sec-title text-white">Nos Reconnaissances & Récompenses</h2>
+                
+                <h2 class="sec-title text-white">Nous-Contacter</h2>
             </div>
-            <div class="swiper th-slider has-shadow" id="awardSlider1" data-slider-options='{"breakpoints":{"0":{"slidesPerView":2},"576":{"slidesPerView":"3"},"768":{"slidesPerView":"4"},"992":{"slidesPerView":"5"},"1200":{"slidesPerView":"5"}}}'>
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/award/award1-1.png') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/award/award1-2.png') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/award/award1-3.png') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/award/award1-4.png') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/award/award1-5.png') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/award/award1-1.png') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/award/award1-2.png') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/award/award1-3.png') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/award/award1-4.png') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/award/award1-5.png') }}" alt="Image">
-                        </a>
-                    </div>
-
-
-                </div>
-            </div>
+            
         </div>
     </section><!--==============================
 Contact Area   
@@ -763,7 +707,7 @@ Contact Area
                 <div class="row g-0">
                     <div class="col-lg-6">
                         <div class="appointment-wrap2 bg-white">
-                            <h2 class="form-title text-theme">Nous-contactez</h2>
+                        
 
                             <form id="contactForm" action="{{ path('contact') }}" method="POST" class="appointment-form">
                                 <div class="row">
@@ -794,7 +738,7 @@ Contact Area
                     </div>
                     <div class="col-lg-6">
                         <div class="contact-thumb4-1">
-                            <img src="{{ asset('assetsFront/img/normal/contact2.jpg') }}" alt="img">
+                            <img src="{{ asset('assetsFront/img/normal/contact_thumb_4_1.png') }}" alt="img">
                         </div>
                     </div>
                 </div>
@@ -858,83 +802,7 @@ Client Area
 ==============================-->
     <div class="client-area-4 space bg-theme overflow-hidden" data-bg-src="{{ asset('assetsFront/img/bg/award-bg-1-1.png') }}">
         <div class="container">
-            <div class="swiper th-slider has-shadow" id="clientSlider1" data-slider-options='{"breakpoints":{"0":{"slidesPerView":2},"576":{"slidesPerView":"3"},"768":{"slidesPerView":"4"},"992":{"slidesPerView":"5"},"1200":{"slidesPerView":"6"}}}'>
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/brand/brand_1_1.svg') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/brand/brand_1_2.svg') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/brand/brand_1_3.svg') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/brand/brand_1_4.svg') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/brand/brand_1_5.svg') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/brand/brand_1_6.svg') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/brand/brand_1_1.svg') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/brand/brand_1_2.svg') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/brand/brand_1_3.svg') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/brand/brand_1_4.svg') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/brand/brand_1_5.svg') }}" alt="Image">
-                        </a>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <a href="#" class="client-card">
-                            <img src="{{ asset('assetsFront/img/brand/brand_1_6.svg') }}" alt="Image">
-                        </a>
-                    </div>
-
-
-                </div>
-            </div>
+           
         </div>
     </div><!--==============================
 Team Area  

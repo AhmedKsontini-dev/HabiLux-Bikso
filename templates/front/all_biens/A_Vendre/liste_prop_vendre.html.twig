@@ -351,24 +351,23 @@ Property Page Area
 							</div>
 						{% else %}
 							{% for bien in biens %}
-                                {# Vérification si une transaction "Location" existe #}
-								{% set isLocation = bien.transactions|filter(t => t.typeTransaction == 'Location') is not empty %}
+                                
                                     <div class="col-md-6 col-xl-4">
                                         <div class="property-card2">
                                             <div class="property-card-thumb img-shine">
                                                 <img
                                                 src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien">
 
-                                                {# Afficher le badge "Loué" si le bien a une transaction de type "Location" #}
-                                                {% if isLocation %}
+                                              
+                                                {% if bien.disponibilite == 'Louee' %}
                                                     <div class="property-status-badge">Loué</div>
                                                 {% endif %}
 
                                                 {# Badge du prix en haut à droite #}
-                                                {% if not isLocation %}
+                                                {% if bien.disponibilite == 'Disponible' %}
                                                     {% if bien.afficherPrix %}
                                                         <div class="property-price-badge">
-                                                            {{ bien.prixBien }} DT
+                                                            {{ bien.prixBien|number_format(0, '', '.') }} DT
                                                         </div>
                                                     {% else %}
                                                         <div class="property-price-badge private-price">
@@ -429,23 +428,21 @@ Property Page Area
 						</div>
 					{% else %}
 						{% for bien in biens %}
-                            {# Vérification si une transaction "Location" existe #}
-							{% set isLocation = bien.transactions|filter(t => t.typeTransaction == 'Location') is not empty %}
-							
+                           
                                 <div class="property-card-wrap style-dark">
                                     <div class="property-thumb position-relative">
                                         <img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien" style="width:390px; height:350px;">
 
                                         {# Afficher le badge "Loué" si le bien a une transaction de type "Location" #}
-										{% if isLocation %}
+										{% if bien.disponibilite == 'Louee' %}
 											<div class="property-status-badge">Loué</div>
 										{% endif %}
 
 										{# Badge du prix en haut à droite #}
-										{% if not isLocation %}
+										{% if bien.disponibilite == 'Disponible' %}
 											{% if bien.afficherPrix %}
 												<div class="property-price-badge">
-													{{ bien.prixBien }} DT
+													{{ bien.prixBien|number_format(0, '', '.') }} DT
 												</div>
 											{% else %}
 												<div class="property-price-badge private-price">
@@ -475,7 +472,7 @@ Property Page Area
                                             <div class="property-card-meta">
                                                 <span>
                                                     <i class="fas fa-money-bill-wave"></i>Prix:<br>
-                                                    {{ bien.afficherPrix ? bien.prixBien ~ 'DT' : 'Prix Privée' }}</span>
+                                                    {{ bien.afficherPrix ? bien.prixBien|number_format(0, '', '.') ~ 'DT' : 'Prix Privée' }}</span>
 
                                                 <span>
                                                     <i class="fas fa-key"></i>Référence:<br>
@@ -507,7 +504,7 @@ Property Page Area
                                             </div>
 
                                             <div class="property-btn-wrap">
-                                                <img src="{{ asset('uploads/photo_profil/' ~ bien.publierPar.photoProfil) }}" alt="Photo de l'utilisateur" class="user-photo">
+                                                
                                                 <a>
                                                     <i class="fas fa-phone-alt"></i>
                                                     {{ bien.publierPar.tel }}</a>

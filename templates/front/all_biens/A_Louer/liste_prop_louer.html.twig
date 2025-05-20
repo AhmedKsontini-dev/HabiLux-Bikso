@@ -227,8 +227,9 @@
 }
 
 .noUi-connect {
-    background: #1C2D37;
+    background: #1C2D37 !important;
 }
+
 
 .noUi-handle {
     height: 18px;
@@ -291,13 +292,7 @@
     left: 50%;
     bottom: -143% !important;
 }
-p {
-    font-family: var(--body-font);
-    margin: 0 0 18px 0;
-    /* color: var(--body-color); */
-    line-height: 1.75;
-    color: #1C2D37;
-}
+
 	</style>
 	<div class="breadcumb-wrapper " data-bg-src="{{ asset('assetsFront/img/bg/breadcumb-bg.jpg') }}">
 		<div class="container">
@@ -341,7 +336,7 @@ p {
 
             <!-- Slider de prix avec deux poignées -->
             <div class="form-group mb-4">
-				<p for="prixSlider">Prix (TND)</p>
+				<p for="prixSlider" style="color:#1C2D37;">Prix (TND)</p>
 				<div id="prixSlider"></div>
 				<input type="hidden" name="prixMin" id="prixMin">
 				<input type="hidden" name="prixMax" id="prixMax">
@@ -406,7 +401,7 @@ p {
 
 						<!-- Slider de prix avec deux poignées -->
 						<div class="form-group mb-4">
-							<p for="prixSlider">Prix (TND)</p>
+							<p for="prixSlider" style="color:#1C2D37;">Prix (TND)</p>
 							<div id="prixSlider"></div>
 							<input type="hidden" name="prixMin" id="prixMin">
 							<input type="hidden" name="prixMax" id="prixMax">
@@ -510,8 +505,6 @@ p {
 							</div>
 						{% else %}
 							{% for bien in biens %}
-								{# Vérification si une transaction "Location" existe #}
-								{% set isLocation = bien.transactions|filter(t => t.typeTransaction == 'Location') is not empty %}
 								
 									<div class="col-md-6 col-xl-4">
 										<div class="property-card2">
@@ -520,15 +513,15 @@ p {
 												src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien">
 
 												{# Afficher le badge "Loué" si le bien a une transaction de type "Location" #}
-												{% if isLocation %}
+												{% if bien.disponibilite == 'Louee' %}
 													<div class="property-status-badge">Louée</div>
 												{% endif %}
 
 												{# Badge du prix en haut à droite #}
-												{% if not isLocation %}
+												{% if bien.disponibilite == 'Disponible' %}
 													{% if bien.afficherPrix %}
 														<div class="property-price-badge">
-															{{ bien.prixBien }} DT
+															{{ bien.prixBien|number_format(0, '', '.') }} DT/Mois
 														</div>
 													{% else %}
 														<div class="property-price-badge private-price">
@@ -536,6 +529,7 @@ p {
 														</div>
 													{% endif %}
 												{% endif %}
+
 
 												<!-- Nouveau badge pour le nomType -->
 												<span class="property-type-badge">
@@ -591,23 +585,20 @@ p {
 						</div>
 					{% else %}
 						{% for bien in biens %}
-								{# Vérification si une transaction "Location" existe #}
-								{% set isLocation = bien.transactions|filter(t => t.typeTransaction == 'Location') is not empty %}
-
+								
 								<div class="property-card-wrap style-dark">
 									<div class="property-thumb position-relative">
 										<img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien" style="width:390px; height:350px;">
 
-										{# Afficher le badge "Loué" si le bien a une transaction de type "Location" #}
-										{% if isLocation %}
+										{% if bien.disponibilite == 'Louee' %}
 											<div class="property-status-badge">Louée</div>
 										{% endif %}
 
 										{# Badge du prix en haut à droite #}
-										{% if not isLocation %}
+										{% if bien.disponibilite == 'Disponible' %}
 											{% if bien.afficherPrix %}
 												<div class="property-price-badge">
-													{{ bien.prixBien }} DT
+													{{ bien.prixBien|number_format(0, '', '.') }} DT/Mois
 												</div>
 											{% else %}
 												<div class="property-price-badge private-price">
@@ -637,7 +628,7 @@ p {
 											<div class="property-card-meta">
 												<span>
 													<i class="fas fa-money-bill-wave"></i>Prix:<br>
-													{{ bien.afficherPrix ? bien.prixBien ~ 'DT' : 'Prix Privée' }}</span>
+													{{ bien.afficherPrix ? bien.prixBien|number_format(0, '', '.') ~ ' DT/Mois' : 'Prix Privée' }}</span>
 
 												<span>
 													<i class="fas fa-key"></i>Référence:<br>
@@ -669,7 +660,7 @@ p {
 											</div>
 
 											<div class="property-btn-wrap">
-												<img src="{{ asset('uploads/photo_profil/' ~ bien.publierPar.photoProfil) }}" alt="Photo de l'utilisateur" class="user-photo">
+												
 												<a>
 													<i class="fas fa-phone-alt"></i>
 													{{ bien.publierPar.tel }}</a>

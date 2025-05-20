@@ -19,7 +19,8 @@ class DetailsPropriete
     #[ORM\ManyToOne(inversedBy: 'detailsProprietes')]
     private ?propriete $propriete = null;
 
-    #[ORM\ManyToOne(inversedBy: 'detailsProprietes')]
+    #[ORM\ManyToOne(targetEntity: Bien::class, inversedBy: 'detailsProprietes')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?bien $bien = null;
 
     #[ORM\Column(nullable: true)]

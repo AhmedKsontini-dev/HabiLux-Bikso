@@ -185,46 +185,6 @@
 
 
 
-
-
-
-    <div class="container-fluid bg-light p-4">
-        <label for="toggleColumns"><strong>Afficher/Masquer Colonnes :</strong></label>
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="toggleColumns" data-bs-toggle="dropdown" aria-expanded="false">
-                Sélectionner les colonnes
-            </button>
-            <ul class="dropdown-menu p-3" aria-labelledby="toggleColumns" id="columnsDropdown">
-                {% set columns = [
-                    {'id': 'col-id', 'label': 'ID'},
-                    {'id': 'col-photo', 'label': 'Photo'},
-                    {'id': 'col-nom', 'label': 'Nom'},
-                    {'id': 'col-prenom', 'label': 'Prénom'},
-                    {'id': 'col-email', 'label': 'Email'},
-                    {'id': 'col-tel', 'label': 'Téléphone'},
-                    {'id': 'col-poste', 'label': 'Poste'},
-                    {'id': 'col-roles', 'label': 'Roles'},
-                    {'id': 'col-verifie', 'label': 'Vérifié'},
-                    {'id': 'col-status', 'label': 'Status'},
-                    {'id': 'col-actions', 'label': 'Actions'}
-                ] %}
-
-                {% for column in columns %}
-                    <li>
-                        <a href="#" class="toggle-column text-decoration-none text-dark d-flex justify-content-between align-items-center"
-                        data-column="{{ column.id }}">
-                            <span>{{ column.label }}</span>
-                            <i class="status-icon fas fa-eye" data-column="{{ column.id }}"></i>
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-
-
- 
-
     <div class="container-fluid bg-light p-4 mt-4">
             {% if app.session.flashBag.has('success') %}
                 <div id="alert" class="alert alert-success" style="display: none;" role="alert">

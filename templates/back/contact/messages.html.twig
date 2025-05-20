@@ -16,76 +16,73 @@
     }
 
     .bg-dark {
-    background-color: #202D3A86 !important; /* Exemple de fond sombre */
-}
+        background-color: #202D3A86 !important;
+    }
 
-.text-white {
-    color: white !important;
-}
+    .text-white {
+        color: white !important;
+    }
 
+    .message-item {
+        position: relative;
+    }
 
-.message-item {
-    position: relative;
-}
-
-
-.badge-warning {
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translate(14%, -28%); 
-    z-index: 10; 
-    background-color: #FF0707FF;
-}
-
-
+    .badge-warning {
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(14%, -28%);
+        z-index: 10;
+        background-color: #FF0707FF;
+    }
 </style>
 {% endblock %}
 
 {% block body %}
-
-    <div class="page-header-left">
-        <h3 class="page-title">📩 Messages de contact</h3>
-    </div>
+<div class="page-header-left">
+    <h3 class="page-title">📩 Messages de contact</h3>
+</div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-4">
-            <input type="text" id="searchInput" class="form-control mb-2" placeholder="Rechercher par nom ou email">
-            <div class="list-group" id="messageList" style="max-height: 400px; overflow-y: auto;">
-                {% for message in messages %}
-    <a href="#" class="list-group-item list-group-item-action message-item {% if not message.isRead %}bg-dark text-white{% endif %}" 
-        data-id="{{ message.id }}" 
-        data-name="{{ message.name }}" 
-        data-tel="{{ message.tel }}"
-        data-email="{{ message.email }}" 
-        data-message="{{ message.message }}" 
-        data-date="{{ message.createdAt|date('d/m/Y H:i') }}"
-        data-status="{{ message.status }}">
-        
-        <strong class="message-name">{{ message.name }}</strong> <br>
-        <small class="message-email">
- 
-            {% if message.status == 'confirmer' %}
-                {{ message.email }}✅
-            {% elseif message.status == 'en_attente' %}
-                {{ message.email }}⏳
-            {% elseif message.status == 'annuler' %}
-                {{ message.email }}❌
-            {% endif %}
-        </small>
-
-        {% if not message.isRead %}
-            <span class="badge badge-warning position-absolute top-0 end-0 m-2">Non lu</span>
-        {% endif %}
-    </a>
-{% endfor %}
+            <div class="d-flex mb-2">
+                <input type="text" id="searchInput" class="form-control me-2" placeholder="Rechercher par nom ou email">
+                <button id="toggleSelectMode" class="btn" title="Supprimer plusieurs messages">
+                    <i class="fas fa-trash-alt text-danger"></i>
+                </button>
 
             </div>
+
+            <div class="list-group" id="messageList" style="max-height: 400px; overflow-y: auto;">
+                {% for message in messages %}
+                    <a href="#" 
+                       class="list-group-item list-group-item-action message-item {% if not message.isRead %}bg-dark text-white{% endif %}" 
+                       data-id="{{ message.id }}"
+                       data-name="{{ message.name }}"
+                       data-tel="{{ message.tel }}"
+                       data-email="{{ message.email }}"
+                       data-date="{{ message.createdAt ? message.createdAt|date('d/m/Y H:i') : '' }}"
+                       data-message="{{ message.message }}"
+                       data-status="{{ message.status }}">
+                       
+                        <input type="checkbox" class="delete-checkbox form-check-input me-2" style="display: none;">
+                        <strong class="message-name">{{ message.name }}</strong> <br>
+                        <small class="message-email">
+                            {% if message.status == 'confirmer' %}{{ message.email }}✅
+                            {% elseif message.status == 'en_attente' %}{{ message.email }}⏳
+                            {% elseif message.status == 'annuler' %}{{ message.email }}❌
+                            {% endif %}
+                        </small>
+
+                        {% if not message.isRead %}
+                            <span class="badge badge-warning position-absolute top-0 end-0 m-2">Non lu</span>
+                        {% endif %}
+                    </a>
+                {% endfor %}
+            </div>
+
+            <button id="deleteSelectedBtn" class="btn btn-danger mt-2" style="display: none;">Supprimer les messages sélectionnés</button>
         </div>
-
-
-
-
 
         <!-- Détails du message -->
         <div class="col-md-8">
@@ -99,14 +96,12 @@
                     <p><strong>Date :</strong> <span id="messageDate"></span></p>
                     <p><strong>Message :</strong></p>
                     <p id="messageContent" class="border p-3 bg-light">Aucun message sélectionné</p>
-
                     <p><strong>Statut :</strong> <span id="messageStatus">Non défini</span></p>
                     <div>
                         <button class="btn btn-success status-btn" data-status="confirmer">✅ Confirmer</button>
                         <button class="btn btn-warning status-btn" data-status="en_attente">⏳ En attente</button>
                         <button class="btn btn-danger status-btn" data-status="annuler">❌ Annuler</button>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -262,4 +257,67 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let selectMode = false;
+        const toggleBtn = document.getElementById("toggleSelectMode");
+        const checkboxes = document.querySelectorAll(".delete-checkbox");
+        const deleteBtn = document.getElementById("deleteSelectedBtn");
+
+        toggleBtn.addEventListener("click", function () {
+            selectMode = !selectMode;
+            checkboxes.forEach(checkbox => checkbox.style.display = selectMode ? 'inline-block' : 'none');
+            deleteBtn.style.display = selectMode ? 'inline-block' : 'none';
+
+            // Réinitialiser les cases si on quitte le mode
+            if (!selectMode) {
+                checkboxes.forEach(cb => cb.checked = false);
+            }
+        });
+
+        // ✅ Empêcher le clic sur la checkbox de propager l'événement au lien parent
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener("click", function (e) {
+                e.stopPropagation();
+            });
+        });
+
+        deleteBtn.addEventListener("click", function () {
+            const selectedIds = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.closest('.message-item').getAttribute('data-id'));
+
+            if (selectedIds.length === 0) {
+                alert("Aucun message sélectionné.");
+                return;
+            }
+
+            if (confirm("Voulez-vous vraiment supprimer les messages sélectionnés ?")) {
+                fetch('/back/contact/messages/delete-multiple', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ ids: selectedIds })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Supprimer les éléments du DOM
+                        selectedIds.forEach(id => {
+                            let el = document.querySelector(`.message-item[data-id="${id}"]`);
+                            if (el) el.remove();
+                        });
+                        alert("Messages supprimés avec succès.");
+                    } else {
+                        console.error("Erreur :", data.message);
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
 {% endblock %}

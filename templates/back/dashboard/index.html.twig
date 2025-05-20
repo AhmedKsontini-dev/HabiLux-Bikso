@@ -51,7 +51,7 @@
                                             <div class="alert alert-danger" role="alert">
                                                 <i class="fas fa-exclamation-triangle fa-shake text-danger fa-2x"></i> <!-- Icône rouge et plus grande -->
                                                 <strong>{{ next_event.title }}</strong><br>
-                                                Date: {{ next_event.startDate|date('d/m/Y') }}<br>
+                                                Date: {{ next_event.startDate|date('d/m/Y H:i') }}<br>
                                                 {{ next_event.description }}
                                             </div>
                                         {% else %}

@@ -8,18 +8,35 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
-            ->add('prenom')
-            ->add('email')
-            ->add('tel')
-            ->add('adresse')
-            ->add('localisation')
+            ->add('nom', null, [
+                'required' => true,
+            ])
+            ->add('prenom', null, [
+                'required' => true,
+            ])
+            ->add('email', EmailType::class, [
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'exemple@domaine.com',
+                ],
+            ])
+            
+            ->add('tel', null, [
+                'required' => true,
+            ])
+            ->add('adresse', null, [
+                'required' => true,
+            ])
+            ->add('localisation', null, [
+                'required' => true,
+            ])
             ->add('cin')
             ->add('poste', ChoiceType::class, [
                 'choices' => [
@@ -34,7 +51,7 @@ class UserType extends AbstractType
                 ],
                 'expanded' => false, // liste déroulante
                 'multiple' => false, // ⛔ un seul choix possible
-                'required' => true,
+                'required' => false,
                 'label' => 'Poste',
                 'placeholder' => 'Sélectionner un poste',
                 'attr' => ['class' => 'form-select'],
@@ -49,7 +66,7 @@ class UserType extends AbstractType
                 'expanded' => false,
                 'multiple' => true,
                 'label' => 'Rôle',
-                'required' => true,
+                'required' => false,
                 'placeholder' => 'Sélectionner un ou plusieurs rôles',
                 'attr' => ['class' => 'form-select'],
             ])

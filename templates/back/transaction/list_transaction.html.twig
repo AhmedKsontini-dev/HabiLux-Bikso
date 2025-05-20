@@ -69,6 +69,12 @@
         margin-bottom: 20px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
+
+    .bg-mauve {
+    background-color: #dc69f1; /* Couleur mauve */
+    color: white; /* Texte blanc pour un meilleur contraste */
+}
+
 </style>
 {% endblock %}
 
@@ -258,11 +264,12 @@
 
             <td>
                 {% if tran.typeTransaction == 'Vente' %}
-                    <span class="badge bg-purple">Vente</span>
+                    <span class="badge bg-mauve">Vente</span> <!-- Mauve pour les ventes -->
                 {% else %}
                     <span class="badge bg-warning text-white">{{ tran.typeTransaction }}</span>
                 {% endif %}
             </td>
+
 
             <td>{{ tran.prixVente }} TND</td>
             <td>{{ tran.commission }} TND</td>
@@ -275,7 +282,7 @@
             </td>
 
             <td>
-                {% if tran.payer == 'Payé' %}
+                {% if tran.payer == 'paye' %}
                     <span class="badge bg-success">Payé</span>
                 {% else %}
                     <span class="badge bg-danger">{{ tran.payer }}</span>
@@ -283,7 +290,7 @@
             </td>
 
             <td>
-                {% if tran.statutTransaction == 'Validée' %}
+                {% if tran.statutTransaction == 'termine' %}
                     <span class="badge bg-success">Validée</span>
                 {% else %}
                     <span class="badge bg-warning">{{ tran.statutTransaction }}</span>

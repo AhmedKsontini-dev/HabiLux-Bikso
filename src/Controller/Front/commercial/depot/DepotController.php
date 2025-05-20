@@ -38,6 +38,21 @@ class DepotController extends AbstractController
                ->setParameter('nomGouvernorat', $gouvernorat);
         }
 
+        // Récupérer les valeurs de prixMin et prixMax depuis la requête
+        $prixMin = $request->query->get('prixMin');
+        $prixMax = $request->query->get('prixMax');
+
+        // Vérifier et appliquer les filtres
+        if (!empty($prixMin)) {
+            $qb->andWhere('b.prixBien >= :prixMin')
+            ->setParameter('prixMin', (int) $prixMin);
+        }
+
+        if (!empty($prixMax)) {
+            $qb->andWhere('b.prixBien <= :prixMax')
+            ->setParameter('prixMax', (int) $prixMax);
+        }
+
         // Tri par option
         $orderby = $request->query->get('orderby');
         switch ($orderby) {
@@ -98,6 +113,21 @@ class DepotController extends AbstractController
             $qb->join('b.gouvernorat', 'g')  // 'gouvernorat' doit être le nom de la relation dans l'entité Bien
                ->andWhere('g.nomGouvernorat = :nomGouvernorat')
                ->setParameter('nomGouvernorat', $gouvernorat);
+        }
+
+        // Récupérer les valeurs de prixMin et prixMax depuis la requête
+        $prixMin = $request->query->get('prixMin');
+        $prixMax = $request->query->get('prixMax');
+
+        // Vérifier et appliquer les filtres
+        if (!empty($prixMin)) {
+            $qb->andWhere('b.prixBien >= :prixMin')
+            ->setParameter('prixMin', (int) $prixMin);
+        }
+
+        if (!empty($prixMax)) {
+            $qb->andWhere('b.prixBien <= :prixMax')
+            ->setParameter('prixMax', (int) $prixMax);
         }
 
         // Tri par option

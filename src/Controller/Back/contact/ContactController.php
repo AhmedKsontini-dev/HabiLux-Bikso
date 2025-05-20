@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class ContactController extends AbstractController
 {
@@ -72,5 +73,29 @@ class ContactController extends AbstractController
         $entityManager->flush();
 
         return new JsonResponse(['status' => 'success', 'newStatus' => $status]);
+    }
+
+    #[Route('/back/contact/messages/delete-multiple', name: 'contact_message_delete_multiple', methods: ['POST'])]
+    public function deleteMultipleMessages(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $ids = $data['ids'] ?? [];
+
+        if (!is_array($ids) || empty($ids)) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Aucun ID fourni'], 400);
+        }
+
+        $repo = $entityManager->getRepository(ContactMessage::class);
+
+        foreach ($ids as $id) {
+            $message = $repo->find($id);
+            if ($message) {
+                $entityManager->remove($message);
+            }
+        }
+
+        $entityManager->flush();
+
+        return new JsonResponse(['status' => 'success']);
     }
 }

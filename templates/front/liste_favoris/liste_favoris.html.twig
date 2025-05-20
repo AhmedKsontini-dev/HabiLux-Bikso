@@ -232,16 +232,21 @@ Property Page Area
                                             {{ bien.typeOffre }}
                                         </span>
                                         <div class="property-info-overlay">
-                                            <h4 class="property-card-title">
+                                            <h4 class="property-card-title" style="font-size: 15px;">
                                                 <a href="{{ path('app_front_all_biens_details_prop', {'id': bien.id}) }}">{{ bien.nomBien }}</a>
                                             </h4>
 
                                             <h5 class="property-card-price" style="color: white;">
-                                                {{ bien.afficherPrix ? bien.prixBien ~ ' DT' : 'Prix Privée' }}
+                                                {% if bien.afficherPrix %}
+                                                    {{ bien.prixBien|number_format(0, '', '.') }} {{ bien.typeOffre == 'A Louer' ? 'DT/Mois' : 'DT' }}
+                                                {% else %}
+                                                    Prix Privée
+                                                {% endif %}
                                             </h5>
 
+
                                             {# Nouvelle ligne pour afficher l'adresse du bien #}
-                                            <p class="property-card-address" style="color: white;">
+                                            <p class="property-card-address" style="color: white; font-size: 12px;">
                                                 <i class="fas fa-map-marker-alt"></i> {{ bien.adresseBien }}
                                             </p>
 
@@ -337,7 +342,7 @@ document.querySelectorAll('.delete-favori').forEach((element) => {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        this.closest('.col-md-6').remove(); // Supprime l'élément parent
+                        location.reload(); // Recharge la page
                     } else {
                         alert(data.message); // Affiche le message d'erreur renvoyé
                     }
@@ -346,7 +351,7 @@ document.querySelectorAll('.delete-favori').forEach((element) => {
         }
     });
 });
-
 </script>
+
 {% endblock %}
 

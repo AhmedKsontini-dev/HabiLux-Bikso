@@ -224,6 +224,26 @@
         color: #1C2D37;
     }
 
+
+.gallery-scrollable {
+        max-height: 800px; /* Ajuste selon la hauteur de 6 images (tu peux réduire si nécessaire) */
+        overflow-y: auto;
+    }
+
+    .property-gallery-card {
+        height: 100%;
+    }
+
+    .gallery-scrollable::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .gallery-scrollable::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 3px;
+    }
+
+
 </style>
     <div class="breadcumb-wrapper " data-bg-src="{{ asset('assetsFront/img/bg/breadcumb-bg.jpg') }}">
         <div class="container">
@@ -326,12 +346,53 @@ Property Page Area
                             </div>
 
                             <h2 class="page-title">À propos de cette propriété</h2>
-                            <p class="mb-30">{{ description }}</p>
+                            <p class="mb-30">{{ description|nl2br }}</p>
 
+
+                   
                             <h2 class="page-title mb-20">Vue d'ensemble de la propriété</h2>
                             <div class="property-overview">
-                                <!-- ... tes blocs de propriétés (Référence ID, Nom du bien, etc.) restent inchangés ... -->
-                                <!-- raccourci ici pour clarté -->
+                                <ul class="property-grid-list">
+                                    <!-- Colonne 1 -->
+                                    <li class="property-grid-item">
+                                        <div class="property-grid-list-icon">
+                                            <img src="{{ asset('assetsFront/img/icon/property-single-icon1-1.svg') }}" alt="img">
+                                        </div>
+                                        <div class="property-grid-list-details">
+                                            <h4 class="property-grid-list-title">Réf. Bien</h4>
+                                            <p class="property-grid-list-text">#{{ bien.id }}</p>
+                                        </div>
+                                    </li>
+                                    
+                                    <li class="property-grid-item">
+                                        <div class="property-grid-list-icon">
+                                            <img src="{{ asset('assetsFront/img/icon/property-single-icon1-2.svg') }}" alt="img">
+                                        </div>
+                                        <div class="property-grid-list-details">
+                                            <h4 class="property-grid-list-title">Type</h4>
+                                            <p class="property-grid-list-text">{{ bien.type.nomType }}</p>
+                                        </div>
+                                    </li>
+                                    
+                                    <li class="property-grid-item">
+                                        <div class="property-grid-list-icon">
+                                            <img src="{{ asset('assetsFront/img/icon/property-single-icon1-5.svg') }}" alt="img">
+                                        </div>
+                                        <div class="property-grid-list-details">
+                                            <h4 class="property-grid-list-title">Ville</h4>
+                                            <p class="property-grid-list-text">{{ bien.ville.nomVille }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="property-grid-item">
+                                        <div class="property-grid-list-icon">
+                                            <img src="{{ asset('assetsFront/img/icon/property-single-icon1-7.svg') }}" alt="img">
+                                        </div>
+                                        <div class="property-grid-list-details">
+                                            <h4 class="property-grid-list-title">Gouvernorat</h4>
+                                            <p class="property-grid-list-text">{{ bien.gouvernorat.nomGouvernorat }}</p>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
 
                             <!-- Onglets Galerie / Vidéo -->
@@ -342,7 +403,6 @@ Property Page Area
                                 </div>
                             </div>
 
-                            <!-- Contenu Galerie -->
                             <div id="galleryContent">
                                 <div class="row gy-4 gallery-scrollable">
                                     {% for image in images %}
@@ -395,7 +455,7 @@ Property Page Area
                                     <div class="widget widget-property-contact">
                                         
                                         <div class="widget-title">
-                                            {% if isLocation %}
+                                            {% if bien.disponibilite == 'Louee' %}
                                                 <h4 class="widget_subtitle">Louée</h4>
                                             {% else %}
                                                 <h4 class="widget_subtitle">{{ typeOffre }}</h4>
@@ -411,14 +471,21 @@ Property Page Area
                                         
 
                                         {% if afficherPrix == 1 %}
-                                            <h4 class="widget_price">
-                                                <i class="fal fa-money-bill-alt"></i> &nbsp;{{ prixBien }} DT
+                                           <h4 class="widget_price">
+                                                <i class="fal fa-money-bill-alt"></i> &nbsp;
+                                                {% if typeOffre == 'A Louer' %}
+                                                    {{ prixBien|number_format(0, '', '.') }} DT/Mois
+                                                {% else %}
+                                                    {{ prixBien|number_format(0, '', '.') }} DT
+                                                {% endif %}
                                             </h4>
+
                                         {% else %}
                                             <h4 class="widget_price">
                                                 <i class="fal fa-info-circle"></i> Contactez nous pour le prix
                                             </h4>
                                         {% endif %}
+
 
 
 
@@ -485,39 +552,50 @@ Property Page Area
 
 
                         <h3 class="page-title mt-45 mb-30">Emplacement</h3>
-                            <div class="location-map">
-                                <div class="contact-map" id="map" style="width: 100%; height: 400px; z-index:-1;"></div> <!-- Div pour la carte -->
-                            </div>
-                            
-                            {% if positionMap %}
-                                {% set coordinates = positionMap | split(',') %}
-                                {% set latitude = coordinates[0] %}
-                                {% set longitude = coordinates[1] %}
-                                
-                                <!-- Inclure Leaflet CSS -->
-                                <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-                                <!-- Inclure Leaflet JS -->
-                                <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<div class="location-map" style="position: relative; z-index:1;">
+    <div class="contact-map" id="map" style="width: 100%; height: 400px; position: relative;"></div>
+</div>
 
-                                <script>
-                                    // Initialiser la carte Leaflet
-                                    var map = L.map('map').setView([{{ latitude }}, {{ longitude }}], 13); // Centre la carte sur les coordonnées
 
-                                    // Ajouter la couche OpenStreetMap
-                                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                    }).addTo(map);
+{% if positionMap %}
+    {% set coordinates = positionMap | split(',') %}
+    {% set latitude = coordinates[0] %}
+    {% set longitude = coordinates[1] %}
+    
+    <!-- Inclure Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-                                    // Ajouter un marqueur
-                                    var marker = L.marker([{{ latitude }}, {{ longitude }}]).addTo(map);
+    <!-- Inclure Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-                                    // Ajouter un popup au marqueur
-                                    marker.bindPopup("<b>Propriété ici</b><br>Voir cette propriété sur la carte.").openPopup();
-                                </script>
-                            {% else %}
-                                <p>Emplacement non disponible</p>
-                            {% endif %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    var map = L.map('map').setView([{{ latitude }}, {{ longitude }}], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Icône personnalisée avec ton logo
+    var customIcon = L.icon({
+        iconUrl: "{{ asset('assetsFront/img/apple-icon-60x60 .png') }}",
+        iconSize:     [32, 32],    // adapte la taille si nécessaire
+        iconAnchor:   [16, 32],    // centre en bas
+        popupAnchor:  [0, -32]     // popup au-dessus de l’icône
+    });
+
+    // Marqueur avec l'icône personnalisée
+    var marker = L.marker([{{ latitude }}, {{ longitude }}], { icon: customIcon }).addTo(map);
+
+    marker.bindPopup("<b>Propriété ici</b><br>Voir cette propriété sur la carte.").openPopup();
+});
+
+    </script>
+{% else %}
+    <p>Emplacement non disponible</p>
+{% endif %}
+
                         </div>
                     </div>
                 </section>

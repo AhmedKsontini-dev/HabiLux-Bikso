@@ -18,11 +18,13 @@ final class TransactionController extends AbstractController
 {
     private HistoriqueService $historiqueService;
     private $unreadMessageService;
+    private TransactionRepository $transactionRepository;
 
-    public function __construct(HistoriqueService $historiqueService, UnreadMessageService $unreadMessageService)
+    public function __construct(HistoriqueService $historiqueService, UnreadMessageService $unreadMessageService, TransactionRepository $transactionRepository)
     {
         $this->unreadMessageService = $unreadMessageService;
         $this->historiqueService = $historiqueService;
+        $this->transactionRepository = $transactionRepository;
     }
 
     #[Route('/back/transactions', name: 'app_transactions')]
@@ -97,7 +99,7 @@ final class TransactionController extends AbstractController
 
 
     #[Route('/back/transactions/new', name: 'app_back_transaction_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,TransactionRepository $transactionRepository): Response
     {
         // Récupérer le nombre de messages non lus
         $unreadCount = $this->unreadMessageService->getUnreadCount();
@@ -121,6 +123,9 @@ final class TransactionController extends AbstractController
                     $entityManager->flush();
                 }
             }
+
+            // Appel de la méthode vendreBien() du repository
+            $this->transactionRepository->vendreBien($transaction, $entityManager);
             
 
             return $this->redirectToRoute('app_transactions', [], Response::HTTP_SEE_OTHER);
@@ -149,10 +154,8 @@ final class TransactionController extends AbstractController
     }
 
     #[Route('/back/transactions/{id}/edit', name: 'app_back_transaction_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Transaction $transaction, EntityManagerInterface $entityManager,TransactionRepository $transactionRepository): Response
     {
-
-        // Récupérer le nombre de messages non lus
         $unreadCount = $this->unreadMessageService->getUnreadCount();
 
         $form = $this->createForm(TransactionType::class, $transaction);
@@ -161,8 +164,12 @@ final class TransactionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            // Appel de la méthode pour mettre à jour la disponibilité du bien
+            $this->transactionRepository->vendreBien($transaction, $entityManager);
+
             $this->historiqueService->enregistrerAction('Modification', "Modification de transaction ID: {$transaction->getId()} ");
             $this->addFlash('success', 'Modification de transaction avec succès');
+
             return $this->redirectToRoute('app_transactions', [], Response::HTTP_SEE_OTHER);
         }
             
@@ -187,4 +194,7 @@ final class TransactionController extends AbstractController
 
         return $this->redirectToRoute('app_transactions', [], Response::HTTP_SEE_OTHER);
     }
+
+  
+   
 }

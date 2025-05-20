@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Transaction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
+
 
 /**
  * @extends ServiceEntityRepository<Transaction>
@@ -61,12 +63,19 @@ class TransactionRepository extends ServiceEntityRepository
 
     public function vendreBien(Transaction $transaction, EntityManagerInterface $entityManager)
     {
+        $bien = $transaction->getBien();
+
         if ($transaction->getTypeTransaction() === 'Vente') {
-            $bien = $transaction->getBien();
             $bien->setBienAfficher(false); // Masquer le bien vendu
-            $entityManager->persist($bien);
-            $entityManager->flush();
+            $bien->setDisponibilite('Non_disponible'); // Indiquer que le bien est non disponible
+        } elseif ($transaction->getTypeTransaction() === 'Location') {
+            $bien->setDisponibilite('Louee'); // Indiquer que le bien est loué
+            $bien->setBienAfficher(true);     // Le bien peut rester visible
         }
+
+        $entityManager->persist($bien);
+        $entityManager->flush();
     }
+
 
 }

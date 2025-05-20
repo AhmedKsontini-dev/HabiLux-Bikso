@@ -47,7 +47,8 @@ class Bien
     /**
      * @var Collection<int, DetailsPropriete>
      */
-    #[ORM\OneToMany(targetEntity: DetailsPropriete::class, mappedBy: 'bien')]
+    #[ORM\OneToMany(targetEntity: DetailsPropriete::class, mappedBy: 'bien', cascade: ['remove'], orphanRemoval: true)]
+
     private Collection $detailsProprietes;
 
     /**
@@ -94,21 +95,19 @@ class Bien
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $youtubeId = null;
 
+    #[ORM\Column(type: 'string', length: 20)]
+    private ?string $disponibilite = 'Disponible'; // Valeur par défaut
 
-
-
-
-
- 
-
-
-
+    public const DISPONIBILITE_OPTIONS = ['Disponible', 'Louee', 'Non_disponible'];
+    
     public function __construct()
     {
         $this->imageBiens = new ArrayCollection();
         $this->dateCreation = new \DateTime();
         $this->favoris = new ArrayCollection();
         $this->transactions = new ArrayCollection();
+        $this->detailsProprietes = new ArrayCollection();
+        
     }
 
     public function setCreationDate(): void
@@ -411,10 +410,20 @@ class Bien
         return $this;
     }
 
+    public function getDisponibilite(): ?string
+    {
+        return $this->disponibilite;
+    }
 
+    public function setDisponibilite(string $disponibilite): self
+    {
+        if (!in_array($disponibilite, self::DISPONIBILITE_OPTIONS)) {
+            throw new \InvalidArgumentException("Disponibilité invalide.");
+        }
+        $this->disponibilite = $disponibilite;
 
-
-
+        return $this;
+    }
 
 
 

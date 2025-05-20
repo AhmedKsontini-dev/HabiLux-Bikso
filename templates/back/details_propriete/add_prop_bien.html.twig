@@ -130,4 +130,26 @@
 
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"].form-check-input');
+    const maxSelection = 3;
+
+    checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            const checkedCount = document.querySelectorAll('input[type="checkbox"].form-check-input:checked').length;
+
+            if (checkedCount > maxSelection) {
+                // Empêche de cocher la 4e case
+                checkbox.checked = false;
+
+                // Message d'erreur (tu peux personnaliser ça avec un toast ou une alerte douce)
+                alert("Vous ne pouvez sélectionner que 3 propriétés au maximum.");
+            }
+        });
+    });
+});
+</script>
+
+
 {% endblock %}

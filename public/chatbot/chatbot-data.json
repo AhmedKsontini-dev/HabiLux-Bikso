@@ -1,10 +1,5 @@
 [
   {
-    "question": "Do you offer properties for rent or for sale?",
-    "keywords": ["rent", "sale", "available", "house", "apartment"],
-    "answer": "Yes, we offer both rental and sale properties including houses, apartments, lands and commercial spaces."
-  },
-  {
     "question": "Quels sont les documents nécessaires pour vendre un bien ?",
     "keywords": ["documents", "papier", "vendre", "bien", "nécessaire"],
     "answer": "Pour vendre un bien, vous avez besoin du titre de propriété, plan topographique, CIN, et d’autres documents légaux. Contactez-nous pour la liste complète."
@@ -15,85 +10,14 @@
     "answer": "Oui, nous avons des terrains agricoles disponibles à la vente dans différentes régions."
   },
   {
-    "question": "How can I schedule a property visit?",
-    "keywords": ["schedule", "visit", "property", "appointment"],
-    "answer": "You can schedule a visit by contacting us directly or filling the visit request form online."
-  },
-  {
     "question": "Est-ce que vous proposez des biens avec financement ?",
     "keywords": ["financement", "crédit", "banque", "payer", "mensuel"],
     "answer": "Oui, certains biens sont éligibles au financement bancaire. Nous pouvons vous aider à monter votre dossier."
   },
   {
-    "question": "Nheb nchorbi dar fi Hammamet",
-    "keywords": ["nheb", "nchri", "dar", "hammamet", "belle", "villa"],
-    "answer": "Ahla w sahla! 3andna plusieurs offres à Hammamet. T7eb location wela achat ?"
-  },
-  {
     "question": "Est-ce que vous avez des locations de courte durée ?",
     "keywords": ["location", "courte", "durée", "vacances", "saison"],
     "answer": "Oui, nous proposons des locations de courte durée idéales pour les vacances ou les séjours temporaires."
-  },
-  {
-    "question": "Fama maison proche men la mer ?",
-    "keywords": ["fama", "maison", "plage", "mer", "proche"],
-    "answer": "Oui, 3andna des maisons très proches de la mer. T7eb fi chnowa l région exactement ?"
-  },
-  {
-    "question": "What are your office hours?",
-    "keywords": ["office", "open", "hours", "working", "schedule"],
-    "answer": "Our office is open from Monday to Saturday, 9am to 6pm. Closed on Sundays."
-  },
-  {
-    "question": "Est-ce que je peux filtrer les annonces par budget ?",
-    "keywords": ["budget", "prix", "filtrer", "montant", "cher"],
-    "answer": "Oui, vous pouvez utiliser les filtres de recherche pour définir votre budget minimum et maximum."
-  },
-
-  {
-    "question": "Do you offer properties for rent or for sale?",
-    "keywords": ["rent", "sale", "available", "house", "apartment"],
-    "answer": "Yes, we offer both rental and sale properties including houses, apartments, lands and commercial spaces."
-  },
-  {
-    "question": "Quels sont les documents nécessaires pour vendre un bien ?",
-    "keywords": ["documents", "papier", "vendre", "bien", "nécessaire"],
-    "answer": "Pour vendre un bien, vous avez besoin du titre de propriété, plan topographique, CIN, et d’autres documents légaux. Contactez-nous pour la liste complète."
-  },
-  {
-    "question": "Est-ce que vous proposez des terrains agricoles ?",
-    "keywords": ["terrain", "agricole", "ferme", "champ"],
-    "answer": "Oui, nous avons des terrains agricoles disponibles à la vente dans différentes régions."
-  },
-  {
-    "question": "How can I schedule a property visit?",
-    "keywords": ["schedule", "visit", "property", "appointment"],
-    "answer": "You can schedule a visit by contacting us directly or filling the visit request form online."
-  },
-  {
-    "question": "Est-ce que vous proposez des biens avec financement ?",
-    "keywords": ["financement", "crédit", "banque", "payer", "mensuel"],
-    "answer": "Oui, certains biens sont éligibles au financement bancaire. Nous pouvons vous aider à monter votre dossier."
-  },
-  {
-    "question": "Nheb nchorbi dar fi Hammamet",
-    "keywords": ["nheb", "nchri", "dar", "hammamet", "belle", "villa"],
-    "answer": "Ahla w sahla! 3andna plusieurs offres à Hammamet. T7eb location wela achat ?"
-  },
-  {
-    "question": "Est-ce que vous avez des locations de courte durée ?",
-    "keywords": ["location", "courte", "durée", "vacances", "saison"],
-    "answer": "Oui, nous proposons des locations de courte durée idéales pour les vacances ou les séjours temporaires."
-  },
-  {
-    "question": "Fama maison proche men la mer ?",
-    "keywords": ["fama", "maison", "plage", "mer", "proche"],
-    "answer": "Oui, 3andna des maisons très proches de la mer. T7eb fi chnowa l région exactement ?"
-  },
-  {
-    "question": "What are your office hours?",
-    "keywords": ["office", "open", "hours", "working", "schedule"],
-    "answer": "Our office is open from Monday to Saturday, 9am to 6pm. Closed on Sundays."
   },
   {
     "question": "Est-ce que je peux filtrer les annonces par budget ?",
@@ -103,7 +27,7 @@
   {
     "question": "Comment contacter l’agence ?",
     "keywords": ["contact", "joindre", "email", "téléphone"],
-    "answer": "Vous pouvez nous contacter via le formulaire de contact ou par téléphone au +216 XX XXX XXX."
+    "answer": "Vous pouvez nous contacter via le formulaire de contact ou par téléphone au +216 93 313 278 ou +216 90 388 911."
   },
   {
     "question": "Quels types de biens proposez-vous ?",
@@ -119,16 +43,6 @@
     "question": "Quelles sont les étapes pour acheter un bien ?",
     "keywords": ["acheter", "procédure", "étapes", "acquisition"],
     "answer": "La procédure inclut la recherche du bien, la visite, la négociation, la signature du contrat et l'enregistrement officiel."
-  },
-  {
-    "question": "bonjour",
-    "keywords": ["salut", "bonjour"],
-    "answer": "Bonjour Mr!"
-  },
-  {
-    "question": "sbeh l khir",
-    "keywords": ["aslema", "khir", "sbeh", "sbe7", "elkhir", "ahla"],
-    "answer": "Abe7 l khir!"
   },
   {
     "question": "Proposez-vous des biens à louer ?",
@@ -158,12 +72,7 @@
   {
     "question": "Où se situe votre agence ?",
     "keywords": ["adresse", "emplacement", "localisation", "où"],
-    "answer": "Notre agence se trouve à Tunis, au centre-ville, à proximité de la place Pasteur."
-  },
-  {
-    "question": "Quels documents sont nécessaires pour vendre un bien ?",
-    "keywords": ["documents", "papier", "vendre", "nécessaire"],
-    "answer": "Il vous faudra le titre de propriété, le plan du bien, la pièce d'identité et un certificat de situation juridique."
+    "answer": "Notre agence se trouve à Nabeul, au centre-ville."
   },
   {
     "question": "Faites-vous des estimations de biens ?",
@@ -250,5 +159,4 @@
     "keywords": ["réserver", "réservation", "bloquer", "option sur bien"],
     "answer": "Oui, vous pouvez poser une option sur un bien pendant une période définie en versant un acompte."
   }
-
 ]

@@ -148,6 +148,121 @@
 			border-radius: 20px;
 			z-index: 10;  /* Assure-toi qu'il soit au-dessus de l'image */
 		}
+
+		 /* Styles généraux pour les sliders */
+    .form-control[type="range"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 8px;
+        border-radius: 5px;
+        background: linear-gradient(to right, #00c6ff, #0072ff);
+        outline: none;
+        transition: background 0.3s ease;
+    }
+
+    /* Styles pour les curseurs */
+    .form-control[type="range"]::-webkit-slider-runnable-track {
+        height: 8px;
+        border-radius: 5px;
+    }
+
+    .form-control[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #1C2D37;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .form-control[type="range"]:focus {
+        background: linear-gradient(to right, #253E4C64, #1C2D37);
+    }
+
+    .form-control[type="range"]:hover::-webkit-slider-thumb {
+        background: #1C2D37;
+        transform: scale(1.2);
+    }
+
+#prixSlider {
+    margin-top: 15px;
+    height: 8px;
+    border-radius: 10px;
+    background: #e1e4e8;
+    position: relative;
+}
+
+.noUi-connect {
+    background: #1C2D37 !important;
+}
+
+
+.noUi-handle {
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background: #1C2D37;
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    top: -6px;
+}
+
+.noUi-horizontal .noUi-handle {
+    top: -6px;
+}
+
+.noUi-target {
+    border: none;
+    box-shadow: none;
+}
+
+.noUi-tooltip {
+    background: #1C2D37;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 12px;
+}
+.property-search-form label {
+    background: var(--theme-color);
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+    -ms-flex: none;
+    flex: none;
+    height: 112px;
+    line-height: 110px;
+    color: var(--white-color);
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 0 60px;
+}
+
+.property-search-form .form-select {
+    background-color: transparent;
+    border: 0;
+    color: var(--theme-color);
+    max-width: 200px;
+    border-radius: 0;
+    border-left: 1px solid var(--theme-color);
+    height: 18px;
+    line-height: 18px;
+    margin-left: 65px;
+ }
+.noUi-horizontal .noUi-tooltip {
+    -webkit-transform: translate(-50%, 0);
+    transform: translate(-50%, 0);
+    left: 50%;
+    bottom: -143% !important;
+}
 </style>
     <div class="breadcumb-wrapper " data-bg-src="{{ asset('assetsFront/img/bg/breadcumb-bg.jpg') }}">
         <div class="container">
@@ -186,6 +301,16 @@ Property Page Area
                 <div class="tab-pane fade show active" id="rent-tab-pane" role="tabpanel" aria-labelledby="rent-tab" tabindex="0">
                     <form class="property-search-form" method="GET" action="{{ path('app_front_habitation_appartemant_avendre') }}">
                         <label>Recherche de propriété</label>
+
+						<!-- Slider de prix avec deux poignées -->
+						<div class="form-group mb-4">
+							<p for="prixSlider" style="color:#1C2D37;">Prix (TND)</p>
+							<div id="prixSlider"></div>
+							<input type="hidden" name="prixMin" id="prixMin">
+							<input type="hidden" name="prixMax" id="prixMax">
+						
+						</div>
+
                         <!-- Champ de recherche par ID ou emplacement -->
 						<div class="form-group">
 							<i class="far fa-search"></i>
@@ -227,6 +352,16 @@ Property Page Area
                 <div class="tab-pane fade" id="buy-tab-pane" role="tabpanel" aria-labelledby="buy-tab" tabindex="0">
                     <form class="property-search-form" method="GET" action="{{ path('app_front_habitation_appartemant_avendre') }}">
                         <label>Recherche de propriété</label>
+
+						<!-- Slider de prix avec deux poignées -->
+						<div class="form-group mb-4">
+							<p for="prixSlider" style="color:#1C2D37;">Prix (TND)</p>
+							<div id="prixSlider"></div>
+							<input type="hidden" name="prixMin" id="prixMin">
+							<input type="hidden" name="prixMax" id="prixMax">
+						
+						</div>
+
                         <!-- Champ de recherche par ID ou emplacement -->
 						<div class="form-group">
 							<i class="far fa-search"></i>
@@ -315,29 +450,29 @@ Property Page Area
 							</div>
 						{% else %}
 							{% for bien in biens %}
-								{# Vérification si une transaction "Location" existe #}
-								{% set isLocation = bien.transactions|filter(t => t.typeTransaction == 'Location') is not empty %}
-							
+								
 									<div class="col-md-6 col-xl-4">
 										<div class="property-card2">
 											<div class="property-card-thumb img-shine" style="position: relative;">
 												<img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien">
 
 												{# Afficher le badge "Loué" si le bien a une transaction de type "Location" #}
-												{% if isLocation %}
+												{% if bien.disponibilite == 'Louee' %}
 													<div class="property-status-badge">Louée</div>
 												{% endif %}
 
 												{# Badge du prix en haut à droite #}
-												{% if bien.afficherPrix %}
-													<div class="property-price-badge">
-														{{ bien.prixBien }} DT
-													</div>
-												{% else %}
-													<div class="property-price-badge private-price">
-														Prix Privée
-													</div>
-												{% endif %}
+												{% if bien.disponibilite == 'Disponible' %}
+													{% if bien.afficherPrix %}
+														<div class="property-price-badge">
+															{{ bien.prixBien|number_format(0, '', '.') }} DT
+														</div>
+													{% else %}
+														<div class="property-price-badge private-price">
+															Prix Privée
+														</div>
+													{% endif %}
+												{% endif %}	
 
 												<div class="property-card-overlay">
 													<h4 class="property-card-title" style="color:#FFFFFFFF;">{{ bien.nomBien }}</h4>
@@ -405,7 +540,7 @@ Property Page Area
 										{% if not isLocation %}
 											{% if bien.afficherPrix %}
 												<div class="property-price-badge">
-													{{ bien.prixBien }} DT
+													{{ bien.prixBien|number_format(0, '', '.') }} DT
 												</div>
 											{% else %}
 												<div class="property-price-badge private-price">
@@ -430,7 +565,7 @@ Property Page Area
 											<div class="property-card-meta">
 												<span>
 													<i class="fas fa-money-bill-wave"></i>Prix:<br>
-													{{ bien.afficherPrix ? bien.prixBien ~ 'DT' : 'Prix Privée' }}</span>
+													{{ bien.afficherPrix ? bien.prixBien|number_format(0, '', '.') ~ 'DT' : 'Prix Privée' }}</span>
 
 												<span>
 													<i class="fas fa-key"></i>Référence:<br>
@@ -462,7 +597,7 @@ Property Page Area
 											</div>
 
 											<div class="property-btn-wrap">
-												<img src="{{ asset('uploads/photo_profil/' ~ bien.publierPar.photoProfil) }}" alt="Photo de l'utilisateur" class="user-photo">
+												
 												<a>
 													<i class="fas fa-phone-alt"></i>
 													{{ bien.publierPar.tel }}</a>
@@ -536,5 +671,43 @@ Property Page Area
 		});
 		});
 	</script>
+
+	<script src="https://cdn.jsdelivr.net/npm/nouislider@15.6.1/dist/nouislider.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider@15.6.1/dist/nouislider.min.css">
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var slider = document.getElementById('prixSlider');
+        var inputMin = document.getElementById('prixMin');
+        var inputMax = document.getElementById('prixMax');
+        var displayMin = document.getElementById('prixMinDisplay');
+        var displayMax = document.getElementById('prixMaxDisplay');
+
+        noUiSlider.create(slider, {
+            start: [
+                {{ app.request.query.get('prixMin', 0) }},
+                {{ app.request.query.get('prixMax', 1000000) }}
+            ],
+            connect: true,
+            step: 1000,
+            range: {
+                'min': 0,
+                'max': 1000000
+            },
+            tooltips: [true, true],
+            format: {
+                to: value => Math.round(value),
+                from: value => Number(value)
+            }
+        });
+
+        slider.noUiSlider.on('update', function (values, handle) {
+            inputMin.value = values[0];
+            inputMax.value = values[1];
+            displayMin.textContent = new Intl.NumberFormat('fr-TN').format(values[0]);
+            displayMax.textContent = new Intl.NumberFormat('fr-TN').format(values[1]);
+        });
+    });
+</script>
 {% endblock %}
 
