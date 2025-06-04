@@ -28,8 +28,20 @@
         right: 10px;
         bottom: 10px;
         border-radius: 20px;
-        background-color: rgba(0, 0, 0, 0.4); /* couche noire avec 40% d’opacité */
+        background-color: rgba(0, 0, 0, 0.4); /* couche noire avec 40% d'opacité */
         z-index: 1;
+    }
+
+    .error-message {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: none;
+    }
+
+    .is-invalid {
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
     }
 
     @media screen and (min-width: 1500px) {
@@ -38,7 +50,6 @@
         }
     }
 </style>
-
 
 <div class="container my-5">
     <div class="row justify-content-center">
@@ -65,14 +76,16 @@
                         {% endfor %}
 
                         <h4 class="mb-4">Me connecter</h4>
-                        <form method="post">
+                        <form method="post" id="loginForm" novalidate>
                             <div class="mb-3">
                                 <label for="inputEmail" class="form-label">Email</label>
                                 <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control bg-light" autocomplete="email" required autofocus>
+                                <div class="error-message" id="emailError">Veuillez saisir une adresse email valide (ex: test@test.com)</div>
                             </div>
                             <div class="mb-3">
                                 <label for="inputPassword" class="form-label">Mot de passe</label>
                                 <input type="password" name="password" id="inputPassword" class="form-control bg-light" autocomplete="current-password" required>
+                                <div class="error-message" id="passwordError">Le mot de passe est obligatoire</div>
                             </div>
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                             <div class="mb-3 form-check">
@@ -98,4 +111,101 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('loginForm');
+    const emailInput = document.getElementById('inputEmail');
+    const passwordInput = document.getElementById('inputPassword');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+
+    // Fonction pour valider l'email
+    function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    // Fonction pour afficher/masquer les erreurs
+    function showError(input, errorElement, message) {
+        input.classList.add('is-invalid');
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
+
+    function hideError(input, errorElement) {
+        input.classList.remove('is-invalid');
+        errorElement.style.display = 'none';
+    }
+
+    // Validation en temps réel pour l'email
+    emailInput.addEventListener('blur', function() {
+        const email = this.value.trim();
+        
+        if (email === '') {
+            showError(emailInput, emailError, 'L\'adresse email est obligatoire');
+        } else if (!validateEmail(email)) {
+            showError(emailInput, emailError, 'Veuillez saisir une adresse email valide (ex: test@test.com)');
+        } else {
+            hideError(emailInput, emailError);
+        }
+    });
+
+    // Validation en temps réel pour le mot de passe
+    passwordInput.addEventListener('blur', function() {
+        const password = this.value.trim();
+        
+        if (password === '') {
+            showError(passwordInput, passwordError, 'Le mot de passe est obligatoire');
+        } else {
+            hideError(passwordInput, passwordError);
+        }
+    });
+
+    // Validation lors de la soumission du formulaire
+    form.addEventListener('submit', function(e) {
+        let isValid = true;
+        
+        // Validation de l'email
+        const email = emailInput.value.trim();
+        if (email === '') {
+            showError(emailInput, emailError, 'L\'adresse email est obligatoire');
+            isValid = false;
+        } else if (!validateEmail(email)) {
+            showError(emailInput, emailError, 'Veuillez saisir une adresse email valide (ex: VotreEmail@exemple.com)');
+            isValid = false;
+        } else {
+            hideError(emailInput, emailError);
+        }
+
+        // Validation du mot de passe
+        const password = passwordInput.value.trim();
+        if (password === '') {
+            showError(passwordInput, passwordError, 'Le mot de passe est obligatoire');
+            isValid = false;
+        } else {
+            hideError(passwordInput, passwordError);
+        }
+
+        // Empêcher la soumission si les données ne sont pas valides
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+
+    // Masquer les erreurs quand l'utilisateur commence à taper
+    emailInput.addEventListener('input', function() {
+        if (this.classList.contains('is-invalid')) {
+            hideError(emailInput, emailError);
+        }
+    });
+
+    passwordInput.addEventListener('input', function() {
+        if (this.classList.contains('is-invalid')) {
+            hideError(passwordInput, passwordError);
+        }
+    });
+});
+</script>
+
 {% endblock %}

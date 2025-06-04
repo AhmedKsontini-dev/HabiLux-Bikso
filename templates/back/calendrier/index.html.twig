@@ -1,6 +1,5 @@
 {% extends 'baseBack.html.twig' %}
 
-
 {% block stylesheet %}
 <style>
     .calendar {
@@ -39,7 +38,7 @@
     }
 
     .nav-button:hover {
-        background: #;
+        background: #95754a;
         transform: translateY(-2px);
     }
 
@@ -66,9 +65,23 @@
         transition: all 0.3s ease;
     }
 
-    .calendar-table td:hover {
+    .calendar-table td:hover:not(.past-date) {
         background: #e9ecef;
         transform: translateY(-2px);
+    }
+
+    .past-date {
+        background: #f5f5f5 !important;
+        color: #bbb !important;
+        cursor: not-allowed !important;
+    }
+
+    .past-date .date-number {
+        color: #bbb !important;
+    }
+
+    .past-date:hover {
+        transform: none !important;
     }
 
     .date-number {
@@ -107,6 +120,7 @@
         width: 90%;
         max-width: 500px;
         z-index: 1000;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
     }
 
     .modal-backdrop {
@@ -141,6 +155,11 @@
         border: 2px solid #e0e0e0;
         border-radius: 6px;
         font-size: 14px;
+        box-sizing: border-box;
+    }
+
+    .form-control.error {
+        border-color: #e74c3c;
     }
 
     .modal-buttons {
@@ -157,10 +176,22 @@
         font-weight: 500;
     }
 
+    .btn-primary {
+        background: #aa8453;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #95754a;
+    }
 
     .btn-delete {
         background: #e74c3c;
         color: white;
+    }
+
+    .btn-delete:hover {
+        background: #c0392b;
     }
 
     .btn-cancel {
@@ -168,10 +199,15 @@
         color: white;
     }
 
+    .btn-cancel:hover {
+        background: #7f8c8d;
+    }
+
     .today {
         background: #e3f2fd !important;
         border: 2px solid #aa8453;
     }
+
     .page-title {
         font-size: 2rem;
         font-weight: bold;
@@ -182,20 +218,29 @@
         margin-bottom: 20px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
+
+    .error-message {
+        color: #e74c3c;
+        font-size: 0.85em;
+        margin-top: 5px;
+        display: block;
+        min-height: 1.2em;
+    }
 </style>
 {% endblock %}
 
 {% block body %}
 <div class="page-header-left">
-                                <h3 class="page-title">Calendrier des affaires</h3>
-                            </div>
+    <h3 class="page-title">Calendrier des affaires</h3>
+</div>
+
 <div class="calendar">
     <div class="calendar-header">
         <button class="nav-button" onclick="navigateMonth(-1)">← Mois précédent</button>
         <h2 class="current-month" id="currentMonthYear"></h2>
         <button class="nav-button" onclick="navigateMonth(1)">Mois suivant →</button>
     </div>
-    
+
     <table class="calendar-table">
         <thead>
             <tr>
@@ -217,24 +262,29 @@
     <h3 class="modal-title" id="modalTitle">Nouvelle visite</h3>
     <form id="eventForm">
         <input type="hidden" id="eventId">
+
         <div class="form-group">
             <label for="eventTitle">Titre</label>
             <input type="text" id="eventTitle" class="form-control" required>
         </div>
+
         <div class="form-group">
             <label for="startDate">Date de début</label>
             <input type="datetime-local" id="startDate" name="startDate" class="form-control" required>
+            <div class="error-message" id="startDateError"></div>
         </div>
 
         <div class="form-group">
             <label for="endDate">Date de fin</label>
             <input type="datetime-local" id="endDate" name="endDate" class="form-control">
+            <div class="error-message" id="endDateError"></div>
         </div>
 
         <div class="form-group">
             <label for="description">Description</label>
             <textarea id="description" class="form-control" rows="4"></textarea>
         </div>
+
         <div class="modal-buttons">
             <button type="button" class="btn btn-delete" id="deleteButton" onclick="deleteEvent()" style="display: none;">Supprimer</button>
             <div>
@@ -266,19 +316,21 @@ async function loadEvents() {
 function updateCalendar() {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
-    
-    document.getElementById('currentMonthYear').textContent = 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Réinitialiser l'heure pour la comparaison
+
+    document.getElementById('currentMonthYear').textContent =
         new Date(year, month).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-    
+
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     const startingDay = firstDay.getDay() || 7;
     const monthLength = lastDay.getDate();
-    
+
     let html = '';
     let day = 1;
     let dayCount = 1;
-    
+
     for (let i = 0; i < 6; i++) {
         html += '<tr>';
         for (let j = 1; j <= 7; j++) {
@@ -287,28 +339,41 @@ function updateCalendar() {
                 dayCount++;
             } else {
                 const currentDay = new Date(year, month, day);
+                currentDay.setHours(0, 0, 0, 0);
                 const dateStr = currentDay.toISOString().split('T')[0];
                 const dayEvents = getEventsForDate(dateStr);
                 const isToday = isSameDate(currentDay, new Date());
+                const isPastDate = currentDay < today;
+
+                let cellClass = '';
+                let clickHandler = '';
                 
-                html += `
-                    <td class="${isToday ? 'today' : ''}" onclick="openNewEventModal('${dateStr}')">
-                        <div class="date-number">${day}</div>
-                        <div class="event-container">
-                            ${dayEvents.map(event => `
-                                <div class="event-item" onclick="openEventModal(event, ${event.id})">
-                                    ${event.title}
-                                </div>
-                            `).join('')}
-                        </div>
-                    </td>`;
+                if (isToday) {
+                    cellClass += 'today ';
+                }
+                if (isPastDate) {
+                    cellClass += 'past-date ';
+                } else {
+                    clickHandler = `onclick="openNewEventModal('${dateStr}')"`;
+                }
+
+                html += `<td class="${cellClass.trim()}" ${clickHandler}>
+                    <div class="date-number">${day}</div>
+                    <div class="event-container">
+                        ${dayEvents.map(event => 
+                            `<div class="event-item" onclick="openEventModal(event, ${event.id})">
+                                ${event.title}
+                            </div>`
+                        ).join('')}
+                    </div>
+                </td>`;
                 day++;
             }
         }
         html += '</tr>';
         if (day > monthLength) break;
     }
-    
+
     document.getElementById('calendarBody').innerHTML = html;
 }
 
@@ -322,13 +387,36 @@ function getEventsForDate(date) {
 }
 
 function openNewEventModal(date) {
+    // Vérifier si la date n'est pas dans le passé
+    const selectedDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    if (selectedDate < today) {
+        return; // Ne pas ouvrir le modal pour les dates passées
+    }
+
     document.getElementById('eventId').value = '';
     document.getElementById('eventTitle').value = '';
-    document.getElementById('startDate').value = date;
-    document.getElementById('endDate').value = date;
+    
+    // Définir la date minimale pour les champs datetime-local
+    const now = new Date();
+    const minDateTime = now.toISOString().slice(0, 16);
+    document.getElementById('startDate').min = minDateTime;
+    document.getElementById('endDate').min = minDateTime;
+    
+    // Définir les valeurs par défaut
+    const defaultStartTime = date + 'T09:00';
+    const defaultEndTime = date + 'T17:00';
+    
+    document.getElementById('startDate').value = defaultStartTime;
+    document.getElementById('endDate').value = defaultEndTime;
     document.getElementById('description').value = '';
     document.getElementById('deleteButton').style.display = 'none';
     document.getElementById('modalTitle').textContent = 'Nouvelle visite';
+
+    // Réinitialiser les erreurs
+    clearErrors();
     
     showModal();
 }
@@ -339,19 +427,81 @@ function openEventModal(e, eventId) {
     if (event) {
         document.getElementById('eventId').value = event.id;
         document.getElementById('eventTitle').value = event.title;
+        
+        // Définir la date minimale pour les champs datetime-local
+        const now = new Date();
+        const minDateTime = now.toISOString().slice(0, 16);
+        document.getElementById('startDate').min = minDateTime;
+        document.getElementById('endDate').min = minDateTime;
+        
         document.getElementById('startDate').value = event.startDate;
         document.getElementById('endDate').value = event.endDate;
         document.getElementById('description').value = event.description;
         document.getElementById('deleteButton').style.display = 'block';
         document.getElementById('modalTitle').textContent = 'Modifier l\'événement';
+
+        // Réinitialiser les erreurs
+        clearErrors();
         
         showModal();
     }
 }
 
+function clearErrors() {
+    document.getElementById('startDateError').textContent = '';
+    document.getElementById('endDateError').textContent = '';
+    document.getElementById('startDate').classList.remove('error');
+    document.getElementById('endDate').classList.remove('error');
+}
+
+function validateStartDate() {
+    const now = new Date();
+    const startDateInput = document.getElementById('startDate');
+    const startDate = new Date(startDateInput.value);
+    const startError = document.getElementById('startDateError');
+
+    if (startDate < now) {
+        startError.textContent = 'La date de début ne peut pas être dans le passé.';
+        startDateInput.classList.add('error');
+        return false;
+    } else {
+        startError.textContent = '';
+        startDateInput.classList.remove('error');
+        return true;
+    }
+}
+
+function validateEndDate() {
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+    const startDate = new Date(startDateInput.value);
+    const endDate = new Date(endDateInput.value);
+    const endError = document.getElementById('endDateError');
+
+    if (endDateInput.value && endDate < startDate) {
+        endError.textContent = 'La date de fin ne peut pas être antérieure à la date de début.';
+        endDateInput.classList.add('error');
+        return false;
+    } else {
+        endError.textContent = '';
+        endDateInput.classList.remove('error');
+        return true;
+    }
+}
+
+function validateEventForm() {
+    const isStartDateValid = validateStartDate();
+    const isEndDateValid = validateEndDate();
+    return isStartDateValid && isEndDateValid;
+}
+
 async function handleSubmit(e) {
     e.preventDefault();
-    
+
+    if (!validateEventForm()) {
+        return;
+    }
+
     const eventId = document.getElementById('eventId').value;
     const eventData = {
         title: document.getElementById('eventTitle').value,
@@ -359,24 +509,23 @@ async function handleSubmit(e) {
         endDate: document.getElementById('endDate').value,
         description: document.getElementById('description').value
     };
-    
+
     try {
-        const url = eventId ? 
-            `/back/calendrier/event/${eventId}` : 
+        const url = eventId ?
+            `/back/calendrier/event/${eventId}` :
             '/back/calendrier/event';
-            
+
         const method = eventId ? 'PUT' : 'POST';
-        
+
         const response = await fetch(url, {
             method: method,
             headers: {
                 'Content-Type': 'application/json',
-                // Ajout du token CSRF si nécessaire
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
             },
             body: JSON.stringify(eventData)
         });
-        
+
         if (response.ok) {
             await loadEvents();
             updateCalendar();
@@ -399,7 +548,7 @@ async function deleteEvent() {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
                 }
             });
-            
+
             if (response.ok) {
                 await loadEvents();
                 updateCalendar();
@@ -419,6 +568,7 @@ function showModal() {
 function closeModal() {
     document.getElementById('modalBackdrop').style.display = 'none';
     document.getElementById('eventModal').style.display = 'none';
+    clearErrors();
 }
 
 function navigateMonth(direction) {
@@ -427,19 +577,55 @@ function navigateMonth(direction) {
 }
 
 function isSameDate(date1, date2) {
-    return date1.getDate() === date2.getDate() && 
-           date1.getMonth() === date2.getMonth() && 
+    return date1.getDate() === date2.getDate() &&
+           date1.getMonth() === date2.getMonth() &&
            date1.getFullYear() === date2.getFullYear();
 }
 
-// Initialisation
+function setupLiveValidation() {
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+
+    // Validation en temps réel pour la date de début
+    startDateInput.addEventListener('input', () => {
+        validateStartDate();
+        // Révalider la date de fin si elle existe
+        if (endDateInput.value) {
+            validateEndDate();
+        }
+    });
+
+    // Validation en temps réel pour la date de fin
+    endDateInput.addEventListener('input', validateEndDate);
+
+    // Validation quand l'utilisateur quitte le champ (blur)
+    startDateInput.addEventListener('blur', validateStartDate);
+    endDateInput.addEventListener('blur', validateEndDate);
+
+    // Validation lors du changement de focus
+    startDateInput.addEventListener('change', () => {
+        validateStartDate();
+        if (endDateInput.value) {
+            validateEndDate();
+        }
+    });
+
+    endDateInput.addEventListener('change', validateEndDate);
+}
+
+// Fermer le modal en cliquant sur le backdrop
+document.addEventListener('click', function(e) {
+    if (e.target.id === 'modalBackdrop') {
+        closeModal();
+    }
+});
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Attacher le gestionnaire d'événements au formulaire
     const form = document.getElementById('eventForm');
     form.addEventListener('submit', handleSubmit);
-    
-    // Initialiser le calendrier
     initCalendar();
+    setupLiveValidation();
 });
 </script>
+
 {% endblock %}

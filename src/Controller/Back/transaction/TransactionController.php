@@ -13,6 +13,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Repository\BienRepository; // ← IMPORTANT : Correct import
+use App\Entity\Bien;
 
 final class TransactionController extends AbstractController
 {
@@ -193,6 +196,44 @@ final class TransactionController extends AbstractController
         }
 
         return $this->redirectToRoute('app_transactions', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    #[Route('/get-bien-description/{id}', name:'get_bien_description', methods:['GET'])]
+    public function getBienDescription(int $id, BienRepository $bienRepository): JsonResponse
+    {
+        try {
+            $bien = $bienRepository->find($id);
+            
+            if (!$bien) {
+                return new JsonResponse([
+                    'error' => 'Bien non trouvé avec l\'ID: ' . $id,
+                    'success' => false
+                ], 404);
+            }
+            
+            // Vérifier si la méthode getDescription() existe
+            if (!method_exists($bien, 'getDescription')) {
+                return new JsonResponse([
+                    'error' => 'La méthode getDescription() n\'existe pas dans l\'entité Bien',
+                    'success' => false
+                ], 500);
+            }
+            
+            $description = $bien->getDescription();
+            
+            return new JsonResponse([
+                'description' => $description ?? 'Aucune description disponible',
+                'success' => true,
+                'bien_id' => $bien->getId()
+            ]);
+            
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'error' => 'Erreur serveur: ' . $e->getMessage(),
+                'success' => false
+            ], 500);
+        }
     }
 
   

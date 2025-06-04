@@ -14,7 +14,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class BienVendreController extends AbstractController
 {
     #[Route('/front/all/biens/vendre', name: 'app_front_all_biens_vendre')]
-    public function index(EntityManagerInterface $entityManager, PaginatorInterface $paginator, BienRepository $bienRepository, Request $request): Response
+    public function index(
+        EntityManagerInterface $entityManager, 
+        PaginatorInterface $paginator, 
+        BienRepository $bienRepository, 
+        Request $request): Response
     {
          // Créer une requête pour récupérer les biens visibles avec typeOffre = "A Vendre"
     $qb = $entityManager->getRepository(Bien::class)->createQueryBuilder('b');
@@ -41,6 +45,20 @@ class BienVendreController extends AbstractController
         $qb->join('b.gouvernorat', 'g')  
            ->andWhere('g.nomGouvernorat = :nomGouvernorat')
            ->setParameter('nomGouvernorat', $gouvernorat);
+    }
+
+
+    // Récupérer les valeurs de prixMin et prixMax depuis la requête
+    $prixMin = $request->query->get('prixMin');
+    $prixMax = $request->query->get('prixMax');
+    // Vérifier et appliquer les filtres
+    if (!empty($prixMin)) {
+        $qb->andWhere('b.prixBien >= :prixMin')
+        ->setParameter('prixMin', (int) $prixMin);
+    }
+    if (!empty($prixMax)) {
+        $qb->andWhere('b.prixBien <= :prixMax')
+        ->setParameter('prixMax', (int) $prixMax);
     }
 
     // Tri par option

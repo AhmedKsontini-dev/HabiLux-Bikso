@@ -46,7 +46,7 @@
             </div>
             <div class="col-md-3">
                 {{ form_label(form.mailVendeur, 'E-mail du Vendeur', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.mailVendeur, {'attr': {'class': 'form-control'}}) }}
+                {{ form_widget(form.mailVendeur) }}
                 {{ form_errors(form.mailVendeur) }}
             </div>
             <div class="col-md-3">
@@ -65,7 +65,7 @@
             </div>
             <div class="col-md-3">
                 {{ form_label(form.bien, 'Reference de bien', {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(form.bien, {'attr': {'class': 'form-control'}}) }}
+                {{ form_widget(form.bien, {'attr': {'class': 'form-control', 'id': 'bien-select'}}) }}
                 {{ form_errors(form.bien) }}
             </div>
             <div class="col-md-3">
@@ -102,8 +102,20 @@
         <div class="row mb-4">
             <h5>4. Description du Bien</h5>
             <div class="col-md-12">
-                {{ form_widget(form.descriptionBien, {'attr': {'class': 'form-control'}}) }}
+                {{ form_widget(form.descriptionBien, {
+                    'attr': {
+                        'class': 'form-control', 
+                        'id': 'description-bien',
+                        'readonly': true,
+                        'rows': 8,
+                        'style': 'background-color: #f8f9fa; cursor: not-allowed;'
+                    }
+                }) }}
                 {{ form_errors(form.descriptionBien) }}
+                <small class="text-muted">
+                    <i class="bi bi-info-circle"></i> 
+                    Cette description est automatiquement remplie selon le bien sélectionné.
+                </small>
             </div>
         </div>
 
@@ -129,15 +141,15 @@
             <div id="locationDurationToggle">
                 <h5>6. Durée de la Location <i class="bi bi-dash-circle" onclick="toggleVisibility('locationDurationToggle')"></i></h5>
                 <div class="col-md-12" id="locationDurationSection">
-                    <div class="col-md-6">
-                        {{ form_label(form.debutLocation, 'Début de Location', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.debutLocation, {'attr': {'class': 'form-control', 'id': 'debutLocation'}}) }}
-                        {{ form_errors(form.debutLocation) }}
+                <div class="col-md-6">
+                        <label for="debutLocation" class="form-label">Début de Location *</label>
+                        <input type="date" class="form-control" id="debutLocation" name="debutLocation" required>
+                        <div class="error-message" id="errorDebutLocation"></div>
                     </div>
                     <div class="col-md-6">
-                        {{ form_label(form.finLocation, 'Fin de Location', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.finLocation, {'attr': {'class': 'form-control', 'id': 'finLocation'}}) }}
-                        {{ form_errors(form.finLocation) }}
+                        <label for="finLocation" class="form-label">Fin de Location *</label>
+                        <input type="date" class="form-control" id="finLocation" name="finLocation" required>
+                        <div class="error-message" id="errorFinLocation"></div>
                     </div>
                 </div>
             </div>
@@ -309,9 +321,266 @@ function printSection() {
     printWindow.print();
 }
 </script>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const debutLocation = document.getElementById('debutLocation');
+            const finLocation = document.getElementById('finLocation');
+            const errorDebutLocation = document.getElementById('errorDebutLocation');
+            const errorFinLocation = document.getElementById('errorFinLocation');
+            const form = document.getElementById('locationForm');
 
+            // Définir la date minimale (aujourd'hui)
+            const today = new Date().toISOString().split('T')[0];
+            debutLocation.min = today;
+            finLocation.min = today;
 
+            // Fonction pour afficher/masquer les erreurs
+            function showError(element, errorElement, message) {
+                element.classList.add('error');
+                errorElement.textContent = message;
+                errorElement.classList.add('show');
+            }
 
+            function hideError(element, errorElement) {
+                element.classList.remove('error');
+                errorElement.classList.remove('show');
+            }
+
+            // Validation du champ début
+            function validateDebutLocation() {
+                const value = debutLocation.value;
+                
+                if (!value) {
+                    showError(debutLocation, errorDebutLocation, 'La date de début est obligatoire.');
+                    return false;
+                }
+
+                const selectedDate = new Date(value);
+                const todayDate = new Date();
+                todayDate.setHours(0, 0, 0, 0);
+
+                if (selectedDate < todayDate) {
+                    showError(debutLocation, errorDebutLocation, 'La date de début ne peut pas être dans le passé.');
+                    return false;
+                }
+
+                hideError(debutLocation, errorDebutLocation);
+                
+                // Mettre à jour la date minimale de fin
+                finLocation.min = value;
+                
+                // Revalider la date de fin si elle existe
+                if (finLocation.value) {
+                    validateFinLocation();
+                }
+                
+                return true;
+            }
+
+            // Validation du champ fin
+            function validateFinLocation() {
+                const valueDebut = debutLocation.value;
+                const valueFin = finLocation.value;
+                
+                if (!valueFin) {
+                    showError(finLocation, errorFinLocation, 'La date de fin est obligatoire.');
+                    return false;
+                }
+
+                if (!valueDebut) {
+                    showError(finLocation, errorFinLocation, 'Veuillez d\'abord saisir la date de début.');
+                    return false;
+                }
+
+                const dateDebut = new Date(valueDebut);
+                const dateFin = new Date(valueFin);
+                const todayDate = new Date();
+                todayDate.setHours(0, 0, 0, 0);
+
+                if (dateFin < todayDate) {
+                    showError(finLocation, errorFinLocation, 'La date de fin ne peut pas être dans le passé.');
+                    return false;
+                }
+
+                if (dateFin < dateDebut) {
+                    showError(finLocation, errorFinLocation, 'La date de fin ne peut pas être antérieure à la date de début.');
+                    return false;
+                }
+
+                hideError(finLocation, errorFinLocation);
+                return true;
+            }
+
+            // Événements blur (quand on clique en dehors du champ)
+            debutLocation.addEventListener('blur', validateDebutLocation);
+            finLocation.addEventListener('blur', validateFinLocation);
+
+            // Événements change (quand la valeur change)
+            debutLocation.addEventListener('change', function() {
+                validateDebutLocation();
+                // Effacer la date de fin si elle devient invalide
+                if (finLocation.value && new Date(finLocation.value) < new Date(debutLocation.value)) {
+                    finLocation.value = '';
+                    hideError(finLocation, errorFinLocation);
+                }
+            });
+
+            finLocation.addEventListener('change', validateFinLocation);
+
+            // Validation lors de la soumission du formulaire
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const isDebutValid = validateDebutLocation();
+                const isFinValid = validateFinLocation();
+                
+                if (isDebutValid && isFinValid) {
+                    alert('Formulaire valide ! Données prêtes à être envoyées.');
+                    // Ici vous pouvez soumettre le formulaire
+                    // form.submit();
+                } else {
+                    alert('Veuillez corriger les erreurs avant de continuer.');
+                }
+            });
+        });
+    </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // === FONCTIONNALITÉ 1: Auto-remplissage description bien ===
+    const bienSelect = document.getElementById('{{ form.bien.vars.id }}');
+    const descriptionTextarea = document.getElementById('{{ form.descriptionBien.vars.id }}');
+    
+    if (bienSelect && descriptionTextarea) {
+        bienSelect.addEventListener('change', function() {
+            const bienId = this.value;
+            
+            if (bienId) {
+                descriptionTextarea.value = 'Chargement de la description...';
+                descriptionTextarea.disabled = true;
+                
+                fetch('{{ path('get_bien_description', {'id': '__ID__'}) }}'.replace('__ID__', bienId))
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            descriptionTextarea.value = data.description;
+                        } else {
+                            descriptionTextarea.value = '';
+                            console.error('Erreur:', data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors de la récupération de la description:', error);
+                        descriptionTextarea.value = '';
+                    })
+                    .finally(() => {
+                        descriptionTextarea.disabled = false;
+                    });
+            } else {
+                descriptionTextarea.value = '';
+            }
+        });
+    }
+    
+    // === FONCTIONNALITÉ 2: Masquer/Afficher champs de location ===
+    const typeTransactionSelect = document.getElementById('{{ form.typeTransaction.vars.id }}');
+    const locationDurationSection = document.getElementById('locationDurationToggle');
+    const debutLocationInput = document.getElementById('debutLocation');
+    const finLocationInput = document.getElementById('finLocation');
+    
+    // Fonction pour masquer/afficher les champs de location
+    function toggleLocationFields() {
+        const selectedType = typeTransactionSelect.value;
+        
+        if (selectedType === 'Vente') {
+            // Masquer les champs de location
+            locationDurationSection.style.display = 'none';
+            
+            // Retirer l'attribut required et vider les champs
+            if (debutLocationInput) {
+                debutLocationInput.removeAttribute('required');
+                debutLocationInput.value = '';
+            }
+            if (finLocationInput) {
+                finLocationInput.removeAttribute('required');
+                finLocationInput.value = '';
+            }
+            
+        } else if (selectedType === 'Location') {
+            // Afficher les champs de location
+            locationDurationSection.style.display = 'block';
+            
+            // Remettre l'attribut required
+            if (debutLocationInput) {
+                debutLocationInput.setAttribute('required', 'required');
+            }
+            if (finLocationInput) {
+                finLocationInput.setAttribute('required', 'required');
+            }
+            
+        } else {
+            // Si aucun type n'est sélectionné, masquer par défaut
+            locationDurationSection.style.display = 'none';
+            if (debutLocationInput) debutLocationInput.removeAttribute('required');
+            if (finLocationInput) finLocationInput.removeAttribute('required');
+        }
+    }
+    
+    // Initialiser et écouter les changements
+    if (typeTransactionSelect) {
+        toggleLocationFields(); // Exécuter au chargement
+        typeTransactionSelect.addEventListener('change', toggleLocationFields);
+    }
+});
+</script>
+
+<script>
+function validateEmailField(input) {
+    const value = input.value;
+    const errorContainer = input.nextElementSibling;
+
+    // Expression régulière basique pour vérifier un email
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!regex.test(value)) {
+        input.classList.add('is-invalid');
+
+        if (!errorContainer || !errorContainer.classList.contains('invalid-feedback')) {
+            const errorDiv = document.createElement('div');
+            errorDiv.classList.add('invalid-feedback');
+            errorDiv.textContent = 'Veuillez saisir un email valide (ex : exemple@domaine.com)';
+            input.parentNode.appendChild(errorDiv);
+        }
+    } else {
+        input.classList.remove('is-invalid');
+        const feedbacks = input.parentNode.querySelectorAll('.invalid-feedback');
+        feedbacks.forEach(el => el.remove());
+    }
+}
+</script>
+<script>
+function validateFutureDate(input) {
+    const selectedDate = new Date(input.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Ignore l'heure
+
+    const existingError = input.parentNode.querySelector('.invalid-feedback');
+
+    if (selectedDate < today) {
+        input.classList.add('is-invalid');
+
+        if (!existingError) {
+            const error = document.createElement('div');
+            error.classList.add('invalid-feedback');
+            error.textContent = 'Veuillez choisir une date future ou aujourd\'hui.';
+            input.parentNode.appendChild(error);
+        }
+    } else {
+        input.classList.remove('is-invalid');
+        if (existingError) existingError.remove();
+    }
+}
+</script>
 
 <style>
     @media print {
@@ -327,4 +596,26 @@ function printSection() {
             top: 0;
         }
     }
+     .error-message {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
+        .form-control.error {
+            border-color: #dc3545;
+        }
+        textarea[readonly] {
+    background-color: #f8f9fa !important;
+    cursor: not-allowed;
+    border-color: #dee2e6;
+}
+
+textarea[readonly]:focus {
+    box-shadow: none;
+    border-color: #dee2e6;
+}
 </style>

@@ -233,6 +233,40 @@
 
     padding: 50px;
 }
+
+
+
+
+
+        
+       
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .form-control.error {
+            border-color: #dc3545;
+        }
+        
+        .form-control.success {
+            border-color: #28a745;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        
+        
 </style>
 
    <div class="hero-5" id="hero">
@@ -382,22 +416,22 @@ Property Area 2
                                 <div class="swiper-slide">
                                     <div class="property-card3 style-border">
                                         <div class="property-card-thumb img-shine">
-    {% if bien.disponibilite == 'Louee' %}
-        <div class="property-status-badge bg-danger text-white">Louée</div>
-    {% else %}
-        <!-- Affichage du tag "A Vendre" ou "A Louer" -->
-        <span class="offer-tag {{ bien.typeOffre == 'A Vendre' ? 'tag-sale' : 'tag-rent' }}">
-            {{ bien.typeOffre }}
-        </span>
-    {% endif %}
+                                            {% if bien.disponibilite == 'Louee' %}
+                                                <div class="property-status-badge bg-danger text-white">Louée</div>
+                                            {% else %}
+                                                <!-- Affichage du tag "A Vendre" ou "A Louer" -->
+                                                <span class="offer-tag {{ bien.typeOffre == 'A Vendre' ? 'tag-sale' : 'tag-rent' }}">
+                                                    {{ bien.typeOffre }}
+                                                </span>
+                                            {% endif %}
 
-    <!-- Nouveau badge pour le nomType -->
-    <span class="property-type-badge">
-        {{ bien.type.nomType }}
-    </span>
+                                            <!-- Nouveau badge pour le nomType -->
+                                            <span class="property-type-badge">
+                                                {{ bien.type.nomType }}
+                                            </span>
 
-    <img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien" style="height:250px; width:100%;">
-</div>
+                                            <img src="{{ asset('uploads/images_bien/' ~ bien.imageBiens|first.nomImage) }}" alt="Image du bien" style="height:250px; width:100%;">
+                                        </div>
 
 
                                         <div class="property-card-details">
@@ -709,25 +743,29 @@ Contact Area
                         <div class="appointment-wrap2 bg-white">
                         
 
-                            <form id="contactForm" action="{{ path('contact') }}" method="POST" class="appointment-form">
+                             <form id="contactForm" action="{{ path('contact') }}" method="POST" class="appointment-form">
                                 <div class="row">
                                     <div class="form-group style-border style-radius col-12">
                                         <input type="text" class="form-control" name="name" id="name" placeholder="Votre Nom et prénom*" required>
                                         <i class="fal fa-user"></i>
+                                        <div class="error-message" id="name-error"></div>
                                     </div>
                                     <div class="form-group style-border style-radius col-12">
-                                        <input type="number" class="form-control" name="tel" id="tel" placeholder="Votre téléphone*" required>
+                                        <input type="tel" class="form-control" name="tel" id="tel" placeholder="Votre téléphone*" required>
                                         <i class="fal fa-phone"></i>
+                                        <div class="error-message" id="tel-error"></div>
                                     </div>
                                     <div class="form-group style-border style-radius col-12">
                                         <input type="email" class="form-control" name="email" id="email" placeholder="Votre Email*" required>
                                         <i class="fal fa-envelope"></i>
+                                        <div class="error-message" id="email-error"></div>
                                     </div>
                                     <div class="col-12 form-group style-border style-radius">
                                         <i class="far fa-comments"></i>
-                                        <textarea name="message" class="form-control" placeholder="Tapez votre message" required></textarea>
+                                        <textarea name="message" class="form-control" id="message" placeholder="Tapez votre message" required></textarea>
+                                        <div class="error-message" id="message-error"></div>
                                     </div>
-                                    <div class="col-12 form-btn mt-4">
+                                     <div class="col-12 form-btn mt-4">
                                         <button type="submit" class="th-btn">Envoyer le message 
                                             <span class="btn-icon"><img src="{{ asset('assetsFront/img/icon/paper-plane.svg') }}" alt="img"></span>
                                         </button>
@@ -888,4 +926,185 @@ Team Area
         }
     });
 </script>
+
+<script>
+        // Fonction pour afficher un message d'erreur
+        function showError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(fieldId + '-error');
+            
+            field.classList.add('error');
+            field.classList.remove('success');
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+        }
+
+        // Fonction pour masquer un message d'erreur
+        function hideError(fieldId) {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(fieldId + '-error');
+            
+            field.classList.remove('error');
+            field.classList.add('success');
+            errorElement.classList.remove('show');
+        }
+
+        // Validation du nom (ne doit pas contenir de chiffres)
+        function validateName(name) {
+            if (name.trim() === '') {
+                return 'Le nom et prénom sont obligatoires';
+            }
+            if (/\d/.test(name)) {
+                return 'Le nom ne doit pas contenir de chiffres';
+            }
+            return '';
+        }
+
+        // Validation du téléphone
+        function validatePhone(phone) {
+            if (phone.trim() === '') {
+                return 'Le numéro de téléphone est obligatoire';
+            }
+            if (!/^\d+$/.test(phone.trim())) {
+                return 'Le numéro de téléphone ne doit contenir que des chiffres';
+            }
+            return '';
+        }
+
+        // Validation de l'email
+        function validateEmail(email) {
+            if (email.trim() === '') {
+                return 'L\'email est obligatoire';
+            }
+            
+            // Vérifier si l'email contient @
+            if (!email.includes('@')) {
+                return 'L\'email doit contenir le symbole @';
+            }
+            
+            // Vérifier si l'email se termine par .com, .fr, etc.
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                return 'Format d\'email invalide (exemple: nom@domaine.com)';
+            }
+            
+            return '';
+        }
+
+        // Validation du message
+        function validateMessage(message) {
+            if (message.trim() === '') {
+                return 'Le message est obligatoire';
+            }
+            return '';
+        }
+
+        // Fonction pour valider un champ spécifique
+        function validateField(fieldId) {
+            const field = document.getElementById(fieldId);
+            const value = field.value;
+            let errorMessage = '';
+
+            switch(fieldId) {
+                case 'name':
+                    errorMessage = validateName(value);
+                    break;
+                case 'tel':
+                    errorMessage = validatePhone(value);
+                    break;
+                case 'email':
+                    errorMessage = validateEmail(value);
+                    break;
+                case 'message':
+                    errorMessage = validateMessage(value);
+                    break;
+            }
+
+            if (errorMessage) {
+                showError(fieldId, errorMessage);
+                return false;
+            } else {
+                hideError(fieldId);
+                return true;
+            }
+        }
+
+        // Attendre que le DOM soit chargé
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Ajouter les événements de validation sur blur (quand l'utilisateur quitte le champ)
+            document.getElementById('name').addEventListener('blur', function() {
+                validateField('name');
+            });
+
+            document.getElementById('tel').addEventListener('blur', function() {
+                validateField('tel');
+            });
+
+            document.getElementById('email').addEventListener('blur', function() {
+                validateField('email');
+            });
+
+            document.getElementById('message').addEventListener('blur', function() {
+                validateField('message');
+            });
+
+            // Validation en temps réel pour le nom (pour empêcher la saisie de chiffres)
+            document.getElementById('name').addEventListener('input', function() {
+                if (this.value !== '') {
+                    validateField('name');
+                }
+            });
+
+            // Validation en temps réel pour le téléphone (pour empêcher la saisie de lettres)
+            document.getElementById('tel').addEventListener('input', function() {
+                // Supprimer tous les caractères non numériques pendant la saisie
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                if (this.value !== '') {
+                    validateField('tel');
+                }
+            });
+
+            // Validation en temps réel pour l'email
+            document.getElementById('email').addEventListener('input', function() {
+                if (this.value !== '') {
+                    validateField('email');
+                }
+            });
+
+            // Gestion de la soumission du formulaire
+            document.getElementById('contactForm').addEventListener('submit', function(e) {
+                // Empêcher la soumission par défaut
+                e.preventDefault();
+                
+                // Valider tous les champs
+                const isNameValid = validateField('name');
+                const isTelValid = validateField('tel');
+                const isEmailValid = validateField('email');
+                const isMessageValid = validateField('message');
+                
+                // Si tous les champs sont valides, permettre la soumission
+                if (isNameValid && isTelValid && isEmailValid && isMessageValid) {
+                    // Retirer le preventDefault et soumettre le formulaire
+                    this.submit();
+                } else {
+                    // Faire défiler vers le premier champ avec erreur
+                    const firstErrorField = document.querySelector('.form-control.error');
+                    if (firstErrorField) {
+                        firstErrorField.focus();
+                        firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            });
+
+            // Réinitialiser les styles au focus
+            document.querySelectorAll('.form-control').forEach(function(field) {
+                field.addEventListener('focus', function() {
+                    this.classList.remove('error', 'success');
+                });
+            });
+            
+        });
+    </script>
 {% endblock %}

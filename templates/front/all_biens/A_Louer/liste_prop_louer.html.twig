@@ -330,66 +330,53 @@
 			</ul>
 
 			<div class="tab-content">
-    <div class="tab-pane fade show active" id="rent-tab-pane" role="tabpanel" aria-labelledby="rent-tab" tabindex="0">
-        <form class="property-search-form" method="GET" action="{{ path('app_front_all_biens_louer') }}" id="filterForm">
-            <label>Recherche de propriété</label>
+				<div class="tab-pane fade show active" id="rent-tab-pane" role="tabpanel" aria-labelledby="rent-tab" tabindex="0">
+					<form class="property-search-form" method="GET" action="{{ path('app_front_all_biens_louer') }}" id="filterForm">
+						<label>Recherche de propriété</label>
 
-            <!-- Slider de prix avec deux poignées -->
-            <div class="form-group mb-4">
-				<p for="prixSlider" style="color:#1C2D37;">Prix (TND)</p>
-				<div id="prixSlider"></div>
-				<input type="hidden" name="prixMin" id="prixMin">
-				<input type="hidden" name="prixMax" id="prixMax">
-			
-			</div>
+						<!-- Slider de prix avec deux poignées -->
+						<div class="form-group mb-4">
+							<p for="prixSlider" style="color:#1C2D37;">Prix (TND)</p>
+							<div id="prixSlider"></div>
+							<input type="hidden" name="prixMin" id="prixMin">
+							<input type="hidden" name="prixMax" id="prixMax">
+						
+						</div>
 
 
-            <!-- Sélection de la catégorie (Type de bien) -->
-            <select class="form-select mb-3" name="nomType">
-                <option value="">Catégories</option>
-                <option value="Villa">🏠 Villa</option>
-                <option value="Appartement">🏢 Appartement</option>
-                <option value="Bureau Commercial">🏢 Bureau Commercial</option>
-                <option value="Depot">🏭 Depôt</option>
-                <option value="Terrain">🏞️ Terrain</option>
-            </select>
-			
+						<!-- Sélection de la catégorie (Type de bien) -->
+						<select class="form-select mb-3" name="nomType">
+							<option value="">Catégories</option>
+							<option value="Villa">🏠 Villa</option>
+							<option value="Appartement">🏢 Appartement</option>
+							<option value="Bureau Commercial">🏢 Bureau Commercial</option>
+							<option value="Depot">🏭 Depôt</option>
+							<option value="Terrain">🏞️ Terrain</option>
+						</select>
+						
 
-            <!-- Sélection de la Ville -->
-            <select class="form-select mb-3" name="gouvernorat">
-                <option value="">Gouvernorat</option>
-                <option value="Ariana">Ariana</option>
-                <option value="Béja">Béja</option>
-                <option value="Ben Arous">Ben Arous</option>
-                <option value="Bizerte">Bizerte</option>
-                <option value="Gabès">Gabès</option>
-                <option value="Gafsa">Gafsa</option>
-                <option value="Jendouba">Jendouba</option>
-                <option value="Kairouan">Kairouan</option>
-                <option value="Kasserine">Kasserine</option>
-                <option value="Kébili">Kébili</option>
-                <option value="Le Kef">Le Kef</option>
-                <option value="Mahdia">Mahdia</option>
-                <option value="La Manouba">La Manouba</option>
-                <option value="Médenine">Médenine</option>
-                <option value="Monastir">Monastir</option>
-                <option value="Nabeul">Nabeul</option>
-                <option value="Sfax">Sfax</option>
-                <option value="Sidi Bouzid">Sidi Bouzid</option>
-                <option value="Siliana">Siliana</option>
-                <option value="Sousse">Sousse</option>
-                <option value="Tataouine">Tataouine</option>
-                <option value="Tozeur">Tozeur</option>
-                <option value="Tunis">Tunis</option>
-                <option value="Zaghouan">Zaghouan</option>
-            </select>
+						<!-- Sélection de la Ville -->
+						<select class="form-select mb-3" name="gouvernorat">
+							<option value="">Gouvernorat</option>
+							<option value="Ariana">Ariana</option>
+							<option value="Ben Arous">Ben Arous</option>
+							<option value="Bizerte">Bizerte</option>
+							<option value="Mahdia">Mahdia</option>
+							<option value="La Manouba">La Manouba</option>
+							<option value="Monastir">Monastir</option>
+							<option value="Nabeul">Nabeul</option>
+							<option value="Sfax">Sfax</option>
+							<option value="Sousse">Sousse</option>
+							<option value="Tunis">Tunis</option>
+							<option value="Zaghouan">Zaghouan</option>
+						</select>
 
-            <button class="th-btn" type="submit">
-                <i class="far fa-search"></i>
-                Rechercher
-            </button>
-        </form>
-    </div>
+						<button class="th-btn" type="submit">
+							<i class="far fa-search"></i>
+							Rechercher
+						</button>
+					</form>
+				</div>
 
 
 
@@ -423,27 +410,14 @@
 						<select class="form-select mb-3" name="gouvernorat">
 							<option value="">Gouvernorat</option>
 							<option value="Ariana">Ariana</option>
-							<option value="Béja">Béja</option>
 							<option value="Ben Arous">Ben Arous</option>
 							<option value="Bizerte">Bizerte</option>
-							<option value="Gabès">Gabès</option>
-							<option value="Gafsa">Gafsa</option>
-							<option value="Jendouba">Jendouba</option>
-							<option value="Kairouan">Kairouan</option>
-							<option value="Kasserine">Kasserine</option>
-							<option value="Kébili">Kébili</option>
-							<option value="Le Kef">Le Kef</option>
 							<option value="Mahdia">Mahdia</option>
 							<option value="La Manouba">La Manouba</option>
-							<option value="Médenine">Médenine</option>
 							<option value="Monastir">Monastir</option>
 							<option value="Nabeul">Nabeul</option>
 							<option value="Sfax">Sfax</option>
-							<option value="Sidi Bouzid">Sidi Bouzid</option>
-							<option value="Siliana">Siliana</option>
 							<option value="Sousse">Sousse</option>
-							<option value="Tataouine">Tataouine</option>
-							<option value="Tozeur">Tozeur</option>
 							<option value="Tunis">Tunis</option>
 							<option value="Zaghouan">Zaghouan</option>
 						</select>
@@ -465,9 +439,7 @@
 				<div class="th-sort-bar">
 					<div class="row justify-content-between align-items-center">
 						<div class="col-md">
-							<p class="woocommerce-result-count">
-								{{ countBiensALouer }} résultats
-							</p>
+							
 						</div>
 
 						<div class="col-md-auto">

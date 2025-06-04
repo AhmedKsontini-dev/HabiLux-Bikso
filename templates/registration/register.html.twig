@@ -61,6 +61,21 @@
         margin-bottom: 10px;
         color: #555;
     }
+
+    .error-message {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
+    }
+
+    .is-invalid {
+        border-color: #dc3545 !important;
+    }
+
+    .is-valid {
+        border-color: #28a745 !important;
+    }
 </style>
 
 <div class="container custom-container bg-white d-flex">
@@ -77,13 +92,28 @@
         <!-- Étape 1 -->
         <div id="step1">
             <div class="row row-cols-1 g-3">
-                {{ form_row(registrationForm.nom, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Nom'}}) }}
-                {{ form_row(registrationForm.prenom, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Prénom'}}) }}
-                {{ form_row(registrationForm.email, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Email'}}) }}
-                {{ form_row(registrationForm.tel, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Téléphone'}}) }}
+                <div class="col">
+                    {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Nom'}}) }}
+                    <div class="error-message" id="nom-error">Le nom est obligatoire</div>
+                </div>
+                
+                <div class="col">
+                    {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Prénom'}}) }}
+                    <div class="error-message" id="prenom-error">Le prénom est obligatoire</div>
+                </div>
+                
+                <div class="col">
+                    {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Email'}}) }}
+                    <div class="error-message" id="email-error">Veuillez saisir une adresse email valide (ex: nom@exemple.com)</div>
+                </div>
+                
+                <div class="col">
+                    {{ form_widget(registrationForm.tel, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Téléphone'}}) }}
+                    <div class="error-message" id="tel-error">Le numéro de téléphone est obligatoire</div>
+                </div>
+                
                 <div class="col">
                     <button type="button" class="btn btn-primary w-100" onclick="validateStep1()">Suivant</button>
-
                 </div>
                 <div class="col text-center">
                     <a href="{{ path('app_login') }}" class="text-dark d-table py-1"><u>Déjà inscrit(e) ? Se connecter</u></a>
@@ -94,9 +124,20 @@
         <!-- Étape 2 -->
         <div id="step2" style="display: none;">
             <div class="row row-cols-1 g-3">
-                {{ form_row(registrationForm.adresse, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Adresse', 'required': true}}) }}
-                {{ form_row(registrationForm.localisation, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Localisation', 'required': true}}) }}
-                {{ form_row(registrationForm.photoProfil, {'attr': {'class': 'form-control bg-light', 'required': true}}) }}
+                <div class="col">
+                    {{ form_widget(registrationForm.adresse, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Adresse'}}) }}
+                    <div class="error-message" id="adresse-error">L'adresse est obligatoire</div>
+                </div>
+                
+                <div class="col">
+                    {{ form_widget(registrationForm.localisation, {'attr': {'class': 'form-control bg-light', 'placeholder': 'Localisation'}}) }}
+                    <div class="error-message" id="localisation-error">La localisation est obligatoire</div>
+                </div>
+                
+                <div class="col">
+                    {{ form_widget(registrationForm.photoProfil, {'attr': {'class': 'form-control bg-light'}}) }}
+                    <div class="error-message" id="photo-error">La photo de profil est obligatoire</div>
+                </div>
                 
                 <div class="col position-relative">
                     <label class="mb-2" for="plainPassword">Mot de passe</label>
@@ -115,15 +156,20 @@
                     <small id="passwordHelp" class="text-danger d-none">
                         Le mot de passe doit contenir au moins une majuscule, un chiffre et 8 caractères.
                     </small>
+                    <div class="error-message" id="password-error">Le mot de passe est obligatoire</div>
                 </div>
 
-                {{ form_row(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+                <div class="col">
+                    {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
+                    {{ form_label(registrationForm.agreeTerms) }}
+                    <div class="error-message" id="terms-error">Vous devez accepter les conditions d'utilisation</div>
+                </div>
 
                 <div class="col">
                     <button type="button" class="btn btn-secondary w-100" onclick="prevStep()">Précédent</button>
                 </div>
                 <div class="col">
-                    <button type="submit" class="btn btn-primary w-100">M'inscrire</button>
+                    <button type="submit" class="btn btn-primary w-100" onclick="return validateStep2()">M'inscrire</button>
                 </div>
                 <div class="col text-center">
                     <a href="{{ path('app_login') }}" class="text-dark d-table py-1"><u>Déjà inscrit(e) ? Se connecter</u></a>
@@ -141,28 +187,164 @@
     </div>
 </div>
 
-
 <script>
+    // Validation de l'étape 1
     function validateStep1() {
-        const step1Fields = document.querySelectorAll('#step1 input');
-        let valid = true;
+        let isValid = true;
+        
+        // Validation du nom
+        const nom = document.querySelector('input[name*="nom"]');
+        const nomError = document.getElementById('nom-error');
+        if (!nom.value.trim()) {
+            nom.classList.add('is-invalid');
+            nom.classList.remove('is-valid');
+            nomError.style.display = 'block';
+            isValid = false;
+        } else {
+            nom.classList.remove('is-invalid');
+            nom.classList.add('is-valid');
+            nomError.style.display = 'none';
+        }
 
-        step1Fields.forEach(input => {
-            if (input.hasAttribute('required') && input.value.trim() === '') {
-                input.classList.add('is-invalid');
-                valid = false;
-            } else {
-                input.classList.remove('is-invalid');
-            }
-        });
+        // Validation du prénom
+        const prenom = document.querySelector('input[name*="prenom"]');
+        const prenomError = document.getElementById('prenom-error');
+        if (!prenom.value.trim()) {
+            prenom.classList.add('is-invalid');
+            prenom.classList.remove('is-valid');
+            prenomError.style.display = 'block';
+            isValid = false;
+        } else {
+            prenom.classList.remove('is-invalid');
+            prenom.classList.add('is-valid');
+            prenomError.style.display = 'none';
+        }
 
-        if (valid) {
+        // Validation de l'email
+        const email = document.querySelector('input[name*="email"]');
+        const emailError = document.getElementById('email-error');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+        if (!email.value.trim()) {
+            email.classList.add('is-invalid');
+            email.classList.remove('is-valid');
+            emailError.textContent = 'L\'email est obligatoire';
+            emailError.style.display = 'block';
+            isValid = false;
+        } else if (!emailRegex.test(email.value)) {
+            email.classList.add('is-invalid');
+            email.classList.remove('is-valid');
+            emailError.textContent = 'Veuillez saisir une adresse email valide (ex: nom@exemple.com)';
+            emailError.style.display = 'block';
+            isValid = false;
+        } else {
+            email.classList.remove('is-invalid');
+            email.classList.add('is-valid');
+            emailError.style.display = 'none';
+        }
+
+        // Validation du téléphone
+        const tel = document.querySelector('input[name*="tel"]');
+        const telError = document.getElementById('tel-error');
+        if (!tel.value.trim()) {
+            tel.classList.add('is-invalid');
+            tel.classList.remove('is-valid');
+            telError.style.display = 'block';
+            isValid = false;
+        } else {
+            tel.classList.remove('is-invalid');
+            tel.classList.add('is-valid');
+            telError.style.display = 'none';
+        }
+
+        if (isValid) {
             nextStep();
         }
     }
-</script>
 
-<script>
+    // Validation de l'étape 2
+    function validateStep2() {
+        let isValid = true;
+
+        // Validation de l'adresse
+        const adresse = document.querySelector('input[name*="adresse"]');
+        const adresseError = document.getElementById('adresse-error');
+        if (!adresse.value.trim()) {
+            adresse.classList.add('is-invalid');
+            adresse.classList.remove('is-valid');
+            adresseError.style.display = 'block';
+            isValid = false;
+        } else {
+            adresse.classList.remove('is-invalid');
+            adresse.classList.add('is-valid');
+            adresseError.style.display = 'none';
+        }
+
+        // Validation de la localisation
+        const localisation = document.querySelector('input[name*="localisation"]');
+        const localisationError = document.getElementById('localisation-error');
+        if (!localisation.value.trim()) {
+            localisation.classList.add('is-invalid');
+            localisation.classList.remove('is-valid');
+            localisationError.style.display = 'block';
+            isValid = false;
+        } else {
+            localisation.classList.remove('is-invalid');
+            localisation.classList.add('is-valid');
+            localisationError.style.display = 'none';
+        }
+
+        // Validation de la photo de profil
+        const photo = document.querySelector('input[name*="photoProfil"]');
+        const photoError = document.getElementById('photo-error');
+        if (!photo.files.length) {
+            photo.classList.add('is-invalid');
+            photo.classList.remove('is-valid');
+            photoError.style.display = 'block';
+            isValid = false;
+        } else {
+            photo.classList.remove('is-invalid');
+            photo.classList.add('is-valid');
+            photoError.style.display = 'none';
+        }
+
+        // Validation du mot de passe
+        const password = document.querySelector('.password-input');
+        const passwordError = document.getElementById('password-error');
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+        
+        if (!password.value.trim()) {
+            password.classList.add('is-invalid');
+            password.classList.remove('is-valid');
+            passwordError.style.display = 'block';
+            isValid = false;
+        } else if (!passwordRegex.test(password.value)) {
+            password.classList.add('is-invalid');
+            password.classList.remove('is-valid');
+            passwordError.style.display = 'none';
+            document.getElementById('passwordHelp').classList.remove('d-none');
+            isValid = false;
+        } else {
+            password.classList.remove('is-invalid');
+            password.classList.add('is-valid');
+            passwordError.style.display = 'none';
+            document.getElementById('passwordHelp').classList.add('d-none');
+        }
+
+        // Validation des conditions d'utilisation
+        const terms = document.querySelector('input[name*="agreeTerms"]');
+        const termsError = document.getElementById('terms-error');
+        if (!terms.checked) {
+            terms.classList.add('is-invalid');
+            termsError.style.display = 'block';
+            isValid = false;
+        } else {
+            terms.classList.remove('is-invalid');
+            termsError.style.display = 'none';
+        }
+
+        return isValid;
+    }
 
     function nextStep() {
         document.getElementById("step1").style.display = 'none';
@@ -209,6 +391,85 @@
             toggleIcon.classList.add('fa-eye');
         }
     }
+
+    // Validation en temps réel pour l'étape 1
+    document.addEventListener('DOMContentLoaded', function() {
+        // Nom
+        const nom = document.querySelector('input[name*="nom"]');
+        if (nom) {
+            nom.addEventListener('blur', function() {
+                const nomError = document.getElementById('nom-error');
+                if (!this.value.trim()) {
+                    this.classList.add('is-invalid');
+                    this.classList.remove('is-valid');
+                    nomError.style.display = 'block';
+                } else {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                    nomError.style.display = 'none';
+                }
+            });
+        }
+
+        // Prénom
+        const prenom = document.querySelector('input[name*="prenom"]');
+        if (prenom) {
+            prenom.addEventListener('blur', function() {
+                const prenomError = document.getElementById('prenom-error');
+                if (!this.value.trim()) {
+                    this.classList.add('is-invalid');
+                    this.classList.remove('is-valid');
+                    prenomError.style.display = 'block';
+                } else {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                    prenomError.style.display = 'none';
+                }
+            });
+        }
+
+        // Email
+        const email = document.querySelector('input[name*="email"]');
+        if (email) {
+            email.addEventListener('blur', function() {
+                const emailError = document.getElementById('email-error');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                if (!this.value.trim()) {
+                    this.classList.add('is-invalid');
+                    this.classList.remove('is-valid');
+                    emailError.textContent = 'L\'email est obligatoire';
+                    emailError.style.display = 'block';
+                } else if (!emailRegex.test(this.value)) {
+                    this.classList.add('is-invalid');
+                    this.classList.remove('is-valid');
+                    emailError.textContent = 'Veuillez saisir une adresse email valide (ex: nom@exemple.com)';
+                    emailError.style.display = 'block';
+                } else {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                    emailError.style.display = 'none';
+                }
+            });
+        }
+
+        // Téléphone
+        const tel = document.querySelector('input[name*="tel"]');
+        if (tel) {
+            tel.addEventListener('blur', function() {
+                const telError = document.getElementById('tel-error');
+                if (!this.value.trim()) {
+                    this.classList.add('is-invalid');
+                    this.classList.remove('is-valid');
+                    telError.style.display = 'block';
+                } else {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                    telError.style.display = 'none';
+                }
+            });
+        }
+    });
 </script>
 
 {% endblock %}

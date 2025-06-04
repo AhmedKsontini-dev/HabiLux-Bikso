@@ -3,37 +3,52 @@
 {% block title %}HabiLux{% endblock %}
 
 {% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-xl-5 col-lg-6 mx-auto">
+            <div class="bg-white xs-p-20 p-30 border rounded">
+                <div class="form-icon-left rounded form-boder">
+                    <h1>Réinitialisez votre mot de passe</h1>
 
+                    {% for flash_error in app.flashes('reset_password_error') %}
+                        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                    {% endfor %}
 
+                    <p>Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.</p>
+                    {{ form_start(requestForm) }}
 
-            <div class="container">
-            
-           
-                <div class="row">
-                    <div class="col-xl-5 col-lg-6 mx-auto">
-                        <div class="bg-white xs-p-20 p-30 border rounded">
-                            <div class="form-icon-left rounded form-boder">
-                                <h1>Réinitialisez votre mot de passe</h1>
-
-                                {% for flash_error in app.flashes('reset_password_error') %}
-                                    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-                                {% endfor %}
-                                
-
-                                <p>Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.</p>
-                                {{ form_start(requestForm) }}
-
-                                    <div>
-                                        {{ form_label(requestForm.email) }}
-                                        {{ form_widget(requestForm.email, {'attr': {'class': 'form-control'}}) }}
-                                        {{ form_errors(requestForm.email) }}
-                                    </div>
-
-                                    <button class="btn btn-primary mt-3">Envoyer l'e-mail de réinitialisation</button>
-                                {{ form_end(requestForm) }}
-                            </div>
-                        </div>
+                    <div>
+                        {{ form_label(requestForm.email) }}
+                        {{ form_widget(requestForm.email) }}
+                        {{ form_errors(requestForm.email) }}
                     </div>
+
+                    <button class="btn btn-primary mt-3" type="submit">Envoyer l'e-mail de réinitialisation</button>
+                    {{ form_end(requestForm) }}
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const emailInput = document.querySelector("input[name='email']");
+    
+    emailInput.addEventListener("blur", function() {
+        const emailValue = emailInput.value;
+        const errorContainer = document.querySelector(".form-errors");
+
+        // Clear previous errors
+        errorContainer.innerHTML = '';
+
+        if (!emailValue.includes('@') || !emailValue.includes('.')) {
+            const errorMessage = document.createElement("div");
+            errorMessage.className = "alert alert-danger";
+            errorMessage.innerText = "Veuillez entrer une adresse e-mail valide.";
+            errorContainer.appendChild(errorMessage);
+        }
+    });
+});
+</script>
 {% endblock %}

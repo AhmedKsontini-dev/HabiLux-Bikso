@@ -29,6 +29,30 @@
         border-color: #ebccd1;
     }
 
+    .form-control:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+
+    .form-control.error {
+        border-color: #dc3545;
+    }
+
+    .form-control.success {
+        border-color: #28a745;
+    }
+
+    .error-message {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
+    }
+
+    .error-message.show {
+        display: block;
+    }
+
 </style>
 
     <div class="breadcumb-wrapper " data-bg-src="{{ asset('assetsFront/img/bg/breadcumb-bg.jpg') }}">
@@ -108,31 +132,35 @@
                     <div class="appointment-wrap2 bg-white me-xxl-5">
                         <h2 class="form-title text-theme">Nous-Contactez</h2>
                         <form id="visitForm" action="{{ path('app_front_contact_visit') }}" method="POST" class="appointment-form">
-                            <div class="row">
-                                <div class="form-group style-border style-radius col-12">
-                                    <input type="text" class="form-control" name="name" id="name" placeholder="Votre Nom et prénom*" required>
-                                    <i class="fal fa-user"></i>
-                                </div>
-                                <div class="form-group style-border style-radius col-12">
-                                    <input type="number" class="form-control" name="tel" id="tel" placeholder="Votre téléphone*" required>
-                                    <i class="fal fa-phone"></i>
-                                </div>
-                                <div class="form-group style-border style-radius col-12">
-                                    <input type="email" class="form-control" name="email" id="email" placeholder="Votre Email*" required>
-                                    <i class="fal fa-envelope"></i>
-                                </div>
-                                <div class="col-12 form-group style-border style-radius">
-                                    <i class="far fa-comments"></i>
-                                    <textarea name="message" placeholder="Tapez Votre Message" class="form-control" required></textarea>
-                                </div>
-                                <div class="col-12 form-btn mt-4">
-                                    <button type="submit" class="th-btn">Envoyer le Message 
-                                        <span class="btn-icon"><img src="{{ asset('assetsFront/img/icon/paper-plane.svg') }}" alt="img"></span>
-                                    </button>
-                                </div>
-                            </div>
-                            <p class="form-messages mb-0 mt-3"></p>
-                        </form>
+    <div class="row">
+        <div class="form-group style-border style-radius col-12">
+            <input type="text" class="form-control" name="name" id="name" placeholder="Votre Nom et prénom*" required>
+            <i class="fal fa-user"></i>
+            <div class="error-message" id="name-error"></div>
+        </div>
+        <div class="form-group style-border style-radius col-12">
+            <input type="tel" class="form-control" name="tel" id="tel" placeholder="Votre téléphone*" required>
+            <i class="fal fa-phone"></i>
+            <div class="error-message" id="tel-error"></div>
+        </div>
+        <div class="form-group style-border style-radius col-12">
+            <input type="email" class="form-control" name="email" id="email" placeholder="Votre Email*" required>
+            <i class="fal fa-envelope"></i>
+            <div class="error-message" id="email-error"></div>
+        </div>
+        <div class="col-12 form-group style-border style-radius">
+            <i class="far fa-comments"></i>
+            <textarea name="message" class="form-control" id="message" placeholder="Tapez Votre Message" required></textarea>
+            <div class="error-message" id="message-error"></div>
+        </div>
+        <div class="col-12 form-btn mt-4">
+            <button type="submit" class="th-btn">Envoyer le Message 
+                <span class="btn-icon"><img src="{{ asset('assetsFront/img/icon/paper-plane.svg') }}" alt="img"></span>
+            </button>
+        </div>
+    </div>
+    <p class="form-messages mb-0 mt-3"></p>
+</form>
                     </div>
                 </div>
             </div>
@@ -145,39 +173,147 @@
         </div>
     </div>
 
+
+
+
 <script>
-    document.getElementById('visitForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    let formData = new FormData(this);
-
-    let response = await fetch(this.action, {
-        method: 'POST',
-        body: formData
-    });
-
-    let result = await response.json();
-
-    let alertDiv = document.createElement('div');
-    alertDiv.classList.add('alert');
-    
-    if (result.success) {
-        alertDiv.classList.add('alert-success');
-        alertDiv.innerText = result.message;
-        this.reset(); // Réinitialiser le formulaire après l'envoi
-    } else {
-        alertDiv.classList.add('alert-danger');
-        alertDiv.innerText = result.message;
+    function showError(fieldId, message) {
+        const field = document.getElementById(fieldId);
+        const errorElement = document.getElementById(fieldId + '-error');
+        field.classList.add('error');
+        field.classList.remove('success');
+        errorElement.textContent = message;
+        errorElement.classList.add('show');
     }
 
-    document.body.appendChild(alertDiv);
+    function hideError(fieldId) {
+        const field = document.getElementById(fieldId);
+        const errorElement = document.getElementById(fieldId + '-error');
+        field.classList.remove('error');
+        field.classList.add('success');
+        errorElement.classList.remove('show');
+    }
 
-    // Supprimer l'alerte après 5 secondes
-    setTimeout(() => {
-        alertDiv.remove();
-    }, 5000);
-});
+    function validateName(name) {
+        if (name.trim() === '') return 'Le nom et prénom sont obligatoires';
+        if (/\d/.test(name)) return 'Le nom ne doit pas contenir de chiffres';
+        return '';
+    }
 
+    function validatePhone(phone) {
+        if (phone.trim() === '') return 'Le numéro de téléphone est obligatoire';
+        if (!/^\d+$/.test(phone.trim())) return 'Le téléphone ne doit contenir que des chiffres';
+        return '';
+    }
+
+    function validateEmail(email) {
+        if (email.trim() === '') return 'L\'email est obligatoire';
+        if (!email.includes('@')) return 'L\'email doit contenir @';
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!regex.test(email)) return 'Format d\'email invalide';
+        return '';
+    }
+
+    function validateMessage(message) {
+        if (message.trim() === '') return 'Le message est obligatoire';
+        return '';
+    }
+
+    function validateField(fieldId) {
+        const field = document.getElementById(fieldId);
+        const value = field.value;
+        let errorMessage = '';
+
+        switch (fieldId) {
+            case 'name': errorMessage = validateName(value); break;
+            case 'tel': errorMessage = validatePhone(value); break;
+            case 'email': errorMessage = validateEmail(value); break;
+            case 'message': errorMessage = validateMessage(value); break;
+        }
+
+        if (errorMessage) {
+            showError(fieldId, errorMessage);
+            return false;
+        } else {
+            hideError(fieldId);
+            return true;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Validation à la sortie des champs
+        ['name', 'tel', 'email', 'message'].forEach(id => {
+            document.getElementById(id).addEventListener('blur', () => validateField(id));
+        });
+
+        // Empêcher saisie de chiffres dans le nom
+        document.getElementById('name').addEventListener('input', function () {
+            this.value = this.value.replace(/[0-9]/g, '');
+            if (this.value !== '') validateField('name');
+        });
+
+        // Empêcher saisie de lettres dans le téléphone
+        document.getElementById('tel').addEventListener('input', function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            if (this.value !== '') validateField('tel');
+        });
+
+        // Validation sur email
+        document.getElementById('email').addEventListener('input', function () {
+            if (this.value !== '') validateField('email');
+        });
+
+        // Soumission AJAX avec validation
+        document.getElementById('visitForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const isValidName = validateField('name');
+            const isValidTel = validateField('tel');
+            const isValidEmail = validateField('email');
+            const isValidMessage = validateField('message');
+
+            if (isValidName && isValidTel && isValidEmail && isValidMessage) {
+                const formData = new FormData(this);
+
+                let response = await fetch(this.action, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                let result = await response.json();
+                const alertDiv = document.createElement('div');
+                alertDiv.classList.add('alert');
+
+                if (result.success) {
+                    alertDiv.classList.add('alert-success');
+                    alertDiv.innerText = result.message;
+                    this.reset();
+                    document.querySelectorAll('.form-control').forEach(f => f.classList.remove('success'));
+                } else {
+                    alertDiv.classList.add('alert-danger');
+                    alertDiv.innerText = result.message;
+                }
+
+                document.body.appendChild(alertDiv);
+                setTimeout(() => alertDiv.remove(), 5000);
+            } else {
+                const firstError = document.querySelector('.form-control.error');
+                if (firstError) {
+                    firstError.focus();
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+
+        // Nettoyer erreurs au focus
+        document.querySelectorAll('.form-control').forEach(field => {
+            field.addEventListener('focus', function () {
+                this.classList.remove('error', 'success');
+            });
+        });
+    });
 </script>
+
 {% endblock %}
 
 

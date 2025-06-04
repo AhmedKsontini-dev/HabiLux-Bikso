@@ -15,6 +15,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType; 
 use App\Entity\Bien;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Validator\Constraints\Email;
 
 
 
@@ -28,22 +32,36 @@ class TransactionType extends AbstractType
                 'label' => 'Nom de l\'acheteur',
                 'required' => true,
             ])
-            ->add('telAcheteur', TextType::class, [
-                'label' => 'Numéro de téléphone de l\'acheteur',
-                'required' => true,
-            ])
             ->add('cinAcheteur', NumberType::class, [
                 'label' => 'CIN de l\'acheteur',
                 'required' => true,
+                'attr' => [
+                    'min' => 0,
+                    'oninput' => "this.value = this.value.replace(/[^0-9]/g, '')",
+                ],
             ])
+
             ->add('nomVendeur', TextType::class, [
                 'label' => 'Nom de vendeur',
                 'required' => true,
             ])
+            ->add('telAcheteur', TextType::class, [
+                'label' => 'Numéro de téléphone de l\'acheteur',
+                'required' => true,
+                'attr' => [
+                    'oninput' => "this.value = this.value.replace(/[^0-9]/g, '')",
+                    'maxlength' => 15, // optionnel, pour limiter la longueur
+                ],
+            ])
             ->add('telVendeur', TextType::class, [
                 'label' => 'Numéro de téléphone de vendeur',
                 'required' => true,
+                'attr' => [
+                    'oninput' => "this.value = this.value.replace(/[^0-9]/g, '')",
+                    'maxlength' => 15, // optionnel aussi
+                ],
             ])
+
             ->add('typeTransaction', ChoiceType::class, [
                 'choices' => [
                     'Vente' => 'Vente',
@@ -53,33 +71,43 @@ class TransactionType extends AbstractType
                 'multiple' => false,
             ])
             
-            ->add('prixVente', TextType::class, [
+           ->add('prixVente', TextType::class, [
                 'label' => 'Prix de vente',
-                'required' => false,
+                'required' => true, // ← Obligatoire
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'Exemple: Le prix de location/vente du bien est de 20 000 000 DT',
+                    'oninput' => "this.value = this.value.replace(/[^0-9]/g, '')", // ← Uniquement chiffres
                 ],
             ])
-            
+
             ->add('commission', TextType::class, [
                 'label' => 'Commission',
-                'required' => false,
+                'required' => true, // ← Obligatoire
+                'attr' => [
+                    'oninput' => "this.value = this.value.replace(/[^0-9]/g, '')", // ← Uniquement chiffres
+                ],
             ])
+
             ->add('dateTransaction', DateType::class, [
                 'label' => 'Date de la transaction',
                 'widget' => 'single_text',
                 'required' => true,
+                'attr' => [
+                    'class' => 'form-control',
+                    'min' => (new \DateTime())->format('Y-m-d'), // 🔒 Empêche la sélection de dates passées
+                    'onblur' => 'validateFutureDate(this)',      // 🔍 Vérifie à la sortie du champ
+                ],
             ])
             ->add('declaration1', CheckboxType::class, [
                 'label'    => 'Je certifie que les informations fournies sont exactes.',
-                'required' => false,
+                'required' => true, // ← Était false
                 'attr'     => ['class' => 'form-check-input'],
             ])
-            
+
             ->add('declaration2', CheckboxType::class, [
                 'label'    => 'J’accepte de respecter toutes les conditions du contrat et de fournir des informations supplémentaires si nécessaire.',
-                'required' => false,
+                'required' => true, // ← Était false
                 'attr'     => ['class' => 'form-check-input'],
             ])
             
@@ -128,19 +156,12 @@ class TransactionType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Exemple : Le bien objet de ce contrat est un appartement de 80m², comprenant 3 pièces, avec balcon ...',
+                    'placeholder' => 'La description sera automatiquement remplie selon le bien sélectionné...',
+                    'readonly' => true, // ← AJOUT DE L'ATTRIBUT READONLY
+                    'rows' => 8, // Optionnel : définir la hauteur du textarea
                 ],
             ])
-            ->add('debutLocation', DateType::class, [
-                'label' => 'Début de la location',
-                'widget' => 'single_text',
-                'required' => false,
-            ])
-            ->add('finLocation', DateType::class, [
-                'label' => 'Fin de la location',
-                'widget' => 'single_text',
-                'required' => false,
-            ])
+            
             ->add('obligationVendeur', TextareaType::class, [
                 'label' => 'Obligations du vendeur',
                 'required' => true,
@@ -182,9 +203,18 @@ class TransactionType extends AbstractType
                 'required' => true,
             ])
           
-            ->add('mailVendeur', TextType::class, [
+            ->add('mailVendeur', EmailType::class, [
                 'label' => 'Email du vendeur',
                 'required' => true,
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez saisir un email.']),
+                    new Email(['message' => 'Veuillez saisir un email valide.']),
+                ],
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'exemple@domaine.com',
+                    'onblur' => 'validateEmailField(this)',
+                ],
             ])
           
             ->add('signatureVendeur', TextType::class, [
@@ -194,13 +224,15 @@ class TransactionType extends AbstractType
             ->add('bien', EntityType::class, [
                 'class' => Bien::class,
                 'choice_label' => function (Bien $bien) {
-                    return $bien->getId();
+                    return $bien->getId() . ' - ' . $bien->getNomBien(); // ou autre champ descriptif
                 },
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('b')
                         ->where('b.disponibilite = :disponibilite')
                         ->setParameter('disponibilite', 'Disponible');
-                }
+                },
+                'placeholder' => 'Sélectionnez un bien',
+                'required' => false,
             ])
         
             ->add('signatureAcheteur', TextType::class, [
