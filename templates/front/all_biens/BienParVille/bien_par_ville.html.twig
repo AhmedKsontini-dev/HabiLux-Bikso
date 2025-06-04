@@ -215,11 +215,11 @@ Property Page Area
                         <!-- Sélection de la catégorie (Type de bien) -->
                         <select class="form-select" name="nomType">
                             <option value="">Catégories</option>
-                            <option value="Villa" {% if selectedNomType == 'Villa' %}selected{% endif %}>Villa</option>
-                            <option value="Appartement" {% if selectedNomType == 'Appartement' %}selected{% endif %}>Appartement</option>
-                            <option value="Bureau Commercial" {% if selectedNomType == 'Bureau Commercial' %}selected{% endif %}>Bureau Commercial</option>
-                            <option value="Depot" {% if selectedNomType == 'Depot' %}selected{% endif %}>Depôt</option>
-                            <option value="Terrain" {% if selectedNomType == 'Terrain' %}selected{% endif %}>Terrain</option>
+                            <option value="Villa" {% if selectedNomType == 'Villa' %}selected{% endif %}>🏠 Villa</option>
+                            <option value="Appartement" {% if selectedNomType == 'Appartement' %}selected{% endif %}>🏢 Appartement</option>
+                            <option value="Bureau Commercial" {% if selectedNomType == 'Bureau Commercial' %}selected{% endif %}>🏢 Bureau Commercial</option>
+                            <option value="Depot" {% if selectedNomType == 'Depot' %}selected{% endif %}>🏭 Depôt</option>
+                            <option value="Terrain" {% if selectedNomType == 'Terrain' %}selected{% endif %}>🏞️ Terrain</option>
                         </select>
 
                         <!-- Sélection de typeOffre -->
@@ -237,23 +237,23 @@ Property Page Area
      
 
                 <div class="tab-pane fade" id="buy-tab-pane" role="tabpanel" aria-labelledby="buy-tab" tabindex="0">
-                    <form class="property-search-form" method="GET" action="{{ path('app_front_all_biens_par_ville', {'nomVille': ville.nomVille}) }}">
+                    <form class="property-search-form" method="GET" action="{{ path('app_front_all_biens_par_ville', {'nomVille': nomVille}) }}">
                         <label>Recherche de propriété</label>
-                        
+
                         <!-- Champ de recherche par ID ou emplacement -->
                         <div class="form-group">
                             <i class="far fa-search"></i>
-                            <input class="form-control" type="text" name="id" placeholder="Référence du propriété">
+                            <input class="form-control" type="text" name="id" placeholder="Référence du propriété" >
                         </div>
 
                         <!-- Sélection de la catégorie (Type de bien) -->
                         <select class="form-select" name="nomType">
                             <option value="">Catégories</option>
-                            <option value="Villa">Villa</option>
-                            <option value="Appartement">Appartement</option>
-                            <option value="Bureau Commercial">Bureau Commercial</option>
-                            <option value="Depot">Depôt</option>
-                            <option value="Terrain">Terrain</option>
+                            <option value="Villa" {% if selectedNomType == 'Villa' %}selected{% endif %}>🏠 Villa</option>
+                            <option value="Appartement" {% if selectedNomType == 'Appartement' %}selected{% endif %}>🏢 Appartement</option>
+                            <option value="Bureau Commercial" {% if selectedNomType == 'Bureau Commercial' %}selected{% endif %}>🏢 Bureau Commercial</option>
+                            <option value="Depot" {% if selectedNomType == 'Depot' %}selected{% endif %}>🏭 Depôt</option>
+                            <option value="Terrain" {% if selectedNomType == 'Terrain' %}selected{% endif %}>🏞️ Terrain</option>
                         </select>
 
                         <!-- Sélection de typeOffre -->
