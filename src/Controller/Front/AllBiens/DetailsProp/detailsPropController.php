@@ -70,7 +70,7 @@ class detailsPropController extends AbstractController
             $entityManager->persist($contactMessage);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Votre message a été enregistré avec succès !');
+            $this->addFlash('success', 'Votre message a été envoyeé avec succèes !');
 
             return $this->render('front/all_biens/details_prop/detailsProp.html.twig', [
                 'bien' => $bien,

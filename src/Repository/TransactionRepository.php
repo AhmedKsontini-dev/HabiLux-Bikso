@@ -77,5 +77,13 @@ class TransactionRepository extends ServiceEntityRepository
         $entityManager->flush();
     }
 
+    public function findFinLocationDepassee(): array
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->where('t.finLocation IS NOT NULL')
+            ->andWhere('t.finLocation < :today')
+            ->setParameter('today', new \DateTime('today'));
+        return $qb->getQuery()->getResult();
+    }
 
 }
