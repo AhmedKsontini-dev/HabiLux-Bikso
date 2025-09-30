@@ -597,7 +597,7 @@ Property Page Area
                             {# Lien vers la page précédente si on n'est pas sur la première page #}
                             {% if biens.currentPageNumber > 1 %}
                                 <li>
-                                    <a class="prev-page" href="{{ path('app_front_habitation_appartemant_louer', { page: biens.currentPageNumber - 1 }) }}">
+                                    <a class="prev-page" href="{{ path('app_front_habitation_appartemant_louer', app.request.query.all | merge({ page: biens.currentPageNumber - 1 })) }}">
                                         <i class="far fa-arrow-left me-2"></i> Précédent
                                     </a>
                                 </li>
@@ -606,7 +606,7 @@ Property Page Area
                             {# Affichage des numéros de page #}
                             {% for page in 1..biens.pageCount %}
                                 <li>
-                                    <a href="{{ path('app_front_habitation_appartemant_louer', { page: page }) }}"
+                                    <a href="{{ path('app_front_habitation_appartemant_louer', app.request.query.all | merge({ page: page })) }}"
                                     class="{{ page == biens.currentPageNumber ? 'active' : '' }}">
                                         {{ page }}
                                     </a>
@@ -616,7 +616,7 @@ Property Page Area
                             {# Lien vers la page suivante si on n'est pas sur la dernière page #}
                             {% if biens.currentPageNumber < biens.pageCount %}
                                 <li>
-                                    <a class="next-page" href="{{ path('app_front_habitation_appartemant_louer', { page: biens.currentPageNumber + 1 }) }}">
+                                    <a class="next-page" href="{{ path('app_front_habitation_appartemant_louer', app.request.query.all | merge({ page: biens.currentPageNumber + 1 })) }}">
                                         Suivant <i class="far fa-arrow-right ms-2"></i>
                                     </a>
                                 </li>

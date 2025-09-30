@@ -16,7 +16,7 @@ class Transaction
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'transactions', cascade: ['persist', 'remove'])]
-    private ?bien $bien = null;
+    private ?Bien $bien = null;
 
 
 
@@ -115,12 +115,12 @@ class Transaction
         return $this->id;
     }
 
-    public function getBien(): ?bien
+    public function getBien(): ?Bien
     {
         return $this->bien;
     }
 
-    public function setBien(bien $bien): static
+    public function setBien(Bien $bien): static
     {
         $this->bien = $bien;
 

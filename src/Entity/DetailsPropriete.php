@@ -17,11 +17,11 @@ class DetailsPropriete
     private ?string $valeurPropriete = null;
 
     #[ORM\ManyToOne(inversedBy: 'detailsProprietes')]
-    private ?propriete $propriete = null;
+    private ?Propriete $propriete = null;
 
     #[ORM\ManyToOne(targetEntity: Bien::class, inversedBy: 'detailsProprietes')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?bien $bien = null;
+    private ?Bien $bien = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $afficher = null;
@@ -43,24 +43,24 @@ class DetailsPropriete
         return $this;
     }
 
-    public function getPropriete(): ?propriete
+    public function getPropriete(): ?Propriete
     {
         return $this->propriete;
     }
 
-    public function setPropriete(?propriete $propriete): static
+    public function setPropriete(?Propriete $propriete): static
     {
         $this->propriete = $propriete;
 
         return $this;
     }
 
-    public function getBien(): ?bien
+    public function getBien(): ?Bien
     {
         return $this->bien;
     }
 
-    public function setBien(?bien $bien): static
+    public function setBien(?Bien $bien): static
     {
         $this->bien = $bien;
 

@@ -20,7 +20,7 @@ class ImageBien
     private ?bool $principal = null;
 
     #[ORM\ManyToOne(inversedBy: 'imageBiens')]
-    private ?bien $bien = null;
+    private ?Bien $bien = null;
 
     public function getId(): ?int
     {
@@ -51,12 +51,12 @@ class ImageBien
         return $this;
     }
 
-    public function getBien(): ?bien
+    public function getBien(): ?Bien
     {
         return $this->bien;
     }
 
-    public function setBien(?bien $bien): static
+    public function setBien(?Bien $bien): static
     {
         $this->bien = $bien;
 

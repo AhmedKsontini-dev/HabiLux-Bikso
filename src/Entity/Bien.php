@@ -42,7 +42,7 @@ class Bien
     private ?Ville $ville = null;
 
     #[ORM\ManyToOne(inversedBy: 'biens')]
-    private ?typeBien $type = null;
+    private ?TypeBien $type = null;
 
     /**
      * @var Collection<int, DetailsPropriete>
@@ -59,7 +59,7 @@ class Bien
 
     
     #[ORM\OneToMany(targetEntity: Favoris::class, mappedBy: 'bien')]
-    private collection $favoris;
+    private Collection $favoris;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateCreation = null;
@@ -219,12 +219,12 @@ class Bien
         return $this;
     }
 
-    public function getType(): ?typeBien
+    public function getType(): ?TypeBien
     {
         return $this->type;
     }
 
-    public function setType(?typeBien $type): static
+    public function setType(?TypeBien $type): static
     {
         $this->type = $type;
 
