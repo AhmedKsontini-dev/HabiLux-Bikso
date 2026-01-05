@@ -1,0 +1,3 @@
+Habiluxx – Real Estate Management Platform
+
+Habiluxx is a comprehensive real estate management platform developed using Symfony and MySQL, with a modern frontend built using HTML, CSS, JavaScript, Bootstrap, AJAX. The platform enables real estate agencies to manage property sales and rentals efficiently while offering an intuitive and responsive user experience. It also integrates an AI-powered chatbot that assists visitors by answering questions in real time, as well as 3D virtual property visits, allowing users to explore properties remotely. Habiluxx combines advanced technology and smart features to deliver a complete digital solution for modern real estate businesses.
